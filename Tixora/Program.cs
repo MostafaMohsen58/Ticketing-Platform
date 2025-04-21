@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Models.Context;
+using Tixora.Repositories;
+using Tixora.Repositories.Interfaces;
 using Tixora.Services;
 using Tixora.Services.Interface;
 
@@ -30,6 +32,7 @@ namespace Tixora
             .AddEntityFrameworkStores<TixoraContext>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             var app = builder.Build();
 
 

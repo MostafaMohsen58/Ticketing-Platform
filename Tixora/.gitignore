@@ -28,7 +28,11 @@ packages/
 # Yarn
 yarn-error.log
 
-# VS Code
+# Visual Studio files
 .vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
 
 appsettings.json
