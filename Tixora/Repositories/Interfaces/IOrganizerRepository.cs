@@ -9,3 +9,4 @@ namespace Tixora.Repositories.Interfaces
         List<Organizer> GetAll();
     }
 }
+
