@@ -2,6 +2,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Models.Context;
+using Tixora.Repositories;
+using Tixora.Repositories.Interfaces;
 using Tixora.Services;
 using Tixora.Services.Interface;
 
@@ -18,7 +20,7 @@ namespace Tixora
 
             builder.Services.AddDbContext<TixoraContext>(options =>
             {
-                options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("cs"));
+                options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
             });
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
@@ -30,6 +32,7 @@ namespace Tixora
             .AddEntityFrameworkStores<TixoraContext>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+            builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
             var app = builder.Build();
 
 

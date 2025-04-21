@@ -25,7 +25,7 @@ namespace Tixora.Repositories
         public void Add(TicketCategory ticketCategory)
         {
             context.TicketCategories.Add(ticketCategory);
-            context.SaveChanges();  
+           
         }
 
         public void Update(int id, TicketCategory newTicketCategory)
@@ -34,7 +34,7 @@ namespace Tixora.Repositories
             oldTicketCategory.Name = newTicketCategory.Name;
             oldTicketCategory.Description = newTicketCategory.Description;
             oldTicketCategory.PriceMultiplier = newTicketCategory.PriceMultiplier;
-            context.SaveChanges();
+            
 
         }
 
@@ -42,7 +42,7 @@ namespace Tixora.Repositories
 
             TicketCategory ticketCategory = GetByID(id);
             context.TicketCategories.Remove(ticketCategory);
-            context.SaveChanges();
+            
 
         }
 
@@ -52,7 +52,7 @@ namespace Tixora.Repositories
         }
         public int Save()
         {
-            throw new NotImplementedException();
+            return context.SaveChanges();
         }
     }
 }
