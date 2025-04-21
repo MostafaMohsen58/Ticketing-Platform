@@ -18,7 +18,7 @@ namespace Tixora
 
             builder.Services.AddDbContext<TixoraContext>(options =>
             {
-                options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+                options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("cs"));
             });
 
             builder.Services.AddIdentity<ApplicationUser, IdentityRole>(options =>
