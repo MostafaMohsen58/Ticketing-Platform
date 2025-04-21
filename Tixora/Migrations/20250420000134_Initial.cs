@@ -59,7 +59,7 @@ namespace Tixora.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Orginziers",
+                name: "Organizers",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
@@ -71,7 +71,7 @@ namespace Tixora.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Orginziers", x => x.Id);
+                    table.PrimaryKey("PK_Organizers", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -221,16 +221,16 @@ namespace Tixora.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    OrginzierId = table.Column<int>(type: "int", nullable: true),
+                    OrganizerId = table.Column<int>(type: "int", nullable: true),
                     VenueId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Events", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Events_Orginziers_OrginzierId",
-                        column: x => x.OrginzierId,
-                        principalTable: "Orginziers",
+                        name: "FK_Events_Organizers_OrganizerId",
+                        column: x => x.OrganizerId,
+                        principalTable: "Organizers",
                         principalColumn: "Id");
                     table.ForeignKey(
                         name: "FK_Events_Venues_VenueId",
@@ -251,7 +251,7 @@ namespace Tixora.Migrations
                     EventId = table.Column<int>(type: "int", nullable: false),
                     TicketCategoryId = table.Column<int>(type: "int", nullable: false),
                     VenueId = table.Column<int>(type: "int", nullable: false),
-                    OrginzierId = table.Column<int>(type: "int", nullable: false)
+                    OrganizerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,9 +263,9 @@ namespace Tixora.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_Orginziers_OrginzierId",
-                        column: x => x.OrginzierId,
-                        principalTable: "Orginziers",
+                        name: "FK_Tickets_Organizers_OrganizerId",
+                        column: x => x.OrganizerId,
+                        principalTable: "Organizers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
@@ -361,9 +361,9 @@ namespace Tixora.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Events_OrginzierId",
+                name: "IX_Events_OrganizerId",
                 table: "Events",
-                column: "OrginzierId");
+                column: "OrganizerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Events_VenueId",
@@ -376,9 +376,9 @@ namespace Tixora.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_OrginzierId",
+                name: "IX_Tickets_OrganizerId",
                 table: "Tickets",
-                column: "OrginzierId");
+                column: "OrganizerId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tickets_TicketCategoryId",
@@ -428,7 +428,7 @@ namespace Tixora.Migrations
                 name: "TicketCategories");
 
             migrationBuilder.DropTable(
-                name: "Orginziers");
+                name: "Organizers");
 
             migrationBuilder.DropTable(
                 name: "Venues");

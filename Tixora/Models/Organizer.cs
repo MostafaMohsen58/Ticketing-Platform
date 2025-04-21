@@ -3,7 +3,7 @@ using Tixora.Validation;
 
 namespace Tixora.Models
 {
-    public class Orginzier
+    public class Organizer
     {
         public int Id { get; set; }
         [Required(ErrorMessage = "name is required")]
