@@ -2,8 +2,11 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Models.Context;
+
 using Tixora.Repositories;
 using Tixora.Repositories.Interfaces;
+
+
 using Tixora.Services;
 using Tixora.Services.Interface;
 
@@ -15,7 +18,15 @@ namespace Tixora
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+
             // Add services to the container.
+
+
+            // Register Repositories
+            builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<TixoraContext>(options =>

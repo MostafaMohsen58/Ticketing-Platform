@@ -12,6 +12,7 @@ namespace Tixora.Models
         [Range(10.00, double.MaxValue, ErrorMessage = "Price must be greater than 10.00")]
         public float Price { get; set; }
 
+
         [Required(ErrorMessage = "Available Quantity is required.")]
         [Range(0, int.MaxValue, ErrorMessage = "Available Quantity cannot be negative.")]
         public int AvailableQuantity { get; set; }
