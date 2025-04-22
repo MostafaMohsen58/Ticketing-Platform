@@ -32,7 +32,11 @@ namespace Tixora
             .AddEntityFrameworkStores<TixoraContext>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
+
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
             var app = builder.Build();
 
 
