@@ -32,7 +32,7 @@ namespace Tixora.Repositories
 
         public Venue GetById(int id)
         {
-            return _context.Venues.FirstOrDefault(v => v.Id == id);
+            return _context.Venues.FirstOrDefault(v => v.Id == id)!;                ;
         }
 
         public List<Venue> GetAll()
