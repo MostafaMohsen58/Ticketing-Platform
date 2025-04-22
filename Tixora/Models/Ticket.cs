@@ -26,17 +26,6 @@ namespace Tixora.Models
 
         [Required(ErrorMessage = "Ticket Category ID is required.")]
         public int TicketCategoryId { get; set; }
-
-        public virtual Venue Venue { get; set; }
-
-        [Required(ErrorMessage = "Venue ID is required.")]
-        public int VenueId { get; set; }
-
-        public virtual Organizer Orginzier { get; set; }
-
-        [Required(ErrorMessage = "Organizer ID is required.")]
-        public int OrginzierId { get; set; }
-
         public virtual List<Booking> Bookings { get; set; }
     }
 }

@@ -25,5 +25,11 @@ namespace Tixora.Models
         public string Category { get; set; }
 
         public virtual List<Ticket> Tickets { get; set; } = new List<Ticket>();
+        public virtual Venue Venue { get; set; }
+        [Required(ErrorMessage = "Venue ID is required.")]
+        public int VenueId { get; set; }
+        public virtual Organizer Organizer { get; set; }
+        [Required(ErrorMessage = "Organizer ID is required.")]
+        public int OrganizerId { get; set; }
     }
 }

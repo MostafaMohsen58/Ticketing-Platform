@@ -6,7 +6,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 namespace Tixora.Migrations
 {
     /// <inheritdoc />
-    public partial class InitalMigration : Migration
+    public partial class Initial : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -221,8 +221,8 @@ namespace Tixora.Migrations
                     StartDate = table.Column<DateTime>(type: "datetime2", nullable: false),
                     ImageUrl = table.Column<string>(type: "nvarchar(200)", maxLength: 200, nullable: true),
                     Category = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    OrganizerId = table.Column<int>(type: "int", nullable: true),
-                    VenueId = table.Column<int>(type: "int", nullable: true)
+                    VenueId = table.Column<int>(type: "int", nullable: false),
+                    OrganizerId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -231,12 +231,14 @@ namespace Tixora.Migrations
                         name: "FK_Events_Organizers_OrganizerId",
                         column: x => x.OrganizerId,
                         principalTable: "Organizers",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Events_Venues_VenueId",
                         column: x => x.VenueId,
                         principalTable: "Venues",
-                        principalColumn: "Id");
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                 });
 
             migrationBuilder.CreateTable(
@@ -249,9 +251,7 @@ namespace Tixora.Migrations
                     Price = table.Column<float>(type: "real", nullable: false),
                     AvailableQuantity = table.Column<int>(type: "int", nullable: false),
                     EventId = table.Column<int>(type: "int", nullable: false),
-                    TicketCategoryId = table.Column<int>(type: "int", nullable: false),
-                    VenueId = table.Column<int>(type: "int", nullable: false),
-                    OrginzierId = table.Column<int>(type: "int", nullable: false)
+                    TicketCategoryId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,21 +263,9 @@ namespace Tixora.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Tickets_Organizers_OrginzierId",
-                        column: x => x.OrginzierId,
-                        principalTable: "Organizers",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
                         name: "FK_Tickets_TicketCategories_TicketCategoryId",
                         column: x => x.TicketCategoryId,
                         principalTable: "TicketCategories",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Tickets_Venues_VenueId",
-                        column: x => x.VenueId,
-                        principalTable: "Venues",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -376,19 +364,9 @@ namespace Tixora.Migrations
                 column: "EventId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Tickets_OrginzierId",
-                table: "Tickets",
-                column: "OrginzierId");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Tickets_TicketCategoryId",
                 table: "Tickets",
                 column: "TicketCategoryId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Tickets_VenueId",
-                table: "Tickets",
-                column: "VenueId");
         }
 
         /// <inheritdoc />
