@@ -12,8 +12,8 @@ using Tixora.Models.Context;
 namespace Tixora.Migrations
 {
     [DbContext(typeof(TixoraContext))]
-    [Migration("20250420232631_dbCreation")]
-    partial class dbCreation
+    [Migration("20250422155930_Add Role Seed")]
+    partial class AddRoleSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -316,7 +316,7 @@ namespace Tixora.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("OrginzierId")
+                    b.Property<int?>("OrganizerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -332,14 +332,14 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrginzierId");
+                    b.HasIndex("OrganizerId");
 
                     b.HasIndex("VenueId");
 
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Tixora.Models.Orginzier", b =>
+            modelBuilder.Entity("Tixora.Models.Organizer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -365,7 +365,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orginziers");
+                    b.ToTable("Organizers");
                 });
 
             modelBuilder.Entity("Tixora.Models.Ticket", b =>
@@ -534,9 +534,9 @@ namespace Tixora.Migrations
 
             modelBuilder.Entity("Tixora.Models.Event", b =>
                 {
-                    b.HasOne("Tixora.Models.Orginzier", null)
+                    b.HasOne("Tixora.Models.Organizer", null)
                         .WithMany("Events")
-                        .HasForeignKey("OrginzierId");
+                        .HasForeignKey("OrganizerId");
 
                     b.HasOne("Tixora.Models.Venue", null)
                         .WithMany("Events")
@@ -551,7 +551,7 @@ namespace Tixora.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tixora.Models.Orginzier", "Orginzier")
+                    b.HasOne("Tixora.Models.Organizer", "Orginzier")
                         .WithMany()
                         .HasForeignKey("OrginzierId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -588,7 +588,7 @@ namespace Tixora.Migrations
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Tixora.Models.Orginzier", b =>
+            modelBuilder.Entity("Tixora.Models.Organizer", b =>
                 {
                     b.Navigation("Events");
                 });

@@ -12,8 +12,8 @@ using Tixora.Models.Context;
 namespace Tixora.Migrations
 {
     [DbContext(typeof(TixoraContext))]
-    [Migration("20250421190439_testToWork")]
-    partial class testToWork
+    [Migration("20250422151229_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
