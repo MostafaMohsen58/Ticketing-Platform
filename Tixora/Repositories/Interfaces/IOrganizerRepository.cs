@@ -1,3 +1,4 @@
+
 ﻿using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
@@ -9,4 +10,3 @@ namespace Tixora.Repositories.Interfaces
         List<Organizer> GetAll();
     }
 }
-

@@ -18,11 +18,10 @@ namespace Tixora.Repositories
         private IQueryable<Ticket> IncludeRelatedData()
         {
             return context.Tickets
-                .Include(t => t.Event)
                 .Include(t => t.TicketCategory)
-                .Include(t => t.Venue)
-                .Include(t => t.Orginzier)
-                .Include(t => t.Bookings);
+                .Include(t => t.Event);
+                //.Include(t => t.Organizer)
+                //.Include(t => t.Bookings);
         }
 
         public List<Ticket> GetAll()
