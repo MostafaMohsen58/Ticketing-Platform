@@ -32,7 +32,7 @@ namespace Tixora.Models
         [Required(ErrorMessage = "Venue ID is required.")]
         public int VenueId { get; set; }
 
-        public virtual Orginzier Orginzier { get; set; }
+        public virtual Organizer Orginzier { get; set; }
 
         [Required(ErrorMessage = "Organizer ID is required.")]
         public int OrginzierId { get; set; }
