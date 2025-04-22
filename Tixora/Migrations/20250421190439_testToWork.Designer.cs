@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Tixora.Models.Context;
 
@@ -11,9 +12,11 @@ using Tixora.Models.Context;
 namespace Tixora.Migrations
 {
     [DbContext(typeof(TixoraContext))]
-    partial class TixoraContextModelSnapshot : ModelSnapshot
+    [Migration("20250421190439_testToWork")]
+    partial class testToWork
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
