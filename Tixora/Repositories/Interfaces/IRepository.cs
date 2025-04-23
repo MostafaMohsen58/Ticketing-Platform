@@ -2,8 +2,9 @@
 {
     public interface IRepository<T> where T : class
     {
-        public void Add(T obj);
-        public void Update(T obj);
-        public int Save();
+        Task AddAsync(T obj);
+        Task UpdateAsync(T obj);
+        Task<int> SaveAsync();
+
     }
 }

@@ -1,38 +1,31 @@
 ﻿using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
-using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
+using Tixora.Services.Interfaces;
 
-namespace Tixora.Repositories
+
+
+namespace Tixora.Services
 {
-    public class TicketRepository : ITicketRepository
+    public class TicketService : ITicketService
     {
-        TixoraContext _context;
+        ITicketRepository _ticketRepository;
 
-        public TicketRepository(TixoraContext context)
+        public TicketService(ITicketRepository ticketRepository)
         {
-            _context = context;
-        }
-
-        private IQueryable<Ticket> IncludeRelatedData()
-        {
-            return _context.Tickets
-                .Include(t => t.TicketCategory)
-                .Include(t => t.Event);
+            _ticketRepository = ticketRepository;
         }
 
         public async Task<List<Ticket>> GetAllAsync()
         {
             try
             {
-                return await IncludeRelatedData().ToListAsync();
+                return await _ticketRepository.GetAllAsync();
             }
             catch (Exception ex)
             {
-                throw new Exception("An error occurred while fetching tickets.", ex);
+                throw new Exception("An error occurred while fetching the tickets.", ex);
             }
         }
 
@@ -40,7 +33,7 @@ namespace Tixora.Repositories
         {
             try
             {
-                return await IncludeRelatedData().FirstOrDefaultAsync(t => t.Id == id);
+                return await _ticketRepository.GetByIdAsync(id);
             }
             catch (Exception ex)
             {
@@ -52,7 +45,8 @@ namespace Tixora.Repositories
         {
             try
             {
-                await _context.Tickets.AddAsync(ticket);
+                await _ticketRepository.AddAsync(ticket);
+                await _ticketRepository.SaveAsync();
             }
             catch (Exception ex)
             {
@@ -64,8 +58,8 @@ namespace Tixora.Repositories
         {
             try
             {
-                _context.Tickets.Update(ticket);
-                
+                await _ticketRepository.UpdateAsync(ticket);
+                await _ticketRepository.SaveAsync();
             }
             catch (Exception ex)
             {
@@ -77,30 +71,16 @@ namespace Tixora.Repositories
         {
             try
             {
-                var ticket = await GetByIdAsync(id);
-                if (ticket != null)
+                var result = await _ticketRepository.DeleteAsync(id);
+                if (result)
                 {
-                    _context.Tickets.Remove(ticket);
-                    await SaveAsync();
-                    return true;
+                    await _ticketRepository.SaveAsync();
                 }
-                return false;
+                return result;
             }
             catch (Exception ex)
             {
                 throw new Exception("An error occurred while deleting the ticket.", ex);
-            }
-        }
-
-        public async Task<int> SaveAsync()
-        {
-            try
-            {
-                return await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while saving changes.", ex);
             }
         }
     }
