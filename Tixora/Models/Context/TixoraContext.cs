@@ -7,9 +7,7 @@ namespace Tixora.Models.Context
     public class TixoraContext:IdentityDbContext<ApplicationUser>
     {
         public TixoraContext(DbContextOptions<TixoraContext> options) : base(options)
-        {
-
-        }
+        {}
         
         public DbSet<Organizer> Organizers { get; set; }
         public DbSet<Venue> Venues { get; set; }

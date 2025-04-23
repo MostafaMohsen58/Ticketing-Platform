@@ -9,6 +9,7 @@ using Tixora.Repositories.Interfaces;
 
 using Tixora.Services;
 using Tixora.Services.Interface;
+using Tixora.Services.Interfaces;
 
 namespace Tixora
 {
@@ -47,6 +48,10 @@ namespace Tixora
             builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
 
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+            builder.Services.AddScoped<IEventsService, EventsService>();
+
 
             var app = builder.Build();
 
