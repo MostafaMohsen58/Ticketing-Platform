@@ -11,10 +11,10 @@ namespace Tixora.Controllers
     public class TicketController : Controller
     {
         ITicketService _ticketService;
-        IEventService _eventService;
+        IEventsService _eventService;
         ITicketCategoryService _ticketCategoryService;
 
-        public TicketController(ITicketService ticketService, IEventService eventService, ITicketCategoryService ticketCategoryService)
+        public TicketController(ITicketService ticketService, IEventsService eventService, ITicketCategoryService ticketCategoryService)
         {
             _ticketService = ticketService;
             _eventService = eventService;
@@ -67,14 +67,24 @@ namespace Tixora.Controllers
         {
             var model = new TicketViewModel
             {
-                Events =  _eventService.GetAll(), 
-                TicketCategories =  _ticketCategoryService.GetAll() 
+                Events = _eventService.GetAll(),
+                TicketCategories = _ticketCategoryService.GetAll()
             };
 
             return View(model);
         }
 
-       
+        //public async Task<IActionResult> Create()
+        //{
+        //    var model = new TicketViewModel
+        //    {
+        //        Events = await _eventService.GetAll(),
+        //        TicketCategories = _ticketCategoryService.GetAll()
+        //    };
+
+        //    return View(model);
+        //}
+
         [HttpPost]
         public IActionResult Create(TicketViewModel model)
         {
