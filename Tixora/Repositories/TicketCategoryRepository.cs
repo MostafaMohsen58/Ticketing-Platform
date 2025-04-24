@@ -6,50 +6,50 @@ namespace Tixora.Repositories
 {
     public class TicketCategoryRepository : ITicketCategoryRepository
     {
-        TixoraContext context;
-        public TicketCategoryRepository(TixoraContext db) { 
-        
+        private readonly TixoraContext context;
+
+        public TicketCategoryRepository(TixoraContext db)
+        {
             context = db;
         }
+
         public List<TicketCategory> GetAll()
         {
-            List<TicketCategory> ticketCategories = context.TicketCategories.ToList();
-            return ticketCategories;
+            return context.TicketCategories.ToList();
         }
 
         public TicketCategory GetByID(int id)
         {
-            TicketCategory ticketCategory = context.TicketCategories.FirstOrDefault(c => c.Id == id);
-            return ticketCategory;
+            return context.TicketCategories.FirstOrDefault(c => c.Id == id);
         }
+
         public void Add(TicketCategory ticketCategory)
         {
             context.TicketCategories.Add(ticketCategory);
-           
+            Save(); 
         }
 
-        public void Update(int id, TicketCategory newTicketCategory)
+        public void Update(TicketCategory ticketCategory)
         {
-            TicketCategory oldTicketCategory = GetByID(id);
-            oldTicketCategory.Name = newTicketCategory.Name;
-            oldTicketCategory.Description = newTicketCategory.Description;
-            oldTicketCategory.PriceMultiplier = newTicketCategory.PriceMultiplier;
-            
-
+            var existingCategory = GetByID(ticketCategory.Id);
+            if (existingCategory != null)
+            {
+                existingCategory.Name = ticketCategory.Name;
+                existingCategory.Description = ticketCategory.Description;
+                existingCategory.PriceMultiplier = ticketCategory.PriceMultiplier;
+                context.Entry(existingCategory).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
+            }
         }
 
-        public void Delete(int id) {
-
-            TicketCategory ticketCategory = GetByID(id);
-            context.TicketCategories.Remove(ticketCategory);
-            
-
-        }
-
-        public void Update(TicketCategory obj)
+        public void Delete(int id)
         {
-            throw new NotImplementedException();
+            var ticketCategory = GetByID(id);
+            if (ticketCategory != null)
+            {
+                context.TicketCategories.Remove(ticketCategory);
+            }
         }
+
         public int Save()
         {
             return context.SaveChanges();
