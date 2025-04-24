@@ -5,12 +5,12 @@ namespace Tixora.Repositories.Interfaces
 {
     public interface IEventRepository 
     {
-        Task Add(Event obj);
+        void Add(Event obj);
         void Update(Event obj);
-        Task<int> Save();
+        int Save();
         void Delete(int id);
         Event GetById(int id);
-        Task<List<Event>> GetAll();
+        List<Event> GetAll();
         public List<SelectListItem> GetVenues();
         public List<SelectListItem> GetOrganizers();
 

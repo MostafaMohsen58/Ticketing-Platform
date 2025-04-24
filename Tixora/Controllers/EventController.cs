@@ -12,9 +12,9 @@ namespace Tixora.Controllers
             _eventsService = eventsService;
         }
 
-        public async Task<IActionResult> Index()
+        public  IActionResult Index()
         {            
-            return View(await _eventsService.GetAll());
+            return View( _eventsService.GetAll());
         }
         [HttpGet]
         public IActionResult Create()
@@ -28,7 +28,7 @@ namespace Tixora.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(AddEventViewModel model)
+        public IActionResult Create(AddEventViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -39,7 +39,7 @@ namespace Tixora.Controllers
                 };
                 return View(modelCopy);
             }
-           await _eventsService.Add(model);
+            _eventsService.Add(model);
             return RedirectToAction("Index");
         }
         [HttpGet]

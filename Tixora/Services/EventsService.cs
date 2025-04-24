@@ -16,7 +16,7 @@ namespace Tixora.Services
             _eventRepository = eventRepository;
         }
 
-        public async Task Add(AddEventViewModel model)
+        public  void Add(AddEventViewModel model)
         {
             var NewEvent = new Event()
             {
@@ -27,8 +27,8 @@ namespace Tixora.Services
                 VenueId = model.VenueId,
                 OrganizerId = model.OrganizerId,
             };
-            await _eventRepository.Add(NewEvent);
-            await _eventRepository.Save();
+             _eventRepository.Add(NewEvent);
+             _eventRepository.Save();
            // return Task.FromResult(NewEvent);
         }
 
@@ -60,9 +60,9 @@ namespace Tixora.Services
             return _eventRepository.GetById(id);
         }
 
-        public async Task<List<Event>> GetAll()
+        public  List<Event> GetAll()
         {
-            return await _eventRepository.GetAll();
+            return  _eventRepository.GetAll();
         }
 
         public List<SelectListItem> Venues()
