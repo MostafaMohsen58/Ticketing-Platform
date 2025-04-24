@@ -1,4 +1,6 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
 
@@ -28,12 +30,20 @@ namespace Tixora.Repositories
 
         public Venue GetById(int id)
         {
-            return _context.Venues.FirstOrDefault(v => v.Id == id);                
+            return _context.Venues.FirstOrDefault(v => v.Id == id)!;                
         }
 
         public List<Venue> GetAll()
         {
             return _context.Venues.ToList();
+        }
+        public List<SelectListItem> GetVenues()
+        {
+            return _context.Venues.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
         }
         public int Save()
         {

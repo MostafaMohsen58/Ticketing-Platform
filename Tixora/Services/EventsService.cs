@@ -65,15 +65,9 @@ namespace Tixora.Services
             return  _eventRepository.GetAll();
         }
 
-        public List<SelectListItem> Venues()
-        {
-            return _eventRepository.GetVenues();
-        }
+      
 
-        public List<SelectListItem> Organizers()
-        {
-            return _eventRepository.GetOrganizers();
-        }
+        
     }
 
 }

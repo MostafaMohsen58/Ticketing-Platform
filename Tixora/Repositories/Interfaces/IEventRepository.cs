@@ -8,8 +8,8 @@ namespace Tixora.Repositories.Interfaces
         void Delete(int id);
         Event GetById(int id);
         List<Event> GetAll();
-        public List<SelectListItem> GetVenues();
-        public List<SelectListItem> GetOrganizers();
+        
+      
 
     }
 }

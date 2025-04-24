@@ -12,8 +12,8 @@ namespace Tixora.Services.Interfaces
         Event GetById(int id);
         Event Edit(EditEventViewModel model);
         bool Delete(int id);
-        List<SelectListItem> Venues();
-        List<SelectListItem> Organizers();
+       
+        
 
     }
 
