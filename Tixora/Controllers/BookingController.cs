@@ -6,6 +6,7 @@ using Tixora.Models;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
 using Tixora.ViewModels;
+using Tixora.ViewModels.BookingViewModel;
 
 namespace Tixora.Controllers
 {
@@ -87,6 +88,22 @@ namespace Tixora.Controllers
                 Value = t.Id.ToString(),
                 Text = $"{t.TicketCategory?.Name} - {t.Price:C} (Available: {t.AvailableQuantity})"
             }).ToList();
+        }
+        public async Task<IActionResult> Confirmation(int id)
+        {
+            var booking = await bookingService.GetByIdAsync(id);
+            var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+            var viewModel = new ConfirmationViewModel
+            {
+                BookingId = booking.Id,
+                EventTitle = booking.Ticket.Event.Title,
+                EventDate = booking.Ticket.Event.StartDate,
+                VenueName = booking.Ticket.Event.Venue.Name,
+                TicketType = booking.Ticket.TicketCategory.Name,
+                Quantity = booking.Amount,
+                BookingDate = booking.BookedAt
+            };
+            return View(viewModel);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

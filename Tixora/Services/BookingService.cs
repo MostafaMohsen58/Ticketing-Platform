@@ -44,12 +44,12 @@ namespace Tixora.Services
             ticket.AvailableQuantity -= viewModel.Amount; // Decrease the available quantity
             await ticketRepository.UpdateAsync(ticket); // Update the ticket's available quantity
 
-            await SendBookingConfirmation(booking);
+            await SendBookingConfirmation(booking, booking.User.Id);
             return booking;
         }
-        private async Task SendBookingConfirmation(Booking booking)
+        private async Task SendBookingConfirmation(Booking booking, string userId)
         {
-            // Logic to send booking confirmation (e.g., email, SMS, etc.)
+            // Logic to send booking confirmation (email)
             // This is a placeholder for the actual implementation
             await Task.CompletedTask;
         }
