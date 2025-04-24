@@ -16,16 +16,6 @@ namespace Tixora.Repositories
         {
             _context = context;
         }
-        public void Add(Organizer obj)
-        {
-            _context.Organizers.Add(obj);
-        }
-        public void Update(Organizer obj)
-        {
-            _context.Organizers.Update(obj);
-        }
-<<<<<<< Updated upstream
-=======
 
         public async Task AddAsync(Organizer organizer)
         {
@@ -83,26 +73,18 @@ namespace Tixora.Repositories
             }
         }
 
->>>>>>> Stashed changes
         public void Delete(int id)
         {
             var organizer = GetById(id);
             if (organizer != null)
             {
-<<<<<<< Updated upstream
                 _context.Organizers.Remove(organizer);
-=======
                 var org = GetById(id);
                 if (org != null)
                 {
                     _context.Organizers.Remove(org);
                     SaveAsync();
                 }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error deleting organizer: {ex.Message}", ex);
->>>>>>> Stashed changes
             }
         }
         public Organizer GetById(int id)

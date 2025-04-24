@@ -57,8 +57,6 @@ namespace Tixora
 
             builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 
-<<<<<<< Updated upstream
-=======
             builder.Services.AddScoped<IEventsService, EventsService>();
 
 
@@ -68,7 +66,6 @@ namespace Tixora
             builder.Services.AddScoped<IOrganizerService, OrganizerService>();
             builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
->>>>>>> Stashed changes
             var app = builder.Build();
 
 
