@@ -12,8 +12,8 @@ using Tixora.Models.Context;
 namespace Tixora.Migrations
 {
     [DbContext(typeof(TixoraContext))]
-    [Migration("20250420175745_AddRolesToDatabase")]
-    partial class AddRolesToDatabase
+    [Migration("20250422172312_AddRoleSeed")]
+    partial class AddRoleSeed
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -227,8 +227,10 @@ namespace Tixora.Migrations
                     b.Property<string>("PasswordHash")
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<int>("PhoneNumber")
-                        .HasColumnType("int");
+                    b.Property<string>("PhoneNumber")
+                        .IsRequired()
+                        .HasMaxLength(11)
+                        .HasColumnType("nvarchar(11)");
 
                     b.Property<bool>("PhoneNumberConfirmed")
                         .HasColumnType("bit");
@@ -314,7 +316,7 @@ namespace Tixora.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("OrginzierId")
+                    b.Property<int>("OrganizerId")
                         .HasColumnType("int");
 
                     b.Property<DateTime>("StartDate")
@@ -325,19 +327,19 @@ namespace Tixora.Migrations
                         .HasMaxLength(200)
                         .HasColumnType("nvarchar(200)");
 
-                    b.Property<int?>("VenueId")
+                    b.Property<int>("VenueId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("OrginzierId");
+                    b.HasIndex("OrganizerId");
 
                     b.HasIndex("VenueId");
 
                     b.ToTable("Events");
                 });
 
-            modelBuilder.Entity("Tixora.Models.Orginzier", b =>
+            modelBuilder.Entity("Tixora.Models.Organizer", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -363,7 +365,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Orginziers");
+                    b.ToTable("Organizers");
                 });
 
             modelBuilder.Entity("Tixora.Models.Ticket", b =>
@@ -380,9 +382,6 @@ namespace Tixora.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<int>("OrginzierId")
-                        .HasColumnType("int");
-
                     b.Property<float>("Price")
                         .HasColumnType("real");
 
@@ -392,18 +391,11 @@ namespace Tixora.Migrations
                     b.Property<int>("TicketCategoryId")
                         .HasColumnType("int");
 
-                    b.Property<int>("VenueId")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("EventId");
 
-                    b.HasIndex("OrginzierId");
-
                     b.HasIndex("TicketCategoryId");
-
-                    b.HasIndex("VenueId");
 
                     b.ToTable("Tickets");
                 });
@@ -532,13 +524,21 @@ namespace Tixora.Migrations
 
             modelBuilder.Entity("Tixora.Models.Event", b =>
                 {
-                    b.HasOne("Tixora.Models.Orginzier", null)
+                    b.HasOne("Tixora.Models.Organizer", "Organizer")
                         .WithMany("Events")
-                        .HasForeignKey("OrginzierId");
+                        .HasForeignKey("OrganizerId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-                    b.HasOne("Tixora.Models.Venue", null)
+                    b.HasOne("Tixora.Models.Venue", "Venue")
                         .WithMany("Events")
-                        .HasForeignKey("VenueId");
+                        .HasForeignKey("VenueId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Organizer");
+
+                    b.Navigation("Venue");
                 });
 
             modelBuilder.Entity("Tixora.Models.Ticket", b =>
@@ -549,31 +549,15 @@ namespace Tixora.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tixora.Models.Orginzier", "Orginzier")
-                        .WithMany()
-                        .HasForeignKey("OrginzierId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.HasOne("Tixora.Models.TicketCategory", "TicketCategory")
                         .WithMany("Tickets")
                         .HasForeignKey("TicketCategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Tixora.Models.Venue", "Venue")
-                        .WithMany()
-                        .HasForeignKey("VenueId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Event");
 
-                    b.Navigation("Orginzier");
-
                     b.Navigation("TicketCategory");
-
-                    b.Navigation("Venue");
                 });
 
             modelBuilder.Entity("Tixora.Models.ApplicationUser", b =>
@@ -586,7 +570,7 @@ namespace Tixora.Migrations
                     b.Navigation("Tickets");
                 });
 
-            modelBuilder.Entity("Tixora.Models.Orginzier", b =>
+            modelBuilder.Entity("Tixora.Models.Organizer", b =>
                 {
                     b.Navigation("Events");
                 });

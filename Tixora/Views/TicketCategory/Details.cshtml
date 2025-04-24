@@ -1,0 +1,55 @@
+﻿@model Tixora.Models.TicketCategory
+
+@{
+    ViewData["Title"] = "Category Details";
+}
+
+<div class="container">
+    <h1>Category Details</h1>
+
+    <div class="card">
+        <div class="card-header">
+            @Model.Name
+        </div>
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
+
+                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PriceMultiplier)</dt>
+                <dd class="col-sm-9">@Html.DisplayFor(model => model.PriceMultiplier)</dd>
+            </dl>
+
+            @if (Model.Tickets != null && Model.Tickets.Any())
+            {
+                <h4>Associated Tickets</h4>
+                <table class="table table-sm">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Event</th>
+                            <th>Price</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var ticket in Model.Tickets)
+                        {
+                            <tr>
+                                <td>@ticket.Id</td>
+                                <td>@(ticket.Event?.Title ?? "N/A")</td>
+                                <td>@ticket.Price</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+        <div class="card-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">Edit</a>
+            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+        </div>
+    </div>
+</div>

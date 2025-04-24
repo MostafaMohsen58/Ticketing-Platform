@@ -5,10 +5,10 @@
 namespace Tixora.Migrations
 {
     /// <inheritdoc />
-    public partial class AddRolesToDatabase : Migration
+    public partial class AddRoleSeed : Migration
     {
         /// <inheritdoc />
-        
+
         private readonly string _adminRoleId = Guid.NewGuid().ToString();
         private readonly string _userRoleId = Guid.NewGuid().ToString();
 
@@ -19,10 +19,10 @@ namespace Tixora.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[]
                 {
-                _adminRoleId,
-                Guid.NewGuid().ToString(),
-                "Admin",
-                "ADMIN"
+            _adminRoleId,
+            Guid.NewGuid().ToString(),
+            "Admin",
+            "ADMIN"
                 }
             );
 
@@ -31,10 +31,10 @@ namespace Tixora.Migrations
                 columns: new[] { "Id", "ConcurrencyStamp", "Name", "NormalizedName" },
                 values: new object[]
                 {
-                _userRoleId,
-                Guid.NewGuid().ToString(),
-                "User",
-                "USER"
+            _userRoleId,
+            Guid.NewGuid().ToString(),
+            "User",
+            "USER"
                 }
             );
 
@@ -56,4 +56,5 @@ namespace Tixora.Migrations
             );
         }
     }
+
 }

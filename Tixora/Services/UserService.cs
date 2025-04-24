@@ -5,7 +5,7 @@ using Tixora.ViewModels;
 
 namespace Tixora.Services
 {
-    public class UserService:IUserService
+    public class UserService : IUserService
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
@@ -59,11 +59,49 @@ namespace Tixora.Services
                 }
             }
             return SignInResult.Failed;
-            
+
         }
         public async Task SignOutUserAsync()
         {
             await _signInManager.SignOutAsync();
+        }
+        public async Task<ApplicationUser> GetUserByIdAsync(string userId)
+        {
+            return await _userManager.FindByIdAsync(userId);
+        }
+        public async Task<IdentityResult> UpdateUserProfileAsync(string userId, EditProfileViewModel model)
+        {
+            var user = await GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
+            }
+
+            user.FirstName = model.FirstName;
+            user.LastName = model.LastName;
+            user.Gender = model.Gender;
+            user.ProfileUrl = model.ProfileUrl;
+            user.Address = model.Address;
+            user.City = model.City;
+            user.PhoneNumber = model.PhoneNumber;
+
+            return await _userManager.UpdateAsync(user);
+        }
+
+        public async Task<IdentityResult> DeleteUserAsync(string userId)
+        {
+            var user = await GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
+            }
+
+            var result = await _userManager.DeleteAsync(user);
+            if (result.Succeeded)
+            {
+                await _signInManager.SignOutAsync();
+            }
+            return result;
         }
     }
 }

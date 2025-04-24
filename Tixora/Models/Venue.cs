@@ -18,6 +18,6 @@ namespace Tixora.Models
         [Range(1, 1000000, ErrorMessage = "Capacity must be between 1 and 1,000,000")]
         public int Capacity { get; set; }
 
-        public virtual List<Event> Events { get; set; }
+        public virtual List<Event>? Events { get; set; }
     }
 }

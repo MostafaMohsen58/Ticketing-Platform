@@ -2,8 +2,14 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Models.Context;
+
+using Tixora.Repositories;
+using Tixora.Repositories.Interfaces;
+
+
 using Tixora.Services;
 using Tixora.Services.Interface;
+using Tixora.Services.Interfaces;
 
 namespace Tixora
 {
@@ -13,7 +19,15 @@ namespace Tixora
         {
             var builder = WebApplication.CreateBuilder(args);
 
+
+
             // Add services to the container.
+
+
+            // Register Repositories
+            builder.Services.AddScoped<ITicketRepository, TicketRepository>();
+
+
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<TixoraContext>(options =>
@@ -30,6 +44,18 @@ namespace Tixora
             .AddEntityFrameworkStores<TixoraContext>();
 
             builder.Services.AddScoped<IUserService, UserService>();
+
+            builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
+            builder.Services.AddScoped<IOrganizerRepository, OrganizerRepository>();
+           
+
+            builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+
+            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
+
+            builder.Services.AddScoped<IVenueService, VenueService>();
+            builder.Services.AddScoped<IOrganizerService, OrganizerService>();
+            builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             var app = builder.Build();
 
 

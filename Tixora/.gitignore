@@ -1,6 +1,7 @@
 bin/
 obj/
 .vs/
+../.vs/
 *.user
 *.suo
 *.csproj.user
@@ -8,7 +9,7 @@ obj/
 _ReSharper*/
 *.resharper.*
 node_modules/
-wwwroot/lib/
+# wwwroot/lib/
 appsettings.Development.json
 Properties/launchSettings.json
 /publish
@@ -22,13 +23,16 @@ Properties/launchSettings.json
 *.rej
 *. Cherry-pick
 
-# NuGet Packages
-packages/
+# # NuGet Packages
+# packages/
 
-# Yarn
-yarn-error.log
+# # Yarn
+# yarn-error.log
 
-# VS Code
-.vscode/
+
+# # VS Code
+# .vscode/
+
 
 appsettings.json
+.vs/
