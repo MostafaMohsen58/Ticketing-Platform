@@ -34,7 +34,8 @@ namespace Tixora.Repositories
         {
             return _context.Events.FirstOrDefault(o => o.Id == id)!;
         }
-        public  List<Event> GetAll()
+
+        public List<Event> GetAll()
         {
             return  _context.Events.ToList();
         }

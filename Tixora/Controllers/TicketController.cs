@@ -74,17 +74,7 @@ namespace Tixora.Controllers
             return View(model);
         }
 
-        //public async Task<IActionResult> Create()
-        //{
-        //    var model = new TicketViewModel
-        //    {
-        //        Events = await _eventService.GetAll(),
-        //        TicketCategories = _ticketCategoryService.GetAll()
-        //    };
-
-        //    return View(model);
-        //}
-
+     
         [HttpPost]
         public IActionResult Create(TicketViewModel model)
         {
