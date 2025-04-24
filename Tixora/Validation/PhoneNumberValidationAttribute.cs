@@ -4,7 +4,7 @@ namespace Tixora.Validation
 {
     public class PhoneNumberValidationAttribute : ValidationAttribute
     {
-        public override bool IsValid(object value)
+        public override bool IsValid(object? value)
         {
             if (value is string phoneNumber)
             {

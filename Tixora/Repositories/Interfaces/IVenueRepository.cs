@@ -4,7 +4,7 @@ namespace Tixora.Repositories.Interfaces
 {
     public interface IVenueRepository : IRepository<Venue>
     {
-        void Delete(int id);
+        void Delete(Venue venue);
         Venue GetById(int id);
         List<Venue> GetAll();
     }

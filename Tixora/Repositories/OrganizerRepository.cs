@@ -1,5 +1,9 @@
-﻿using Tixora.Models.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using Tixora.Models;
+using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
 
 namespace Tixora.Repositories
@@ -7,6 +11,7 @@ namespace Tixora.Repositories
     public class OrganizerRepository : IOrganizerRepository
     {
         private readonly TixoraContext _context;
+
         public OrganizerRepository(TixoraContext context)
         {
             _context = context;
@@ -111,7 +116,14 @@ namespace Tixora.Repositories
 
         public async Task<int> SaveAsync()
         {
-            return _context.SaveChanges();
+            try
+            {
+                return _context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                throw new Exception($"Database update error: {ex.InnerException?.Message ?? ex.Message}", ex);
+            }
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Tixora.Validation
             ErrorMessage = $"Birth year must be after {_minimumYear}";
         }
 
-        public override bool IsValid(object value)
+        public override bool IsValid(object? value)
         {
             if (value is DateOnly dateOfBirth)
             {
