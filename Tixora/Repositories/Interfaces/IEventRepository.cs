@@ -3,11 +3,8 @@ using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
 {
-    public interface IEventRepository 
+    public interface IEventRepository  : IRepository<Event>
     {
-        void Add(Event obj);
-        void Update(Event obj);
-        int Save();
         void Delete(int id);
         Event GetById(int id);
         List<Event> GetAll();
