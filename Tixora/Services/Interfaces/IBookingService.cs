@@ -14,7 +14,7 @@ namespace Tixora.Services.Interfaces
         Task<int> SaveAsync();
 
         /// Custom methods
-        Task<Booking> CreateBookingAsync(CreateBookingViewModel viewModel);
+        Task<Booking> CreateBookingAsync(CreateBookingViewModel viewModel, string userId);
         Task ConfirmBookingAsync(Booking booking);
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
     }

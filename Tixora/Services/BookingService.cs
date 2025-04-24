@@ -10,55 +10,55 @@ namespace Tixora.Services
         private readonly IBookingRepository bookingRepository;
         private readonly ITicketRepository ticketRepository;
         private readonly IEventsService eventsService;
-        public BookingService(IBookingRepository _bookingRepository, ITicketRepository _ticketRepository, IEventsService _eventsService)
+        public BookingService(IBookingRepository _bookingRepository,
+            ITicketRepository _ticketRepository,
+            IEventsService _eventsService)
         {
             bookingRepository = _bookingRepository;
             ticketRepository = _ticketRepository;
             eventsService = _eventsService;
         }
-        private Booking MapToBooking(CreateBookingViewModel viewModel, string userId, Ticket ticket)
+        
+        public async Task<Booking> CreateBookingAsync(CreateBookingViewModel viewModel, string userId)
         {
-            return new Booking
-            {
-                Amount = viewModel.Amount,
-                TicketId = viewModel.TicketId,
-                UserId = userId,
-                BookedAt = DateTime.UtcNow,
-                //TransactionId = GenerateTransactionId(),
-                Ticket = ticket
-            };
-        }
-        private string GenerateTransactionId()
-        {
-            return $"TXN-{DateTime.UtcNow:yyyyMMddHHmmss}-{Guid.NewGuid().ToString().Substring(0, 4)}";
-        }
-        public async Task<Booking> CreateBookingAsync(CreateBookingViewModel viewModel)
-        {
+            if (viewModel == null)
+                throw new ArgumentNullException(nameof(viewModel));
+
+            if (viewModel.Amount <= 0)
+                throw new ArgumentException("Quantity must be greater than zero", nameof(viewModel.Amount));
+
             var ticket = ticketRepository.GetById(viewModel.TicketId);
             if (ticket.AvailableQuantity < viewModel.Amount)
-                throw new InvalidOperationException($"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
-            var booking = MapToBooking(viewModel, userId: "userId", ticket);
+                throw new InvalidOperationException($"Not enough tickets available. Only {ticket.AvailableQuantity} left. Requested: {viewModel.Amount}");
+            
+            var booking = new Booking
+            {
+                UserId = userId,
+                TicketId = viewModel.TicketId,
+                Amount = viewModel.Amount,
+                BookedAt = DateTime.UtcNow,
+                TransactionId = 0, // Placeholder for transaction ID
+
+            };
             await ConfirmBookingAsync(booking);
+            ticket.AvailableQuantity -= viewModel.Amount; // Decrease the available quantity
+            await ticketRepository.UpdateAsync(ticket); // Update the ticket's available quantity
+
+            await SendBookingConfirmation(booking);
             return booking;
+        }
+        private async Task SendBookingConfirmation(Booking booking)
+        {
+            // Logic to send booking confirmation (e.g., email, SMS, etc.)
+            // This is a placeholder for the actual implementation
+            await Task.CompletedTask;
         }
         public async Task ConfirmBookingAsync(Booking booking)
         {
-            var existingBooking = await bookingRepository.GetByIdAsync(booking.Id);
-
-            var ticket = (await bookingRepository.GetByIdAsync(booking.TicketId))?.Ticket;
-            if (ticket.AvailableQuantity < booking.Amount)
-            {
-                throw new InvalidOperationException("Not enough tickets available.");
-            }
-            // Decrease the available quantity
-            ticket.AvailableQuantity -= booking.Amount;
-            await ticketRepository.UpdateAsync(ticket); // Update the ticket's available quantity
-
-            bookingRepository.AddAsync(booking);
-            bookingRepository.SaveAsync(); // Save the booking to the database
+           await bookingRepository.AddAsync(booking);
+           await bookingRepository.SaveAsync(); // Save the booking to the database
 
         }
-
         public async Task<IEnumerable<Booking>> GetActiveBookingsAsync()
         {
             var booking = await bookingRepository.GetByDateRangeAsync(startDate: DateTime.UtcNow.AddDays(-30), endDate: DateTime.UtcNow);
@@ -72,6 +72,5 @@ namespace Tixora.Services
         public async Task UpdateAsync(Booking booking) => await bookingRepository.UpdateAsync(booking);
         public async Task DeleteAsync(int id) => await bookingRepository.DeleteAsync(id);
         public async Task<int> SaveAsync() => await bookingRepository.SaveAsync();
-
     }
 }

@@ -34,10 +34,10 @@ namespace Tixora.ViewModels
         public float TotalPrice { get; private set; }
 
         //// Seats
-        [Display(Name = "Select Seats")]
-        public List<string> SelectedSeats { get; set; } = new List<string>();
+        //[Display(Name = "Select Seats")]
+        //public List<string> SelectedSeats { get; set; } = new List<string>();
 
-        public List<SelectListItem> AvailableSeats { get; set; } = new List<SelectListItem>();
+        //public List<SelectListItem> AvailableSeats { get; set; } = new List<SelectListItem>();
 
         public void CalculateTotalPrice(float ticketPrice)
         {

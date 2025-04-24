@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Security.Claims;
 using Tixora.Models;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
@@ -34,20 +35,20 @@ namespace Tixora.Controllers
             var booking = await bookingService.GetByIdAsync(id);
             return View(booking);
         }
-        // Booking/Create
+        // Booking/Create?eventId=1
         [HttpGet]
         public async Task<IActionResult> Create(int eventId)
         {
             var eventDetails = eventsService.GetById(eventId);
-            var tickets = ticketRepository.GetAll();
+            var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
             var viewModel = new CreateBookingViewModel
             {
                 EventId = eventId,
                 EventTitle = eventDetails.Title,
-                EventImageUrl = eventDetails.ImageUrl,
+                EventImageUrl = Url.Content($"~/images/{eventDetails.ImageUrl}"),
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
-                AvailableTickets = tickets.Select(t => new SelectListItem
+                AvailableTickets = availableTickets.Select(t => new SelectListItem
                 {
                     Value = t.Id.ToString(),
                     Text = $"{t.TicketCategory.Name} - {t.Price:C} (Available: {t.AvailableQuantity})"
@@ -59,22 +60,33 @@ namespace Tixora.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateBookingViewModel viewModel)
         {
-            if (ModelState.IsValid)
+            
+            if (!ModelState.IsValid)
             {
-                //viewModel.AvailableTickets = await eventsService.GetAvailableTicketsAsync(viewModel.EventId);
+                await AvailableTickets(viewModel);
                 return View(viewModel);
             }
             try
             {
-                var booking = await bookingService.CreateBookingAsync(viewModel);
-                return RedirectToAction("Index");
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var booking = await bookingService.CreateBookingAsync(viewModel,userId);
+                return RedirectToAction("Confirmation", new { id = booking.Id });
             }
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"Error creating booking: {ex.Message}");
+                await AvailableTickets(viewModel);
+                return View(viewModel);
             }
-            //viewModel.AvailableTickets = await _eventService.GetAvailableTicketsAsync(viewModel.EventId);
-            return View(viewModel);
+        }
+        private async Task AvailableTickets(CreateBookingViewModel viewModel)
+        {
+            var availableTickets = await eventsService.GetAvailableTicketsAsync(viewModel.EventId);
+            viewModel.AvailableTickets = availableTickets.Select(t => new SelectListItem
+            {
+                Value = t.Id.ToString(),
+                Text = $"{t.TicketCategory?.Name} - {t.Price:C} (Available: {t.AvailableQuantity})"
+            }).ToList();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]

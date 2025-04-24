@@ -13,7 +13,7 @@ namespace Tixora.Repositories.Interfaces
         Task<List<Event>> GetAll();
         public List<SelectListItem> GetVenues();
         public List<SelectListItem> GetOrganizers();
-
+        Task<List<Ticket>> GetAvailableTicketsAsync(int eventId);
     }
 }
 

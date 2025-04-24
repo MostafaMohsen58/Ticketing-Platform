@@ -61,5 +61,11 @@ namespace Tixora.Repositories
                 Text = x.Name
             }).OrderBy(x => x.Text).AsNoTracking().ToList();
         }
+        public async Task<List<Ticket>> GetAvailableTicketsAsync(int eventId)
+        {
+            return await _context.Tickets
+                .Where(t => t.EventId == eventId && t.AvailableQuantity > 0 && t.Status == 0)
+                .ToListAsync();
+        }
     }
 }

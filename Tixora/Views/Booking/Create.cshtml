@@ -1,37 +1,102 @@
 ﻿@model Tixora.ViewModels.CreateBookingViewModel
 
-<div class="container mt-4">
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h3>Book Tickets for @Model.EventTitle</h3>
-            <p class="mb-0">@Model.VenueName • @Model.EventDate.ToString("f")</p>
+@{
+    ViewData["Title"] = "Create Booking";
+}
+
+<div class="container">
+    <h1>Create Booking</h1>
+    <hr />
+
+    <div class="row">
+        <div class="col-md-6">
+            <!-- Event Info -->
+            <div class="card mb-4">
+                <div class="card-header bg-primary text-white">
+                    <h3>@Model.EventTitle</h3>
+                </div>
+                <div class="card-body">
+                    <div class="event-image-container" style="min-height: 200px; background-color: #f5f5f5;">
+                        @if (!string.IsNullOrEmpty(Model.EventImageUrl))
+                        {
+                            <img src="@Model.EventImageUrl"
+                                 class="img-fluid mb-3"
+                                 style="max-width: 100%; height: auto; display: block;"
+                                 alt="@Model.EventTitle"
+                                 onerror="this.onerror=null;this.src='/images/default-event.jpg';">
+                        }
+                        else
+                        {
+                            <div class="text-muted p-4 text-center">No event image available</div>
+                        }
+                    </div>
+                    <p><strong>Date:</strong> @Model.EventDate.ToString("f")</p>
+                    <p><strong>Venue:</strong> @Model.VenueName</p>
+                </div>
+            </div>
         </div>
 
-        <div class="card-body">
-            <form asp-action="Create" method="post">
-                <input type="hidden" asp-for="EventId" />
-
-                <div class="form-group mb-3">
-                    <label asp-for="TicketId" class="form-label">Ticket Type</label>
-                    <select asp-for="TicketId" asp-items="Model.AvailableTickets"
-                            class="form-select" required>
-                        <option value="">-- Select Ticket --</option>
-                    </select>
-                    <span asp-validation-for="TicketId" class="text-danger"></span>
+        <div class="col-md-6">
+            <!-- Booking Form -->
+            <div class="card">
+                <div class="card-header bg-info text-white">
+                    <h3>Booking Details</h3>
                 </div>
+                <div class="card-body">
+                    <form asp-action="Create" method="post">
+                        <input type="hidden" asp-for="EventId" />
+                        <input type="hidden" asp-for="EventTitle" />
+                        <input type="hidden" asp-for="EventDate" />
+                        <input type="hidden" asp-for="EventImageUrl" />
+                        <input type="hidden" asp-for="VenueName" />
 
-                <div class="form-group mb-3">
-                    <label asp-for="Amount" class="form-label">Number of Tickets</label>
-                    <input asp-for="Amount" class="form-control" min="1" max="10" required>
-                    <span asp-validation-for="Amount" class="text-danger"></span>
-                </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="TicketId" class="form-label">Ticket Type *</label>
+                            <select asp-for="TicketId" asp-items="Model.AvailableTickets"
+                                    class="form-select" required>
+                                <option value="">-- Select Ticket --</option>
+                            </select>
+                            <span asp-validation-for="TicketId" class="text-danger"></span>
+                        </div>
 
-                <div class="d-grid gap-2">
-                    <button type="submit" class="btn btn-success">
-                        <i class="fas fa-ticket-alt"></i> Confirm Booking
-                    </button>
+                        <div class="form-group mb-3">
+                            <label asp-for="Amount" class="form-label">Quantity *</label>
+                            <input asp-for="Amount" class="form-control" min="1" max="10" />
+                            <span asp-validation-for="Amount" class="text-danger"></span>
+                        </div>
+
+                        <div class="form-group mb-3">
+                            <label class="form-label">Total Price</label>
+                            <div class="form-control-plaintext">@(Model.TotalPrice.ToString("C"))</div>
+                        </div>
+
+                        <div class="form-group">
+                            <button type="submit" class="btn btn-primary">Confirm Booking</button>
+                            <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                        </div>
+                    </form>
                 </div>
-            </form>
+            </div>
         </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script>
+        // Calc Total Price
+        $(document).ready(function() {
+            $('#TicketId, #Amount').change(function() {
+                var ticketId = $('#TicketId').val();
+                var amount = $('#Amount').val();
+
+                if (ticketId && amount) {
+                    // أستخدام بيانات موجودة مسبقاً
+                }
+            });
+        });
+    </script>
+}

@@ -14,7 +14,7 @@ namespace Tixora.Services.Interfaces
         bool Delete(int id);
         List<SelectListItem> Venues();
         List<SelectListItem> Organizers();
-
+        Task<List<Ticket>> GetAvailableTicketsAsync(int eventId);
     }
 
 }

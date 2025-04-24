@@ -74,6 +74,11 @@ namespace Tixora.Services
         {
             return _eventRepository.GetOrganizers();
         }
+        public async Task<List<Ticket>> GetAvailableTicketsAsync(int eventId)
+        {
+            var tickets = await _eventRepository.GetAvailableTicketsAsync(eventId);
+            return tickets;
+        }
     }
 
 }
