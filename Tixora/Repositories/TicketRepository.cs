@@ -10,7 +10,7 @@ namespace Tixora.Repositories
 {
     public class TicketRepository : ITicketRepository
     {
-        TixoraContext _context;
+        private readonly TixoraContext _context;
 
         public TicketRepository(TixoraContext context)
         {
@@ -24,84 +24,65 @@ namespace Tixora.Repositories
                 .Include(t => t.Event);
         }
 
-        public async Task<List<Ticket>> GetAllAsync()
+        public List<Ticket> GetAll()
         {
-            try
-            {
-                return await IncludeRelatedData().ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while fetching tickets.", ex);
-            }
+                return IncludeRelatedData().ToList();
+        
         }
 
-        public async Task<Ticket> GetByIdAsync(int id)
+        public Ticket GetById(int id)
         {
-            try
-            {
-                return await IncludeRelatedData().FirstOrDefaultAsync(t => t.Id == id);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while fetching the ticket.", ex);
-            }
+        
+                return IncludeRelatedData().FirstOrDefault(t => t.Id == id);
         }
 
-        public async Task AddAsync(Ticket ticket)
+        public void Add(Ticket ticket)
         {
-            try
-            {
-                await _context.Tickets.AddAsync(ticket);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while adding the ticket.", ex);
-            }
+           
+                _context.Tickets.Add(ticket);
+         
         }
 
-        public async Task UpdateAsync(Ticket ticket)
+        public void Update(Ticket ticket)
         {
-            try
-            {
+           
                 _context.Tickets.Update(ticket);
-                
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while updating the ticket.", ex);
-            }
+          
         }
 
-        public async Task<bool> DeleteAsync(int id)
+        public bool Delete(int id)
         {
-            try
-            {
-                var ticket = await GetByIdAsync(id);
+           
+                var ticket = GetById(id);
                 if (ticket != null)
                 {
                     _context.Tickets.Remove(ticket);
-                    await SaveAsync();
                     return true;
                 }
                 return false;
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while deleting the ticket.", ex);
-            }
+          
         }
 
-        public async Task<int> SaveAsync()
+        public int Save()
         {
-            try
-            {
-                return await _context.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception("An error occurred while saving changes.", ex);
-            }
+        
+                return _context.SaveChanges();
+        
+          
         }
+        public IEnumerable<Ticket> GetTicketsByUser(string username)
+        {
+            return _context.Bookings
+                .Include(b => b.Ticket)
+                    .ThenInclude(t => t.Event)
+                .Include(b => b.Ticket)
+                    .ThenInclude(t => t.TicketCategory)
+                .Include(b => b.User)
+                .Where(b => b.User.UserName == username)
+                .Select(b => b.Ticket)
+                .Distinct()
+                .ToList();
+        }
+
     }
 }

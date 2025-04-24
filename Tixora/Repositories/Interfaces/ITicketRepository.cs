@@ -6,8 +6,12 @@ namespace Tixora.Repositories.Interfaces
 {
     public interface ITicketRepository : IRepository<Ticket>
     {
-        Task<List<Ticket>> GetAllAsync();
-        Task<Ticket> GetByIdAsync(int id);
-        Task<bool> DeleteAsync(int id);
+        List<Ticket> GetAll();
+        Ticket GetById(int id);
+        bool Delete(int id);
+        IEnumerable<Ticket> GetTicketsByUser(string username);
+
+
+
     }
 }

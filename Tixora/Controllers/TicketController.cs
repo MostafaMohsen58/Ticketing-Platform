@@ -1,8 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Models.ViewModels;
-using Tixora.Services.Interface;
 using Tixora.Services.Interfaces;
+using Tixora.ViewModels;
 
 
 
@@ -21,15 +21,40 @@ namespace Tixora.Controllers
             _ticketCategoryService = ticketCategoryService;
         }
 
-        public async Task<IActionResult> Index()
+        public IActionResult Index(float? price, TicketStatus? status)
         {
-            var tickets = await _ticketService.GetAllAsync();
-            return View(tickets);
+            var tickets = _ticketService.GetAll();
+
+            if (price.HasValue)
+            {
+                tickets = tickets.Where(t => t.Price == price).ToList();
+            }
+
+            if (status.HasValue)
+            {
+                TicketStatus convertedStatus = (TicketStatus)status.Value;
+                tickets = tickets.Where(t => t.Status == convertedStatus).ToList();
+            }
+
+            var availableCount = tickets.Count(t => t.Status == TicketStatus.Available);
+            var soldOutCount = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
+
+            var viewModel = new TicketIndexViewModel
+            {
+                Price = price,
+                Status = status,
+                Tickets = tickets,
+                AvailableCount = availableCount,
+                SoldOutCount = soldOutCount
+            };
+
+            return View(viewModel);
         }
 
-        public async Task<IActionResult> Details(int id)
+
+        public IActionResult Details(int id)
         {
-            var ticket = await _ticketService.GetByIdAsync(id);
+            var ticket =  _ticketService.GetById(id);
             if (ticket == null)
             {
                 return NotFound();
@@ -38,12 +63,12 @@ namespace Tixora.Controllers
             return View(ticket);
         }
 
-        public async Task<IActionResult> Create()
+        public IActionResult Create()
         {
             var model = new TicketViewModel
             {
-                Events = await _eventService.GetAllAsync(), 
-                TicketCategories = await _ticketCategoryService.GetAllAsync() 
+                Events =  _eventService.GetAll(), 
+                TicketCategories =  _ticketCategoryService.GetAll() 
             };
 
             return View(model);
@@ -51,7 +76,7 @@ namespace Tixora.Controllers
 
        
         [HttpPost]
-        public async Task<IActionResult> Create(TicketViewModel model)
+        public IActionResult Create(TicketViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -64,22 +89,22 @@ namespace Tixora.Controllers
                     TicketCategoryId = model.TicketCategoryId
                 };
 
-                await _ticketService.AddAsync(ticket);
+                 _ticketService.Add(ticket);
 
                 return RedirectToAction("Index"); 
             }
 
-            model.Events = await _eventService.GetAllAsync(); 
-            model.TicketCategories = await _ticketCategoryService.GetAllAsync();
+            model.Events =  _eventService.GetAll(); 
+            model.TicketCategories =  _ticketCategoryService.GetAll();
 
             return View(model);
         }
 
       
 
-        public async Task<IActionResult> Edit(int id)
+        public IActionResult Edit(int id)
         {
-            var ticket = await _ticketService.GetByIdAsync(id);
+            var ticket =  _ticketService.GetById(id);
             if (ticket == null)
             {
                 return NotFound();
@@ -93,15 +118,15 @@ namespace Tixora.Controllers
                 AvailableQuantity = ticket.AvailableQuantity,
                 EventId = ticket.EventId,
                 TicketCategoryId = ticket.TicketCategoryId,
-                Events = await _eventService.GetAllAsync(),
-                TicketCategories = await _ticketCategoryService.GetAllAsync()
+                Events = _eventService.GetAll(),
+                TicketCategories =  _ticketCategoryService.GetAll()
             };
 
             return View(model);
         }
 
         [HttpPost]
-        public async Task<IActionResult> Edit(TicketViewModel model)
+        public IActionResult Edit(TicketViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -115,43 +140,64 @@ namespace Tixora.Controllers
                     TicketCategoryId = model.TicketCategoryId
                 };
 
-                await _ticketService.UpdateAsync(ticket);
+                 _ticketService.Update(ticket);
 
                 return RedirectToAction("Index");
             }
 
-            model.Events = await _eventService.GetAllAsync();
-            model.TicketCategories = await _ticketCategoryService.GetAllAsync();
+            model.Events =  _eventService.GetAll();
+            model.TicketCategories =  _ticketCategoryService.GetAll();
 
             return View(model);
         }
 
-        public async Task<IActionResult> Delete(int id)
+    
+        public IActionResult Delete(int id)
         {
-            var ticket = await _ticketService.GetByIdAsync(id);
+            var ticket = _ticketService.GetById(id);
             if (ticket == null)
             {
                 return NotFound();
             }
-
-            return View(ticket); 
+            return View(ticket);
         }
 
-        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public IActionResult DeleteConfirmed(int id)
         {
-            var result = await _ticketService.DeleteAsync(id);
+            var result = _ticketService.Delete(id);
             if (result)
             {
-                return RedirectToAction("Index"); 
+                return RedirectToAction("Index");
             }
-
             return NotFound();
         }
 
-        
-      
+        public IActionResult Report()
+        {
+            
+            var tickets = _ticketService.GetAll();
+
+            var totalRevenue = tickets.Sum(t => t.Price);
+            var totalSold = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
+
+           
+            var reportViewModel = new ReportViewModel
+            {
+                TotalRevenue = totalRevenue,
+                TotalSold = totalSold
+            };
+
+            
+            return View(reportViewModel);
+        }
+
+        public IActionResult History()
+        {
+            var userTickets = _ticketService.GetTicketsByUser(User.Identity.Name);
+            return View(userTickets);
+        }
+
     }
 }

@@ -1,0 +1,42 @@
+﻿@model IEnumerable<Tixora.Models.Ticket>
+
+<h3>Your Ticket History</h3>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Event</th>
+            <th>Ticket Category</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var ticket in Model)
+        {
+                <tr>
+                    <td>@ticket.Id</td>
+                    <td>@ticket.Price</td>
+                    <td>
+                    @if (ticket.Status == Tixora.Models.TicketStatus.Available)
+                    {
+                                <span class="badge bg-success">Available</span>
+                    }
+                    else if (ticket.Status == Tixora.Models.TicketStatus.NonAvailable)
+                    {
+                                <span class="badge bg-danger">Sold Out</span>
+                    }
+                    </td>
+                    <td>@ticket.Event?.Title</td>
+                    <td>@ticket.TicketCategory?.Name</td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-info btn-sm">Details</a>
+                        <a asp-action="Edit" asp-route-id="@ticket.Id" class="btn btn-warning btn-sm mx-1">Edit</a>
+                        <a asp-action="Delete" asp-route-id="@ticket.Id" class="btn btn-danger btn-sm">Delete</a>
+                    </td>
+                </tr>
+        }
+    </tbody>
+</table>

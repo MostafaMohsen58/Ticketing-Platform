@@ -1,0 +1,20 @@
+﻿@model Tixora.ViewModels.ReportViewModel
+
+<h3>Total Revenue: @Model.TotalRevenue.ToString("C")</h3>
+<h3>Total Sold Tickets: @Model.TotalSold</h3>
+
+
+<table class="table table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Total Revenue</th>
+            <th>Total Sold Tickets</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>@Model.TotalRevenue.ToString("C")</td>
+            <td>@Model.TotalSold</td>
+        </tr>
+    </tbody>
+</table>
