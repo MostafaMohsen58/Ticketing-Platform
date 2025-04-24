@@ -16,7 +16,6 @@ namespace Tixora.Models
         [Range(0.1, 10.0, ErrorMessage = "Price multiplier must be between 0.1 and 10.0")]
         public float PriceMultiplier { get; set; }
 
-        public virtual List<Ticket> Tickets { get; set; }
+        public virtual List<Ticket> Tickets { get; set; } = new List<Ticket>();
     }
-
 }

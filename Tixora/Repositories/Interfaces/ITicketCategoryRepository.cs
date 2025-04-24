@@ -6,8 +6,6 @@ namespace Tixora.Repositories.Interfaces
     {
         List<TicketCategory> GetAll();
         TicketCategory GetByID(int id);
-        public void Delete(int id);
-
+        void Delete(int id);
     }
-
 }
