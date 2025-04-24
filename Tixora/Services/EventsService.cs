@@ -7,7 +7,7 @@ using Tixora.ViewModels.EventViewModel;
 namespace Tixora.Services
 {
     
-    public class EventsService : IEventsService
+    public class EventsService : IEventsService 
     {
         
         private readonly IEventRepository _eventRepository;
@@ -65,15 +65,9 @@ namespace Tixora.Services
             return  _eventRepository.GetAll();
         }
 
-        public List<SelectListItem> Venues()
-        {
-            return _eventRepository.GetVenues();
-        }
+      
 
-        public List<SelectListItem> Organizers()
-        {
-            return _eventRepository.GetOrganizers();
-        }
+        
     }
 
 }

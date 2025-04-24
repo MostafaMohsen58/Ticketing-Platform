@@ -44,22 +44,8 @@ namespace Tixora.Repositories
             return  _context.SaveChanges();
         }
 
-        public List<SelectListItem> GetVenues()
-        {
-            return _context.Venues.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name
-            }).OrderBy(x => x.Text).AsNoTracking().ToList();
-        }
+       
 
-        public List<SelectListItem> GetOrganizers()
-        {
-            return _context.Organizers.Select(x => new SelectListItem
-            {
-                Value = x.Id.ToString(),
-                Text = x.Name
-            }).OrderBy(x => x.Text).AsNoTracking().ToList();
-        }
+        
     }
 }

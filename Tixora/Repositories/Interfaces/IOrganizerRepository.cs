@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
@@ -6,6 +7,7 @@ namespace Tixora.Repositories.Interfaces
     {
         Organizer GetById(int id);
         List<Organizer> GetAll();
+        public List<SelectListItem> GetOrganizers();
         void Delete(int id);
     }
 }
