@@ -7,8 +7,8 @@ namespace Tixora.Services.Interfaces
 {
     public interface IEventsService
     {
-        Task<List<Event>> GetAll();
-        Task Add(AddEventViewModel model);
+        List<Event> GetAll();
+        void Add(AddEventViewModel model);
         Event GetById(int id);
         Event Edit(EditEventViewModel model);
         bool Delete(int id);
