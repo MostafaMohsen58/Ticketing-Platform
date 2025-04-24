@@ -1,4 +1,9 @@
-﻿// Please see documentation at https://learn.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿$.validator.addMethod('filesize', function (value, element, par) {
+    return this.optional(element) || element.files[0].size <= par;
+});
 
-// Write your JavaScript code.
+$(document).ready(function () {
+    $('#Cover').on('change', function () {
+        $('.cover-preview').attr('src', window.URL.createObjectURL(this.files[0])).removeClass('d-none');
+    });
+});

@@ -46,11 +46,20 @@ namespace Tixora
             builder.Services.AddScoped<ITicketRepository, TicketRepository>();
             builder.Services.AddScoped<IVenueRepository, VenueRepository>();
             builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
+            builder.Services.AddScoped<IOrganizerRepository, OrganizerRepository>();
+           
+
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
-            
+            builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+            builder.Services.AddScoped<IEventsService, EventsService>();
 
 
+            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 
+            builder.Services.AddScoped<IVenueService, VenueService>();
+            builder.Services.AddScoped<IOrganizerService, OrganizerService>();
+            builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             var app = builder.Build();
 
 
