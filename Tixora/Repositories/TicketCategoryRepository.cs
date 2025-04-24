@@ -22,6 +22,7 @@ namespace Tixora.Repositories
             TicketCategory ticketCategory = context.TicketCategories.FirstOrDefault(c => c.Id == id);
             return ticketCategory;
         }
+<<<<<<< Updated upstream
         public void Add(TicketCategory ticketCategory)
         {
             context.TicketCategories.Add(ticketCategory);
@@ -29,6 +30,16 @@ namespace Tixora.Repositories
         }
 
         public void Update(int id, TicketCategory newTicketCategory)
+=======
+
+        public async Task AddAsync(TicketCategory ticketCategory)
+        {
+            context.TicketCategories.AddAsync(ticketCategory);
+            SaveAsync(); 
+        }
+
+        public async Task UpdateAsync(TicketCategory ticketCategory)
+>>>>>>> Stashed changes
         {
             TicketCategory oldTicketCategory = GetByID(id);
             oldTicketCategory.Name = newTicketCategory.Name;
@@ -50,7 +61,12 @@ namespace Tixora.Repositories
         {
             throw new NotImplementedException();
         }
+<<<<<<< Updated upstream
         public int Save()
+=======
+
+        public async Task<int> SaveAsync()
+>>>>>>> Stashed changes
         {
             return context.SaveChanges();
         }

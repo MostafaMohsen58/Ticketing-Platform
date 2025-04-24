@@ -11,12 +11,12 @@ namespace Tixora.Repositories
         {
             _context = context;
         }
-        public void Add(Venue obj)
+        public async Task AddAsync(Venue obj)
         {
             _context.Venues.Add(obj);
         }
 
-        public void Update(Venue obj)
+        public async Task UpdateAsync(Venue obj)
         {
             _context.Venues.Update(obj);
         }
@@ -39,7 +39,7 @@ namespace Tixora.Repositories
         {
             return _context.Venues.ToList();
         }
-        public int Save()
+        public async Task<int> SaveAsync()
         {
             return _context.SaveChanges();
         }
