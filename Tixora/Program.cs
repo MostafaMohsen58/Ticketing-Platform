@@ -50,6 +50,10 @@ namespace Tixora
            
 
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
+            builder.Services.AddScoped<IEventRepository, EventRepository>();
+
+            builder.Services.AddScoped<IEventsService, EventsService>();
+
 
             builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 

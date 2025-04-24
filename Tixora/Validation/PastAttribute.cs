@@ -4,7 +4,7 @@ namespace Tixora.Validation
 {
     public class PastAttribute : ValidationAttribute
     {
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        protected override ValidationResult IsValid(object? value, ValidationContext validationContext)
         {
             if (value is DateOnly dateValue)
             {
@@ -13,7 +13,7 @@ namespace Tixora.Validation
                     return new ValidationResult(ErrorMessage);
                 }
             }
-            return ValidationResult.Success;
+            return ValidationResult.Success!;
         }
     }
 }
