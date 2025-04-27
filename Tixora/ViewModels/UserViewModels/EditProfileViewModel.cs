@@ -2,22 +2,14 @@
 using Tixora.Models;
 using Tixora.Validation;
 
-namespace Tixora.ViewModels
+namespace Tixora.ViewModels.UserViewModels
 {
     public class EditProfileViewModel
     {
-        [Required(ErrorMessage = "First name is required")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "First name must be between 2 and 50 characters")]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Required(ErrorMessage = "Last name is required")]
-        [StringLength(50, MinimumLength = 2, ErrorMessage = "Last name must be between 2 and 50 characters")]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
-
-        [Display(Name = "Gender")]
-        public Gender Gender { get; set; } // Or your Gender enum
+        public string? Id { get; set; }
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Url(ErrorMessage = "Invalid URL format")]
         [Display(Name = "Profile Picture")]
@@ -31,9 +23,11 @@ namespace Tixora.ViewModels
         [Display(Name = "City")]
         public string City { get; set; }
 
-        [Phone] // Basic phone number validation
+        [Phone]
         [Display(Name = "Phone Number")]
         [PhoneNumberValidation(ErrorMessage = "Phone number must start with '01' and have 11 digits.")]
         public string PhoneNumber { get; set; }
+        
+       
     }
 }

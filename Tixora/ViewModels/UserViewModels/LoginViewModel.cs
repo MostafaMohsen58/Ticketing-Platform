@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace Tixora.ViewModels
+namespace Tixora.ViewModels.UserViewModels
 {
     public class LoginViewModel
     {
@@ -12,6 +12,6 @@ namespace Tixora.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
         [Display(Name = "Remember Me")]
-        public bool RememberMe{ get; set; }
+        public bool RememberMe { get; set; }
     }
 }
