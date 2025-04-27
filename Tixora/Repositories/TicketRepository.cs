@@ -38,12 +38,12 @@ namespace Tixora.Repositories
 
         public async Task AddAsync(Ticket ticket)
         {
-            await context.Tickets.AddAsync(ticket);
+            await _context.Tickets.AddAsync(ticket);
         }
         public async Task UpdateAsync(Ticket ticket)
         {
        
-             context.Tickets.Update(ticket);
+             _context.Tickets.Update(ticket);
         }
 
         public async Task<bool> Delete(int id)
@@ -51,24 +51,16 @@ namespace Tixora.Repositories
             var ticket =await GetById(id);
             if (ticket != null)
             {
-                context.Tickets.Remove(ticket);
+                _context.Tickets.Remove(ticket);
                 return true;
 
             }
-           
-                var ticket = GetById(id);
-                if (ticket != null)
-                {
-                    _context.Tickets.Remove(ticket);
-                    return true;
-                }
-                return false;
-          
+            return false;
         }
 
         public async Task<int> SaveAsync()
         {
-            return await context.SaveChangesAsync();
+            return await _context.SaveChangesAsync();
         }
         public IEnumerable<Ticket> GetTicketsByUser(string username)
         {
