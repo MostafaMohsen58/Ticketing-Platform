@@ -17,22 +17,22 @@ namespace Tixora.Repositories
         {
            await _context.Events.AddAsync(obj);
         }
-        public void Update(Event obj)
+        public async Task Update(Event obj)
         {
             _context.Events.Update(obj);
         }
 
-        public void  Delete(int id)
+        public async Task  Delete(int id)
         {
-            var Event = GetById(id);
+            var Event =await GetById(id);
             if (Event != null)
             {
                  _context.Events.Remove(Event);
             }
         }
-        public Event GetById(int id)
+        public async Task<Event> GetById(int id)
         {
-            return _context.Events.FirstOrDefault(o => o.Id == id)!;
+            return await _context.Events.FirstOrDefaultAsync(o => o.Id == id)!;
         }
         public async Task<List<Event>> GetAll()
         {
@@ -44,22 +44,22 @@ namespace Tixora.Repositories
             return await _context.SaveChangesAsync();
         }
 
-        public List<SelectListItem> GetVenues()
+        public async Task<List<SelectListItem>> GetVenues()
         {
-            return _context.Venues.Select(x => new SelectListItem
+            return await _context.Venues.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
-            }).OrderBy(x => x.Text).AsNoTracking().ToList();
+            }).OrderBy(x => x.Text).AsNoTracking().ToListAsync();
         }
 
-        public List<SelectListItem> GetOrganizers()
+        public async Task<List<SelectListItem>> GetOrganizers()
         {
-            return _context.Organizers.Select(x => new SelectListItem
+            return await _context.Organizers.Select(x => new SelectListItem
             {
                 Value = x.Id.ToString(),
                 Text = x.Name
-            }).OrderBy(x => x.Text).AsNoTracking().ToList();
+            }).OrderBy(x => x.Text).AsNoTracking().ToListAsync();
         }
         public async Task<List<Ticket>> GetAvailableTicketsAsync(int eventId)
         {

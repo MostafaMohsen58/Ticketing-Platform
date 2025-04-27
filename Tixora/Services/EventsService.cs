@@ -32,10 +32,10 @@ namespace Tixora.Services
            // return Task.FromResult(NewEvent);
         }
 
-        public  bool Delete(int id)
+        public async  Task<bool> Delete(int id)
         {
-            _eventRepository.Delete(id);
-            _eventRepository.Save();
+            await _eventRepository.Delete(id);
+            await _eventRepository.Save();
             return true;
         }
 
@@ -55,9 +55,9 @@ namespace Tixora.Services
             return e;
         }
 
-        public Event GetById(int id)
+        public async Task<Event> GetById(int id)
         {
-            return _eventRepository.GetById(id);
+            return await _eventRepository.GetById(id);
         }
 
         public async Task<List<Event>> GetAll()
@@ -65,14 +65,14 @@ namespace Tixora.Services
             return await _eventRepository.GetAll();
         }
 
-        public List<SelectListItem> Venues()
+        public async Task<List<SelectListItem>> Venues()
         {
-            return _eventRepository.GetVenues();
+            return await _eventRepository.GetVenues();
         }
 
-        public List<SelectListItem> Organizers()
+        public async Task<List<SelectListItem>> Organizers()
         {
-            return _eventRepository.GetOrganizers();
+            return await _eventRepository.GetOrganizers();
         }
         public async Task<List<Ticket>> GetAvailableTicketsAsync(int eventId)
         {

@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
 
@@ -13,7 +14,7 @@ namespace Tixora.Repositories
         }
         public async Task AddAsync(Venue obj)
         {
-            _context.Venues.Add(obj);
+            await _context.Venues.AddAsync(obj);
         }
 
         public async Task UpdateAsync(Venue obj)
@@ -23,21 +24,21 @@ namespace Tixora.Repositories
 
         public void Delete(Venue venue)
         {
-                _context.Venues.Remove(venue);
+            _context.Venues.Remove(venue);
         }
 
-        public Venue GetById(int id)
+        public async Task<Venue> GetById(int id)
         {
-            return _context.Venues.FirstOrDefault(v => v.Id == id);                
+            return await _context.Venues.FirstOrDefaultAsync(v => v.Id == id);                
         }
 
-        public List<Venue> GetAll()
+        public async Task<List<Venue>> GetAll()
         {
-            return _context.Venues.ToList();
+            return await _context.Venues.ToListAsync();
         }
         public async Task<int> SaveAsync()
         {
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
         }
     }
 }

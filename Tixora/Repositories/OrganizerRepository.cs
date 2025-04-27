@@ -30,7 +30,7 @@ namespace Tixora.Repositories
 
             try
             {
-                _context.Organizers.Add(organizer);
+                await _context.Organizers.AddAsync(organizer);
                 await SaveAsync();
             }
             catch (Exception ex)
@@ -46,7 +46,7 @@ namespace Tixora.Repositories
 
             try
             {
-                var existingOrganizer = GetById(organizer.Id);
+                var existingOrganizer =await GetById(organizer.Id);
                 if (existingOrganizer == null)
                 {
                     throw new Exception($"Organizer with ID {organizer.Id} not found");
@@ -73,34 +73,34 @@ namespace Tixora.Repositories
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var organizer = GetById(id);
+            var organizer =await GetById(id);
             if (organizer != null)
             {
                 _context.Organizers.Remove(organizer);
-                var org = GetById(id);
+                var org =await GetById(id);
                 if (org != null)
                 {
                     _context.Organizers.Remove(org);
-                    SaveAsync();
+                    await SaveAsync();
                 }
             }
         }
-        public Organizer GetById(int id)
+        public async Task<Organizer> GetById(int id)
         {
-            return _context.Organizers.FirstOrDefault(o => o.Id == id);
+            return await _context.Organizers.FirstOrDefaultAsync(o => o.Id == id);
         }
-        public List<Organizer> GetAll()
+        public async Task<List<Organizer>> GetAll()
         {
-            return _context.Organizers.ToList();
+            return await _context.Organizers.ToListAsync();
         }
 
         public async Task<int> SaveAsync()
         {
             try
             {
-                return _context.SaveChanges();
+                return await _context.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {

@@ -13,15 +13,15 @@ namespace Tixora.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var categories = _service.GetAll();
+            var categories =await _service.GetAll();
             return View(categories);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var category = _service.GetById(id);
+            var category =await _service.GetById(id);
             if (category == null)
                 return NotFound();
 
@@ -32,7 +32,7 @@ namespace Tixora.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(TicketCategory category)
+        public async Task<IActionResult> Create(TicketCategory category)
         {
             ModelState.Remove("Tickets");
 
@@ -45,7 +45,7 @@ namespace Tixora.Controllers
                         category.Tickets = new List<Ticket>();
                     }
 
-                    _service.Add(category);
+                    await _service.Add(category);
                     TempData["SuccessMessage"] = "Category created successfully";
                     return RedirectToAction(nameof(Index));
                 }
@@ -57,9 +57,9 @@ namespace Tixora.Controllers
             return View(category);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var category = _service.GetById(id);
+            var category = await _service.GetById(id);
             if (category == null)
                 return NotFound();
 
@@ -68,13 +68,13 @@ namespace Tixora.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(TicketCategory category)
+        public async Task<IActionResult> Edit(TicketCategory category)
         {
             if (ModelState.IsValid)
             {
                 try
                 {
-                    _service.Update(category);
+                    await _service.Update(category);
                     TempData["SuccessMessage"] = "Ticket category updated successfully";
                     return RedirectToAction(nameof(Index));
                 }
@@ -86,9 +86,9 @@ namespace Tixora.Controllers
             return View(category);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var category = _service.GetById(id);
+            var category =await _service.GetById(id);
             if (category == null)
                 return NotFound();
 
@@ -97,11 +97,11 @@ namespace Tixora.Controllers
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
-                _service.Delete(id);
+                await _service.Delete(id);
                 TempData["SuccessMessage"] = "Ticket category has been successfully deleted.";
                 return RedirectToAction(nameof(Index));
             }

@@ -24,32 +24,32 @@ namespace Tixora.Repositories
                 //.Include(t => t.Bookings);
         }
 
-        public List<Ticket> GetAll()
+        public async Task<List<Ticket>> GetAll()
         {
-            return IncludeRelatedData().ToList();
+            return await IncludeRelatedData().ToListAsync();
             
         }
 
-        public Ticket GetById(int id)
+        public async Task<Ticket> GetById(int id)
         {
-            return IncludeRelatedData().FirstOrDefault(t => t.Id == id);
+            return await IncludeRelatedData().FirstOrDefaultAsync(t => t.Id == id);
            
         }
 
         public async Task AddAsync(Ticket ticket)
         {
-            context.Tickets.Add(ticket);
+            await context.Tickets.AddAsync(ticket);
         }
         public async Task UpdateAsync(Ticket ticket)
         {
        
-            context.Tickets.Update(ticket);
+             context.Tickets.Update(ticket);
        
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-            var ticket = GetById(id);
+            var ticket =await GetById(id);
             if (ticket != null)
             {
                 context.Tickets.Remove(ticket);
@@ -63,7 +63,7 @@ namespace Tixora.Repositories
 
         public async Task<int> SaveAsync()
         {
-            return context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
     }
 }

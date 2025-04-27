@@ -9,11 +9,11 @@ namespace Tixora.Services.Interfaces
     {
         Task<List<Event>> GetAll();
         Task Add(AddEventViewModel model);
-        Event GetById(int id);
+        Task<Event> GetById(int id);
         Event Edit(EditEventViewModel model);
-        bool Delete(int id);
-        List<SelectListItem> Venues();
-        List<SelectListItem> Organizers();
+        Task<bool> Delete(int id);
+        Task<List<SelectListItem>> Venues();
+        Task<List<SelectListItem>> Organizers();
         Task<List<Ticket>> GetAvailableTicketsAsync(int eventId);
     }
 

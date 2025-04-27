@@ -40,7 +40,7 @@ namespace Tixora.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int eventId)
         {
-            var eventDetails = eventsService.GetById(eventId);
+            var eventDetails =await eventsService.GetById(eventId);
             var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
             var viewModel = new CreateBookingViewModel
             {
@@ -69,7 +69,7 @@ namespace Tixora.Controllers
             }
             try
             {
-                var ticket = ticketRepository.GetById(viewModel.TicketId);
+                var ticket =await ticketRepository.GetById(viewModel.TicketId);
                 if (ticket.AvailableQuantity < viewModel.Amount)
                 {
                     ModelState.AddModelError("Amount", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
@@ -167,7 +167,7 @@ namespace Tixora.Controllers
             }
             try
             {
-                var ticket = ticketRepository.GetById(viewModel.TicketId);
+                var ticket = await ticketRepository.GetById(viewModel.TicketId);
                 if (viewModel.TicketId != booking.TicketId)
                 {
                     if (viewModel.CurrentQuantity > ticket.AvailableQuantity)
@@ -203,7 +203,7 @@ namespace Tixora.Controllers
         private async Task<List<SelectListItem>> GetAvailableTicketsForEdit(int eventId, int currentTicketId)
         {
             var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
-            var currentTicket = ticketRepository.GetById(currentTicketId);
+            var currentTicket =await ticketRepository.GetById(currentTicketId);
             if (currentTicket != null)
             {
                 availableTickets = availableTickets

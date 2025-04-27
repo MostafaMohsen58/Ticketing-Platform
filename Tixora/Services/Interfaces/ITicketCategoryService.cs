@@ -4,10 +4,10 @@ namespace Tixora.Services.Interfaces
 {
     public interface ITicketCategoryService
     {
-        List<TicketCategory> GetAll();
-        TicketCategory GetById(int id);
-        void Add(TicketCategory category);
-        void Update(TicketCategory category);
-        void Delete(int id);
+        Task<List<TicketCategory>> GetAll();
+        Task<TicketCategory> GetById(int id);
+        Task Add(TicketCategory category);
+        Task Update(TicketCategory category);
+        Task Delete(int id);
     }
 }

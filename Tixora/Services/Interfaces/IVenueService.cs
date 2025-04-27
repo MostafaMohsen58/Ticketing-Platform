@@ -5,11 +5,11 @@ namespace Tixora.Services.Interfaces
 {
     public interface IVenueService
     {
-        List<Venue> GetAll();
-        Venue GetById(int id);
-        void Create(Venue venue);
-        void Update(Venue venue);
-        void Delete(int id);
-        public Venue? CheckVenueExistWithSameName(string name);
+        Task<List<Venue>> GetAll();
+        Task<Venue> GetById(int id);
+        Task Create(Venue venue);
+        Task Update(Venue venue);
+        Task Delete(int id);
+        public Task<Venue?> CheckVenueExistWithSameName(string name);
     }
 }

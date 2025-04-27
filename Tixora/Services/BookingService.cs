@@ -28,7 +28,7 @@ namespace Tixora.Services
             if (viewModel.Amount <= 0)
                 throw new ArgumentException("Quantity must be greater than zero", nameof(viewModel.Amount));
 
-            var ticket = ticketRepository.GetById(viewModel.TicketId);
+            var ticket =await ticketRepository.GetById(viewModel.TicketId);
             var booking = new Booking
             {
                 UserId = userId,
@@ -65,10 +65,10 @@ namespace Tixora.Services
         public async Task<bool> UpdateAsync(EditBookingViewModel viewModel, int bookingId)
         {
             var booking = await bookingRepository.GetByIdAsync(bookingId);
-            var newticket = ticketRepository.GetById(viewModel.TicketId);
+            var newticket =await ticketRepository.GetById(viewModel.TicketId);
             if (booking.TicketId != viewModel.TicketId)
             {
-                var oldTicket = ticketRepository.GetById(booking.TicketId);
+                var oldTicket =await ticketRepository.GetById(booking.TicketId);
                 oldTicket.AvailableQuantity += booking.Amount; // Increase the available quantity of the old ticket
                 await ticketRepository.UpdateAsync(oldTicket); // Update the old ticket's available quantity
             }

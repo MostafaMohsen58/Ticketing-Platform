@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.EntityFrameworkCore;
+using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
 
@@ -13,25 +14,25 @@ namespace Tixora.Repositories
             context = db;
         }
 
-        public List<TicketCategory> GetAll()
+        public async Task<List<TicketCategory>> GetAll()
         {
-            return context.TicketCategories.ToList();
+            return await context.TicketCategories.ToListAsync();
         }
 
-        public TicketCategory GetByID(int id)
+        public async Task<TicketCategory> GetByID(int id)
         {
-            return context.TicketCategories.FirstOrDefault(c => c.Id == id);
+            return await context.TicketCategories.FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task AddAsync(TicketCategory ticketCategory)
         {
-            context.TicketCategories.AddAsync(ticketCategory);
+            await context.TicketCategories.AddAsync(ticketCategory);
             await SaveAsync(); 
         }
 
         public async Task UpdateAsync(TicketCategory ticketCategory)
         {
-            var existingCategory = GetByID(ticketCategory.Id);
+            var existingCategory =await GetByID(ticketCategory.Id);
             if (existingCategory != null)
             {
                 existingCategory.Name = ticketCategory.Name;
@@ -41,17 +42,17 @@ namespace Tixora.Repositories
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var ticketCategory = GetByID(id);
+            var ticketCategory =await GetByID(id);
             if (ticketCategory != null)
             {
-                context.TicketCategories.Remove(ticketCategory);
+                 context.TicketCategories.Remove(ticketCategory);
             }
         }
         public async Task<int> SaveAsync()
         {
-            return context.SaveChanges();
+            return await context.SaveChangesAsync();
         }
     }
 }
