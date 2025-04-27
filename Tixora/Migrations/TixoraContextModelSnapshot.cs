@@ -288,7 +288,7 @@ namespace Tixora.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings");
+                    b.ToTable("Bookings", (string)null);
                 });
 
             modelBuilder.Entity("Tixora.Models.Event", b =>
@@ -333,7 +333,7 @@ namespace Tixora.Migrations
 
                     b.HasIndex("VenueId");
 
-                    b.ToTable("Events");
+                    b.ToTable("Events", (string)null);
                 });
 
             modelBuilder.Entity("Tixora.Models.Organizer", b =>
@@ -362,7 +362,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organizers");
+                    b.ToTable("Organizers", (string)null);
                 });
 
             modelBuilder.Entity("Tixora.Models.Ticket", b =>
@@ -394,7 +394,7 @@ namespace Tixora.Migrations
 
                     b.HasIndex("TicketCategoryId");
 
-                    b.ToTable("Tickets");
+                    b.ToTable("Tickets", (string)null);
                 });
 
             modelBuilder.Entity("Tixora.Models.TicketCategory", b =>
@@ -420,7 +420,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketCategories");
+                    b.ToTable("TicketCategories", (string)null);
                 });
 
             modelBuilder.Entity("Tixora.Models.Venue", b =>
@@ -446,7 +446,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Venues");
+                    b.ToTable("Venues", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -27,15 +27,15 @@ namespace Tixora.Services
                 VenueId = model.VenueId,
                 OrganizerId = model.OrganizerId,
             };
-            await _eventRepository.Add(NewEvent);
-            await _eventRepository.Save();
+            await _eventRepository.AddAsync(NewEvent);
+            await _eventRepository.SaveAsync();
            // return Task.FromResult(NewEvent);
         }
 
         public async Task<bool> Delete(int id)
         {
             await _eventRepository.Delete(id);
-            await _eventRepository.Save();
+            await _eventRepository.SaveAsync();
             return true;
         }
 
@@ -51,7 +51,7 @@ namespace Tixora.Services
                 OrganizerId = model.OrganizerId,
 
             };
-             _eventRepository.Update(e);
+             _eventRepository.UpdateAsync(e);
             return e;
         }
 

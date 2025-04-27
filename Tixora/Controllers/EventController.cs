@@ -16,9 +16,9 @@ namespace Tixora.Controllers
             _organizerService = organizerService;
         }
 
-        public  IActionResult Index()
+        public  async Task<IActionResult> Index()
         {            
-            return View( _eventsService.GetAll());
+            return View(await _eventsService.GetAll());
         }
         [HttpGet]
         public async Task<IActionResult> Create()
@@ -32,7 +32,7 @@ namespace Tixora.Controllers
         }
 
         [HttpPost]
-        public IActionResult Create(AddEventViewModel model)
+        public async Task<IActionResult> Create(AddEventViewModel model)
         {
             if (!ModelState.IsValid)
             {
@@ -43,7 +43,7 @@ namespace Tixora.Controllers
                 };
                 return View(modelCopy);
             }
-            _eventsService.Add(model);
+            await _eventsService.Add(model);
             return RedirectToAction("Index");
         }
         [HttpGet]
@@ -85,9 +85,9 @@ namespace Tixora.Controllers
             await _eventsService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {          
-            return View(_eventsService.GetById(id));
+            return View(await _eventsService.GetById(id));
         }
     }
 }
