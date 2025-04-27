@@ -1,4 +1,5 @@
-﻿@using Tixora.ViewModels
+﻿@using Tixora.ViewModels.UserViewModels
+
 @model RegisterViewModel
 
 @{
@@ -7,34 +8,29 @@
 
     <style>
         body {
-            background-image: url('/images/crowded_people.jpg'); /* Ensure the path is correct */
+            background-image: url('/images/crowded_people.jpg'); 
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            /* min-height: 100vh; */
-            display: flex;
-            align-items: center;
-            justify-content: center; /* Center the container horizontally as well */
-		align-content: center;
         }
 
-        .register-container {
-            max-width: 600px;
+        .register-container { 
+            max-width: 520px; 
             background-color: rgba(255, 255, 255, 0.9);
             padding: 30px;
             border-radius: 10px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            margin: 20px;
+            margin: auto;
         }
 
         .form-label {
-            font-weight: bold;
-        }
+             font-weight: bold; 
+         }
     </style>
 
     <div class="container register-container">
-        <h2 class="mb-4 text-center">Register for Match Tickets</h2>
-        <form asp-controller="Account" asp-action="Register" method="post">
+        <h2 class="mb-4 text-center">Registeration Form</h2>
+    <form asp-controller="Account" asp-action="Register" method="post" enctype="multipart/form-data">
             <div asp-validation-summary="All"></div>
             <div class="mb-3">
                 <label asp-for="Email" class="form-label">Email address</label>
@@ -72,10 +68,21 @@
                 </select>
                 <span asp-validation-for="Gender" class="text-danger"></span>
             </div>
-            <div class="mb-3">
+            @* <div class="mb-3">
                 <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
                 <input asp-for="ProfileUrl" type="url" class="form-control" placeholder="Enter profile picture URL">
                 <span asp-validation-for="ProfileUrl" class="text-danger"></span>
+            </div> *@
+             <div class="mb-3">
+                <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
+                @* <input type="file" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model?.ImageUrl" /> *@
+                @if (!string.IsNullOrEmpty(Model?.ProfileUrl))
+                {
+                    <div>
+                        <img src="/images/user/@Model.ProfileUrl" alt="User Image" width="150" height="150" />
+                    </div>
+                }
+                <input type="file" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model?.ProfileUrl" />
             </div>
             <div class="mb-3">
                 <label asp-for="Address" class="form-label">Address</label>
@@ -106,6 +113,9 @@
                 <button type="submit" class="btn btn-primary">Register</button>
             </div>
         </form>
+        <div class="mt-3 text-center">
+            <a asp-action="Login">I have already an account</a>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

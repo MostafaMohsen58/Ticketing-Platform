@@ -1,0 +1,193 @@
+﻿@model UserProfileViewModel
+@{
+    ViewBag.Title = "Edit Profile";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-12">
+            @if (TempData["SuccessMessage"] != null)
+            {
+                <div class="alert alert-success">
+                    @TempData["SuccessMessage"]
+                </div>
+            }
+            @if (TempData["ErrorMessage"] != null)
+            {
+                <div class="alert alert-danger">
+                    @TempData["ErrorMessage"]
+                </div>
+            }
+        </div>
+    </div>
+
+    <div class="row mb-4">
+        <div class="col-md-12 text-center">
+            <div class="profile-image-container">
+                @if (!string.IsNullOrEmpty(Model.ProfileImagePath))
+                {
+                    <img src="/images/user/@Model.ProfileImagePath" alt="Profile Picture" class="profile-image rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+                }
+                else
+                {
+                    <img src="~/Content/Images/default-profile.png" alt="Default Profile" class="profile-image rounded-circle" style="width: 100px; height: 100px; object-fit: cover;" />
+                }
+            </div>
+            <div class="mt-2">
+                @using (Html.BeginForm("UploadProfileImage", "Profile", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                {
+                    <div class="input-group">
+                        <input type="file" name="image" id="profileImage" class="form-control" accept="image/*" style="display: none;" onchange="this.form.submit();" />
+                        <label for="profileImage" class="btn btn-outline-secondary">Change Photo</label>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+
+    <!-- Personal Information Section -->
+    <div class="card mb-4">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Personal Information</h3>
+            <div class="action-buttons-personal">
+                <button type="button" class="btn btn-secondary cancel-btn-personal" style="display: none;" onclick="cancelPersonalEdit()">Cancel</button>
+                <button type="button" class="btn btn-primary save-btn-personal" style="display: none;" onclick="savePersonalInfo()">Save</button>
+                <button type="button" class="btn btn-success update-btn-personal" onclick="enablePersonalEdit()">Update</button>
+            </div>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("SavePersonalInfo", "Profile", FormMethod.Post, new { id = "personalInfoForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.PersonalInfo.FanName, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PersonalInfo.FanName, new { @class = "form-control", dir = "rtl", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.PersonalInfo.FanName, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.PersonalInfo.Email, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PersonalInfo.Email, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.PersonalInfo.Email, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.PersonalInfo.PhoneNumber, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.PersonalInfo.PhoneNumber, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.PersonalInfo.PhoneNumber, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+
+    <!-- Account Information Section -->
+    <div class="card">
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Account Information</h3>
+            <div class="action-buttons-account">
+                <button type="button" class="btn btn-secondary cancel-btn-account" style="display: none;" onclick="cancelAccountEdit()">Cancel</button>
+                <button type="button" class="btn btn-primary save-btn-account" style="display: none;" onclick="saveAccountInfo()">Save</button>
+                <button type="button" class="btn btn-success update-btn-account" onclick="enableAccountEdit()">Update</button>
+            </div>
+        </div>
+        <div class="card-body">
+            @using (Html.BeginForm("UpdateAccountInfo", "Profile", FormMethod.Post, new { id = "accountInfoForm" }))
+            {
+                @Html.AntiForgeryToken()
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.AccountInfo.OldPassword, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.AccountInfo.OldPassword, new { @class = "form-control", placeholder = "Old Password", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.AccountInfo.OldPassword, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.AccountInfo.Password, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.AccountInfo.Password, new { @class = "form-control", placeholder = "Password", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.AccountInfo.Password, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.AccountInfo.ConfirmPassword, new { @class = "form-label" })
+                        @Html.PasswordFor(m => m.AccountInfo.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.AccountInfo.ConfirmPassword, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.AccountInfo.City, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AccountInfo.City, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.AccountInfo.City, "", new { @class = "text-danger" })
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        @Html.LabelFor(m => m.AccountInfo.Address, new { @class = "form-label" })
+                        @Html.TextBoxFor(m => m.AccountInfo.Address, new { @class = "form-control", disabled = "disabled" })
+                        @Html.ValidationMessageFor(m => m.AccountInfo.Address, "", new { @class = "text-danger" })
+                    </div>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            // Auto-submit when profile image is changed
+            $("#profileImage").change(function () {
+                $(this).closest("form").submit();
+            });
+        });
+
+        // Personal Information section functions
+        function enablePersonalEdit() {
+            // Show/hide buttons
+            $(".update-btn-personal").hide();
+            $(".cancel-btn-personal, .save-btn-personal").show();
+
+            // Enable input fields
+            $("#personalInfoForm input").prop("disabled", false);
+        }
+
+        function cancelPersonalEdit() {
+            // Show/hide buttons
+            $(".cancel-btn-personal, .save-btn-personal").hide();
+            $(".update-btn-personal").show();
+
+            // Disable input fields and reset to original values
+            $("#personalInfoForm input").prop("disabled", true);
+            $("#personalInfoForm")[0].reset();
+        }
+
+        function savePersonalInfo() {
+            // Submit the form
+            $("#personalInfoForm").submit();
+        }
+
+        // Account Information section functions
+        function enableAccountEdit() {
+            // Show/hide buttons
+            $(".update-btn-account").hide();
+            $(".cancel-btn-account, .save-btn-account").show();
+
+            // Enable input fields
+            $("#accountInfoForm input").prop("disabled", false);
+        }
+
+        function cancelAccountEdit() {
+            // Show/hide buttons
+            $(".cancel-btn-account, .save-btn-account").hide();
+            $(".update-btn-account").show();
+
+            // Disable input fields and reset to original values
+            $("#accountInfoForm input").prop("disabled", true);
+            $("#accountInfoForm")[0].reset();
+        }
+
+        function saveAccountInfo() {
+            // Submit the form
+            $("#accountInfoForm").submit();
+        }
+    </script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

@@ -2,11 +2,11 @@
 using Tixora.Models;
 using Tixora.Validation;
 
-namespace Tixora.ViewModels
+namespace Tixora.ViewModels.UserViewModels
 {
     public class RegisterViewModel
     {
-        [Required(ErrorMessage ="Email is required")]
+        [Required(ErrorMessage = "Email is required")]
         [EmailAddress]
         public string Email { get; set; }
 
@@ -14,7 +14,7 @@ namespace Tixora.ViewModels
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Compare("Password",ErrorMessage ="Confirm password must match password")]
+        [Compare("Password", ErrorMessage = "Confirm password must match password")]
         public string ConfirmPassword { get; set; }
         [Required(ErrorMessage = "First name is required")]
         [StringLength(50, MinimumLength = 2, ErrorMessage = "First name must be between 2 and 50 characters")]
