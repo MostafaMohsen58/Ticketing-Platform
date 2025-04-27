@@ -17,17 +17,7 @@ namespace Tixora.Repositories
             _context = context;
         }
 
-        public Organizer GetById(int id)
-        {
-            return _context.Organizers.Include(o => o.Events).FirstOrDefault(o => o.Id == id);
-        }
-
-        public List<Organizer> GetAll()
-        {
-            return _context.Organizers.Include(o => o.Events).ToList();
-        }
-
-        public void Add(Organizer organizer)
+        public async Task AddAsync(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
@@ -41,7 +31,7 @@ namespace Tixora.Repositories
             try
             {
                 _context.Organizers.Add(organizer);
-                Save();
+                await SaveAsync();
             }
             catch (Exception ex)
             {
@@ -49,7 +39,7 @@ namespace Tixora.Repositories
             }
         }
 
-        public void Update(Organizer organizer)
+        public async Task UpdateAsync(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
@@ -75,7 +65,7 @@ namespace Tixora.Repositories
                 }
 
                 _context.Entry(existingOrganizer).State = EntityState.Modified;
-                Save();
+                await SaveAsync();
             }
             catch (Exception ex)
             {
@@ -85,22 +75,28 @@ namespace Tixora.Repositories
 
         public void Delete(int id)
         {
-            try
+            var organizer = GetById(id);
+            if (organizer != null)
             {
+                _context.Organizers.Remove(organizer);
                 var org = GetById(id);
                 if (org != null)
                 {
                     _context.Organizers.Remove(org);
-                    Save();
+                    SaveAsync();
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error deleting organizer: {ex.Message}", ex);
-            }
+        }
+        public Organizer GetById(int id)
+        {
+            return _context.Organizers.FirstOrDefault(o => o.Id == id);
+        }
+        public List<Organizer> GetAll()
+        {
+            return _context.Organizers.ToList();
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
             try
             {

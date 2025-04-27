@@ -1,6 +1,8 @@
 ﻿using Tixora.Models.Context;
 using Tixora.Models;
 using Tixora.Repositories.Interfaces;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace Tixora.Repositories
 {
@@ -11,34 +13,59 @@ namespace Tixora.Repositories
         {
             _context = context;
         }
-        public void Add(Event obj)
+        public async Task Add(Event obj)
         {
-            _context.Events.Add(obj);
+           await _context.Events.AddAsync(obj);
         }
         public void Update(Event obj)
         {
             _context.Events.Update(obj);
         }
-        public void Delete(int id)
+
+        public void  Delete(int id)
         {
             var Event = GetById(id);
             if (Event != null)
             {
-                _context.Events.Remove(Event);
+                 _context.Events.Remove(Event);
             }
         }
         public Event GetById(int id)
         {
             return _context.Events.FirstOrDefault(o => o.Id == id)!;
         }
-        public List<Event> GetAll()
+        public async Task<List<Event>> GetAll()
         {
-            return _context.Events.ToList();
+            return await _context.Events.ToListAsync();
         }
 
-        public int Save()
+        public async Task<int> Save()
         {
-            return _context.SaveChanges();
+            return await _context.SaveChangesAsync();
+        }
+
+        public List<SelectListItem> GetVenues()
+        {
+            return _context.Venues.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
+        }
+
+        public List<SelectListItem> GetOrganizers()
+        {
+            return _context.Organizers.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
+        }
+        public async Task<List<Ticket>> GetAvailableTicketsAsync(int eventId)
+        {
+            return await _context.Tickets
+                .Where(t => t.EventId == eventId && t.AvailableQuantity > 0 && t.Status == 0)
+                .ToListAsync();
         }
     }
 }

@@ -23,13 +23,13 @@ namespace Tixora.Repositories
             return context.TicketCategories.FirstOrDefault(c => c.Id == id);
         }
 
-        public void Add(TicketCategory ticketCategory)
+        public async Task AddAsync(TicketCategory ticketCategory)
         {
-            context.TicketCategories.Add(ticketCategory);
-            Save(); 
+            context.TicketCategories.AddAsync(ticketCategory);
+            await SaveAsync(); 
         }
 
-        public void Update(TicketCategory ticketCategory)
+        public async Task UpdateAsync(TicketCategory ticketCategory)
         {
             var existingCategory = GetByID(ticketCategory.Id);
             if (existingCategory != null)
@@ -49,8 +49,7 @@ namespace Tixora.Repositories
                 context.TicketCategories.Remove(ticketCategory);
             }
         }
-
-        public int Save()
+        public async Task<int> SaveAsync()
         {
             return context.SaveChanges();
         }

@@ -35,7 +35,7 @@ namespace Tixora.Services
             {
                 try
                 {
-                    _repository.Add(organizer);
+                    _repository.AddAsync(organizer);
                     scope.Complete();
                 }
                 catch (Exception)
@@ -55,7 +55,7 @@ namespace Tixora.Services
             {
                 try
                 {
-                    _repository.Update(organizer);
+                    _repository.UpdateAsync(organizer);
                     scope.Complete();
                 }
                 catch (Exception)
