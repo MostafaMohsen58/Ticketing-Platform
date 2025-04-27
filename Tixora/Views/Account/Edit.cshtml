@@ -1,0 +1,65 @@
+﻿@model EditProfileViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Edit" enctype="multipart/form-data">
+            <div asp-validation-summary="All" class="text-danger"></div>
+            <div class="form-group">
+                <input asp-for="Id" class="form-control" hidden />
+            </div>
+            <div class="form-group">
+                <label asp-for="Email" class="control-label"></label>
+                <input asp-for="Email" class="form-control" />
+                <span asp-validation-for="Email" class="text-danger"></span>
+            </div>
+            @* <div class="form-group">
+                <label asp-for="ProfileUrl" class="control-label"></label>
+                <input asp-for="ProfileUrl" class="form-control" />
+                <span asp-validation-for="ProfileUrl" class="text-danger"></span>
+            </div> *@
+            <div class="mb-3">
+                <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
+                @if (!string.IsNullOrEmpty(Model?.ProfileUrl))
+                {
+                    <div>
+                        <img src="/images/user/@Model.ProfileUrl" alt="User Image" width="150" height="150" />
+                    </div>
+                }
+                <input type="file" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model?.ProfileUrl" />
+            </div>
+            <div class="form-group">
+                <label asp-for="Address" class="control-label"></label>
+                <input asp-for="Address" class="form-control" />
+                <span asp-validation-for="Address" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="City" class="control-label"></label>
+                <input asp-for="City" class="form-control" />
+                <span asp-validation-for="City" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="PhoneNumber" class="control-label"></label>
+                <input asp-for="PhoneNumber" class="form-control" />
+                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
