@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Tixora.Models;
 using Tixora.ViewModels;
 
 namespace Tixora.Services.Interfaces
@@ -11,5 +12,6 @@ namespace Tixora.Services.Interfaces
         Task Update(Venue venue);
         Task Delete(int id);
         public Task<Venue?> CheckVenueExistWithSameName(string name);
+        List<SelectListItem> Venues();
     }
 }

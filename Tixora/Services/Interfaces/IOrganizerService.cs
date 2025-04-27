@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Tixora.Models;
 
 namespace Tixora.Services.Interfaces
 {
@@ -9,5 +10,6 @@ namespace Tixora.Services.Interfaces
         Task Add(Organizer organizer);
         Task Update(Organizer organizer);
         Task Delete(int id);
+        List<SelectListItem> Organizers();
     }
 }

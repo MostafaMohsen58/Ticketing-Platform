@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -106,6 +107,14 @@ namespace Tixora.Repositories
             {
                 throw new Exception($"Database update error: {ex.InnerException?.Message ?? ex.Message}", ex);
             }
+        }
+        public List<SelectListItem> GetOrganizers()
+        {
+            return _context.Organizers.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
         }
     }
 }

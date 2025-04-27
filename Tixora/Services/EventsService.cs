@@ -7,7 +7,7 @@ using Tixora.ViewModels.EventViewModel;
 namespace Tixora.Services
 {
     
-    public class EventsService : IEventsService
+    public class EventsService : IEventsService 
     {
         
         private readonly IEventRepository _eventRepository;
@@ -32,7 +32,7 @@ namespace Tixora.Services
            // return Task.FromResult(NewEvent);
         }
 
-        public async  Task<bool> Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             await _eventRepository.Delete(id);
             await _eventRepository.Save();

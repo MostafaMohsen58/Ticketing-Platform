@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
@@ -35,6 +36,14 @@ namespace Tixora.Repositories
         public async Task<List<Venue>> GetAll()
         {
             return await _context.Venues.ToListAsync();
+        }
+        public List<SelectListItem> GetVenues()
+        {
+            return _context.Venues.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
         }
         public async Task<int> SaveAsync()
         {

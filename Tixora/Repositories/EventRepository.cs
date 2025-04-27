@@ -13,9 +13,9 @@ namespace Tixora.Repositories
         {
             _context = context;
         }
-        public async Task Add(Event obj)
+        public  void Add(Event obj)
         {
-           await _context.Events.AddAsync(obj);
+            _context.Events.Add(obj);
         }
         public async Task Update(Event obj)
         {
@@ -34,14 +34,14 @@ namespace Tixora.Repositories
         {
             return await _context.Events.FirstOrDefaultAsync(o => o.Id == id)!;
         }
-        public async Task<List<Event>> GetAll()
+        public  List<Event> GetAll()
         {
-            return await _context.Events.ToListAsync();
+            return  _context.Events.ToList();
         }
 
-        public async Task<int> Save()
+        public int Save()
         {
-            return await _context.SaveChangesAsync();
+            return  _context.SaveChanges();
         }
 
         public async Task<List<SelectListItem>> GetVenues()

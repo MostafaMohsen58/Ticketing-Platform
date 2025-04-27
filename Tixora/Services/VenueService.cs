@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Tixora.Models;
 using Tixora.Repositories;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
@@ -8,6 +9,7 @@ namespace Tixora.Services
 {
     public class VenueService : IVenueService
     {
+        
         private readonly IVenueRepository venueRepository;
 
         public VenueService(IVenueRepository venueRepository)
@@ -70,8 +72,11 @@ namespace Tixora.Services
             List<Venue> venues=await venueRepository.GetAll();
             return venues;
         }
+        public List<SelectListItem> Venues()
+        {
+            return venueRepository.GetVenues();
+        }
 
-        
 
     }
 }

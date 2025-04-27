@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
 {
@@ -7,5 +8,6 @@ namespace Tixora.Repositories.Interfaces
         void Delete(Venue venue);
         Task<Venue> GetById(int id);
         Task<List<Venue>> GetAll();
+        public List<SelectListItem> GetVenues();
     }
 }

@@ -3,7 +3,7 @@ using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
 {
-    public interface IEventRepository 
+    public interface IEventRepository  : IRepository<Event>
     {
         Task Add(Event obj);
         Task Update(Event obj);
