@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,24 @@ namespace Tixora.Repositories
         }
 
         public async Task AddAsync(Organizer organizer)
+        public Organizer GetById(int id)
+        {
+            return _context.Organizers.Include(o => o.Events).FirstOrDefault(o => o.Id == id);
+        }
+
+        public List<Organizer> GetAll()
+        {
+            return _context.Organizers.Include(o => o.Events).ToList();
+        }
+        public List<SelectListItem> GetOrganizers()
+        {
+            return _context.Organizers.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
+        }
+        public void Add(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));

@@ -6,7 +6,7 @@
 }
 
 
-<form asp-action="Edit">
+<form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
     <div asp-validation-summary="All" class="text-danger"></div>
     <div class="row">
         <div class="col-md-6">

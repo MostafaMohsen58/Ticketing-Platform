@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Transactions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Tixora.Models;
+using Tixora.Repositories;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
 
@@ -25,7 +27,10 @@ namespace Tixora.Services
         {
             return _repository.GetAll();
         }
-
+        public List<SelectListItem> Organizers()
+        {
+            return _repository.GetOrganizers();
+        }
         public void Add(Organizer organizer)
         {
             if (organizer == null)

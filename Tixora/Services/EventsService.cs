@@ -7,7 +7,7 @@ using Tixora.ViewModels.EventViewModel;
 namespace Tixora.Services
 {
     
-    public class EventsService : IEventsService
+    public class EventsService : IEventsService 
     {
         
         private readonly IEventRepository _eventRepository;
@@ -16,7 +16,7 @@ namespace Tixora.Services
             _eventRepository = eventRepository;
         }
 
-        public async Task Add(AddEventViewModel model)
+        public  void Add(AddEventViewModel model)
         {
             var NewEvent = new Event()
             {
@@ -27,8 +27,8 @@ namespace Tixora.Services
                 VenueId = model.VenueId,
                 OrganizerId = model.OrganizerId,
             };
-            await _eventRepository.Add(NewEvent);
-            await _eventRepository.Save();
+             _eventRepository.Add(NewEvent);
+             _eventRepository.Save();
            // return Task.FromResult(NewEvent);
         }
 
@@ -60,16 +60,12 @@ namespace Tixora.Services
             return _eventRepository.GetById(id);
         }
 
-        public async Task<List<Event>> GetAll()
+        public  List<Event> GetAll()
         {
-            return await _eventRepository.GetAll();
+            return  _eventRepository.GetAll();
         }
 
-        public List<SelectListItem> Venues()
-        {
-            return _eventRepository.GetVenues();
-        }
-
+     
         public List<SelectListItem> Organizers()
         {
             return _eventRepository.GetOrganizers();
