@@ -20,7 +20,7 @@ namespace Tixora.Repositories
 
         public TicketCategory GetByID(int id)
         {
-            return context.TicketCategories.FirstOrDefault(c => c.Id == id);
+            return context.TicketCategories.FirstOrDefault(c => c.Id == id)!;
         }
 
         public void Add(TicketCategory ticketCategory)

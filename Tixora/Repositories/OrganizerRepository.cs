@@ -20,7 +20,7 @@ namespace Tixora.Repositories
 
         public Organizer GetById(int id)
         {
-            return _context.Organizers.Include(o => o.Events).FirstOrDefault(o => o.Id == id);
+            return _context.Organizers.Include(o => o.Events).FirstOrDefault(o => o.Id == id)!;
         }
 
         public List<Organizer> GetAll()

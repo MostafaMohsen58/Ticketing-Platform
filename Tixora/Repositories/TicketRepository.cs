@@ -32,7 +32,7 @@ namespace Tixora.Repositories
 
         public Ticket GetById(int id)
         {
-            return IncludeRelatedData().FirstOrDefault(t => t.Id == id);
+            return IncludeRelatedData().FirstOrDefault(t => t.Id == id)!;
            
         }
 

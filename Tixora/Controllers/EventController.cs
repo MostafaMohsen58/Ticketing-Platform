@@ -85,6 +85,9 @@ namespace Tixora.Controllers
             _eventsService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
-
+        public IActionResult Details(int id)
+        {          
+            return View(_eventsService.GetById(id));
+        }
     }
 }
