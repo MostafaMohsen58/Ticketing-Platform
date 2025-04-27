@@ -9,7 +9,6 @@ namespace Tixora.ViewModels.BookingViewModel
         public int EventId { get; set; }
         [Display(Name = "Ticket Type")]
         public int TicketId { get; set; }
-        public int Quantity { get; set; }
         public int CurrentQuantity { get; set; }
         public string EventTitle { get; set; }
         public string CurrentTicketType { get; set; }

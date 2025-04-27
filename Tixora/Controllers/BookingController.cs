@@ -155,22 +155,42 @@ namespace Tixora.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, EditBookingViewModel viewModel)
         {
+            var booking = await bookingService.GetByIdAsync(id);
             if (!ModelState.IsValid)
             {
+                viewModel.EventTitle = booking.Ticket.Event.Title;
+                viewModel.EventId = booking.Ticket.EventId;
+                viewModel.CurrentTicketType = booking.Ticket.TicketCategory.Name;
+                viewModel.CurrentQuantity = booking.Amount;
                 viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                 return View(viewModel);
             }
             try
             {
-                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
-                var booking = await bookingService.GetByIdAsync(id);
+                var ticket = ticketRepository.GetById(viewModel.TicketId);
+                if (viewModel.TicketId != booking.TicketId)
+                {
+                    if (viewModel.CurrentQuantity > ticket.AvailableQuantity)
+                    {
+                        ModelState.AddModelError("CurrentQuantity", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
+                        viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
+                        return View(viewModel);
+                    }
+                }
+                else if (viewModel.CurrentQuantity > booking.Amount + ticket.AvailableQuantity)
+                {
+                    ModelState.AddModelError("CurrentQuantity", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
+                    viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
+                    return View(viewModel);
+                }
                 var result = await bookingService.UpdateAsync(viewModel, id);
                 if (!result)
                 {
                     ModelState.AddModelError("", "Error updating booking.");
-                    viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.Id);
+                    viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                     return View(viewModel);
                 }
+                await bookingService.SaveAsync();
                 return RedirectToAction("Confirmation", new { id = booking.Id });
             }
             catch (Exception ex)

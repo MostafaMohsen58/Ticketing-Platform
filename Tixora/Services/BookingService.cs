@@ -74,6 +74,7 @@ namespace Tixora.Services
             }
             newticket.AvailableQuantity -= viewModel.CurrentQuantity; // Decrease the available quantity of the new ticket
             await ticketRepository.UpdateAsync(newticket); // Update the new ticket's available quantity
+
             booking.BookedAt = DateTime.UtcNow;
             booking.TicketId = viewModel.TicketId;
             booking.Amount = viewModel.CurrentQuantity;
