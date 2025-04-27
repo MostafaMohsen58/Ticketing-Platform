@@ -1,14 +1,13 @@
-﻿using System.Collections;
-using Tixora.Models;
+﻿using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
 {
     public interface IBookingRepository : IRepository<Booking>
     {
-        IEnumerable<Booking>  GetAll();
-        Booking GetById(int id);
-        void Delete(int id);
-        IEnumerable<Booking> GetByUserId(string userId);
-        IEnumerable<Booking> GetByDateRange(DateTime startDate, DateTime endDate);
+        Task<IEnumerable<Booking>> GetAllAsync();
+        Task<Booking> GetByIdAsync(int id);
+        Task DeleteAsync(int id);
+        Task<IEnumerable<Booking>> GetByUserIdAsync(string userId);
+        Task<IEnumerable<Booking>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
     }
 }

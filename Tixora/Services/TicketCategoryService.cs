@@ -28,7 +28,7 @@ namespace Tixora.Services
         {
             if (category != null)
             {
-                _repository.Add(category);
+                _repository.AddAsync(category);
                 
             }
         }
@@ -37,15 +37,15 @@ namespace Tixora.Services
         {
             if (category != null)
             {
-                _repository.Update(category);
-                _repository.Save();
+                _repository.UpdateAsync(category);
+                _repository.SaveAsync();
             }
         }
 
         public void Delete(int id)
         {
             _repository.Delete(id);
-            _repository.Save();
+            _repository.SaveAsync();
         }
     }
 }

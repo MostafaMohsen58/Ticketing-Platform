@@ -36,11 +36,11 @@ namespace Tixora.Repositories
            
         }
 
-        public void Add(Ticket ticket)
+        public async Task AddAsync(Ticket ticket)
         {
             context.Tickets.Add(ticket);
         }
-        public void Update(Ticket ticket)
+        public async Task UpdateAsync(Ticket ticket)
         {
        
             context.Tickets.Update(ticket);
@@ -61,7 +61,7 @@ namespace Tixora.Repositories
 
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
             return context.SaveChanges();
         }

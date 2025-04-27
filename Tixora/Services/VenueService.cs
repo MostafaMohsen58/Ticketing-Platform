@@ -16,8 +16,8 @@ namespace Tixora.Services
         }
         public void Create(Venue venue)
         {
-            venueRepository.Add(venue);
-            venueRepository.Save();
+            venueRepository.AddAsync(venue);
+            venueRepository.SaveAsync();
         }
         public Venue? CheckVenueExistWithSameName(string name)
         {
@@ -34,8 +34,8 @@ namespace Tixora.Services
                 venueFromDb.Address = venue.Address;
                 venueFromDb.Capacity = venue.Capacity;
 
-                venueRepository.Update(venueFromDb);
-                venueRepository.Save();
+                venueRepository.UpdateAsync(venueFromDb);
+                venueRepository.SaveAsync();
             }
         }
         public void Delete(int id)
@@ -44,7 +44,7 @@ namespace Tixora.Services
             if (venueFromDb != null)
             {
                 venueRepository.Delete(venueFromDb);
-                venueRepository.Save();
+                venueRepository.SaveAsync();
             }
             
         }
