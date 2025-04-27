@@ -1,0 +1,55 @@
+﻿@model Tixora.Models.ViewModels.TicketViewModel
+
+@{
+    ViewData["Title"] = "Edit Ticket";
+}
+
+<h1>Edit Ticket</h1>
+
+<form asp-action="Edit" method="post">
+    <input type="hidden" asp-for="Id" />
+
+    <div class="mb-3">
+        <label asp-for="Price" class="form-label"></label>
+        <input asp-for="Price" class="form-control" />
+        <span asp-validation-for="Price" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="AvailableQuantity" class="form-label"></label>
+        <input asp-for="AvailableQuantity" class="form-control" />
+        <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="Status" class="form-label"></label>
+        <select asp-for="Status" class="form-select">
+            <option value="0">Available</option>
+            <option value="1">SoldOut</option>
+        </select>
+        <span asp-validation-for="Status" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="EventId" class="form-label"></label>
+        <select asp-for="EventId" class="form-select" asp-items="@(new SelectList(Model.Events, "Id", "Title", Model.EventId))">
+            <option value="">-- Select Event --</option>
+        </select>
+        <span asp-validation-for="EventId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="TicketCategoryId" class="form-label"></label>
+        <select asp-for="TicketCategoryId" class="form-select" asp-items="@(new SelectList(Model.TicketCategories, "Id", "Name", Model.TicketCategoryId))">
+            <option value="">-- Select Ticket Category --</option>
+        </select>
+        <span asp-validation-for="TicketCategoryId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+</form>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

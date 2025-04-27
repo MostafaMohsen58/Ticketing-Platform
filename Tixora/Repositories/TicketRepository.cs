@@ -1,27 +1,27 @@
-﻿using Tixora.Models;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
-using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace Tixora.Repositories
 {
-    public class TicketRepository: ITicketRepository
+    public class TicketRepository : ITicketRepository
     {
-         TixoraContext context;
-        public TicketRepository(TixoraContext tixoracontext)
-        {
-            context = tixoracontext;
-        }
+        private readonly TixoraContext _context;
 
+        public TicketRepository(TixoraContext context)
+        {
+            _context = context;
+        }
 
         private IQueryable<Ticket> IncludeRelatedData()
         {
-            return context.Tickets
+            return _context.Tickets
                 .Include(t => t.TicketCategory)
                 .Include(t => t.Event);
-                //.Include(t => t.Organizer)
-                //.Include(t => t.Bookings);
         }
 
         public async Task<List<Ticket>> GetAll()
@@ -44,7 +44,6 @@ namespace Tixora.Repositories
         {
        
              context.Tickets.Update(ticket);
-       
         }
 
         public async Task<bool> Delete(int id)
@@ -57,24 +56,33 @@ namespace Tixora.Repositories
 
             }
            
-            return false;
-
+                var ticket = GetById(id);
+                if (ticket != null)
+                {
+                    _context.Tickets.Remove(ticket);
+                    return true;
+                }
+                return false;
+          
         }
 
         public async Task<int> SaveAsync()
         {
             return await context.SaveChangesAsync();
         }
+        public IEnumerable<Ticket> GetTicketsByUser(string username)
+        {
+            return _context.Bookings
+                .Include(b => b.Ticket)
+                    .ThenInclude(t => t.Event)
+                .Include(b => b.Ticket)
+                    .ThenInclude(t => t.TicketCategory)
+                .Include(b => b.User)
+                .Where(b => b.User.UserName == username)
+                .Select(b => b.Ticket)
+                .Distinct()
+                .ToList();
+        }
+
     }
 }
-
-
-
-
-
-
-
-
-
-
-

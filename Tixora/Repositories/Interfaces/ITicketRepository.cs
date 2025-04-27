@@ -1,4 +1,6 @@
 ﻿using Tixora.Models;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Tixora.Repositories.Interfaces
 {
@@ -8,8 +10,8 @@ namespace Tixora.Repositories.Interfaces
         Task<List<Ticket>> GetAll();
         Task<Ticket> GetById(int id);
         Task<bool> Delete(int id);
+        IEnumerable<Ticket> GetTicketsByUser(string username);
        
 
-        
     }
 }
