@@ -53,7 +53,7 @@
                     </div>
 
                     <div class="text-center mt-4">
-                        <a href="#" class="btn btn-primary mr-2">
+                        <a asp-action="PrintTicket" asp-controller="Booking" asp-route-id="@Model.BookingId" class="btn btn-primary mr-2">
                             <i class="fas fa-print"></i> Print Ticket
                         </a>
                         <a asp-action="Index" asp-controller="Event" class="btn btn-outline-secondary">
@@ -62,20 +62,10 @@
                     </div>
                 </div>
 
-                <div class="card-footer text-muted text-center">
-                    <small>A confirmation email has been sent to your registered email address.</small>
-                </div>
+                @* <div class="card-footer text-muted text-center"> *@
+                @*     <small>A confirmation email has been sent to your registered email address.</small> *@
+                @* </div> *@
             </div>
         </div>
     </div>
 </div>
-
-@section Scripts {
-    <script>
-        // Print
-        $('.btn-print').click(function() {
-            window.print();
-        });
-    </script>
-}
-

@@ -1,0 +1,128 @@
+﻿@model Tixora.ViewModels.BookingViewModel.EditBookingViewModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<div class="container py-4">
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+            <div class="card shadow-sm">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Edit Booking</h3>
+                </div>
+                
+                <form asp-action="Edit" class="needs-validation" novalidate>
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="EventId" />
+                    
+                    <div class="card-body">
+                        <!-- Event Information Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-calendar-alt me-2"></i>Event Information
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control-plaintext border-bottom pb-2" 
+                                               id="eventName" value="@Model.EventTitle" readonly>
+                                        <label for="eventName">Event Name</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Current Ticket Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-ticket-alt me-2"></i>Current Ticket
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control-plaintext border-bottom pb-2" 
+                                               id="currentType" value="@Model.CurrentTicketType" readonly>
+                                        <label for="currentType">Ticket Type</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input type="text" class="form-control-plaintext border-bottom pb-2" 
+                                               id="currentQty" value="@Model.CurrentQuantity" readonly>
+                                        <label for="currentQty">Quantity</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- New Ticket Section -->
+                        <div class="mb-4">
+                            <h5 class="text-primary mb-3">
+                                <i class="fas fa-edit me-2"></i>Update Ticket
+                            </h5>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <select asp-for="TicketId" asp-items="Model.AvailableTickets" 
+                                                class="form-select" id="ticketType" required>
+                                            <option value="" selected disabled>Select ticket type</option>
+                                        </select>
+                                        <label for="ticketType">New Ticket Type</label>
+                                        <span asp-validation-for="TicketId" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-floating mb-3">
+                                        <input asp-for="Quantity" class="form-control" id="quantity" 
+                                               min="1" required placeholder=" ">
+                                        <label for="quantity">New Quantity</label>
+                                        <span asp-validation-for="Quantity" class="text-danger small"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card-footer bg-light">
+                        <div class="d-flex justify-content-between">
+                            <a asp-action="Details" asp-route-id="@Model.Id" 
+                               class="btn btn-outline-secondary">
+                                <i class="fas fa-arrow-left me-2"></i>Back to Details
+                            </a>
+                            <button type="submit" class="btn btn-primary px-4">
+                                <i class="fas fa-save me-2"></i>Save Changes
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .form-control-plaintext {
+            background-color: transparent;
+            border: none;
+            box-shadow: none;
+            padding-left: 0;
+            padding-right: 0;
+        }
+        
+        .border-bottom {
+            border-bottom: 1px solid #dee2e6 !important;
+        }
+        
+        .card {
+            border-radius: 0.5rem;
+            overflow: hidden;
+        }
+
+    </style>
+}
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

@@ -31,7 +31,7 @@ namespace Tixora.Repositories
             try
             {
                 _context.Organizers.Add(organizer);
-                SaveAsync();
+                await SaveAsync();
             }
             catch (Exception ex)
             {
@@ -65,7 +65,7 @@ namespace Tixora.Repositories
                 }
 
                 _context.Entry(existingOrganizer).State = EntityState.Modified;
-                SaveAsync();
+                await SaveAsync();
             }
             catch (Exception ex)
             {

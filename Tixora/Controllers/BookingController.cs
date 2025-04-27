@@ -69,6 +69,13 @@ namespace Tixora.Controllers
             }
             try
             {
+                var ticket = ticketRepository.GetById(viewModel.TicketId);
+                if (ticket.AvailableQuantity < viewModel.Amount)
+                {
+                    ModelState.AddModelError("Amount", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
+                    await AvailableTickets(viewModel);
+                    return View(viewModel);
+                }
                 var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
                 var booking = await bookingService.CreateBookingAsync(viewModel,userId);
                 return RedirectToAction("Confirmation", new { id = booking.Id });
@@ -89,6 +96,7 @@ namespace Tixora.Controllers
                 Text = $"{t.TicketCategory?.Name} - {t.Price:C} (Available: {t.AvailableQuantity})"
             }).ToList();
         }
+        // Booking/Confirmation/5
         public async Task<IActionResult> Confirmation(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);
@@ -105,24 +113,93 @@ namespace Tixora.Controllers
             };
             return View(viewModel);
         }
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> PrintTicket(int id)
+        {
+            var booking = await bookingService.GetByIdAsync(id);
+            var viewModel = new ConfirmationViewModel
+            {
+                BookingId = booking.Id,
+                EventTitle = booking.Ticket.Event.Title,
+                EventDate = booking.Ticket.Event.StartDate,
+                VenueName = booking.Ticket.Event.Venue.Name,
+                TicketType = booking.Ticket.TicketCategory.Name,
+                Quantity = booking.Amount,
+                BookingDate = booking.BookedAt
+            };
+            return View("PrintTicket", viewModel);
+        }
+        // Booking/Edit/5
+        [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);
-            return View(booking);
-        }
-        public async Task<IActionResult> Edit(int id, Booking booking)
-        {
-            if (ModelState.IsValid)
+            var viewModel = new EditBookingViewModel
             {
-                bookingService.UpdateAsync(booking);
-                bookingService.SaveAsync();
-                return RedirectToAction("Index");
+                Id = booking.Id,
+                EventId = booking.Ticket.EventId,
+                EventTitle = booking.Ticket.Event.Title,
+                CurrentQuantity = booking.Amount,
+                TicketId = booking.TicketId,
+                CurrentTicketType = booking.Ticket.TicketCategory.Name,
+                AvailableTickets = await GetAvailableTicketsForEdit(booking.Ticket.EventId, booking.TicketId)
+            };
+            if (!viewModel.AvailableTickets.Any())
+            {
+                ViewBag.ErrorMessage = "No available tickets for this event.";
             }
-            return View(booking);
+
+            return View(viewModel);
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, EditBookingViewModel viewModel)
+        {
+            if (!ModelState.IsValid)
+            {
+                viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
+                return View(viewModel);
+            }
+            try
+            {
+                var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+                var booking = await bookingService.GetByIdAsync(id);
+                var result = await bookingService.UpdateAsync(viewModel, id);
+                if (!result)
+                {
+                    ModelState.AddModelError("", "Error updating booking.");
+                    viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.Id);
+                    return View(viewModel);
+                }
+                return RedirectToAction("Confirmation", new { id = booking.Id });
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Error updating booking: {ex.Message}");
+                viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.Id);
+                return View(viewModel);
+            }
+        }
+        private async Task<List<SelectListItem>> GetAvailableTicketsForEdit(int eventId, int currentTicketId)
+        {
+            var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
+            var currentTicket = ticketRepository.GetById(currentTicketId);
+            if (currentTicket != null)
+            {
+                availableTickets = availableTickets
+                    .Union(new List<Ticket> { currentTicket })
+                    .ToList();
+            }
+            return availableTickets
+                .Select(t => new SelectListItem
+                {
+                    Value = t.Id.ToString(),
+                    Text = $"{t.TicketCategory?.Name} - {t.Price:C} (Available: {t.AvailableQuantity})",
+                    Selected = t.Id == currentTicketId
+                })
+                .OrderBy(t => t.Text)
+                .ToList();
+        }
         public async Task<IActionResult> Delete(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);

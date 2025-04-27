@@ -26,7 +26,7 @@ namespace Tixora.Repositories
         public async Task AddAsync(TicketCategory ticketCategory)
         {
             context.TicketCategories.AddAsync(ticketCategory);
-            SaveAsync(); 
+            await SaveAsync(); 
         }
 
         public async Task UpdateAsync(TicketCategory ticketCategory)

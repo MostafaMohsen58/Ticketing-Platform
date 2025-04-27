@@ -1,5 +1,6 @@
 ﻿using Tixora.Models;
 using Tixora.ViewModels;
+using Tixora.ViewModels.BookingViewModel;
 
 namespace Tixora.Services.Interfaces
 {
@@ -9,7 +10,7 @@ namespace Tixora.Services.Interfaces
         Task<IEnumerable<Booking>> GetAllAsync();
         Task<Booking> GetByIdAsync(int id);
         Task AddAsync(Booking booking);
-        Task UpdateAsync(Booking booking);
+        Task<bool> UpdateAsync(EditBookingViewModel viewModel, int bookingId);
         Task DeleteAsync(int id);
         Task<int> SaveAsync();
 
