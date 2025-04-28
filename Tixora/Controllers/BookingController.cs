@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Tixora.Models;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
@@ -100,6 +101,7 @@ namespace Tixora.Controllers
         public async Task<IActionResult> Confirmation(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);
+            var ticketsPrice = (decimal)(booking.Amount * booking.Ticket.Price);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var viewModel = new ConfirmationViewModel
             {
@@ -109,7 +111,8 @@ namespace Tixora.Controllers
                 VenueName = booking.Ticket.Event.Venue.Name,
                 TicketType = booking.Ticket.TicketCategory.Name,
                 Quantity = booking.Amount,
-                BookingDate = booking.BookedAt
+                BookingDate = booking.BookedAt,
+                TotalPrice = ticketsPrice
             };
             return View(viewModel);
         }
@@ -239,11 +242,22 @@ namespace Tixora.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            bookingService.DeleteAsync(id);
-            bookingService.SaveAsync();
-            return RedirectToAction("Index");
+            try
+            {
+                await bookingService.DeleteAsync(id);
+                await bookingService.SaveAsync();
+
+                TempData["SuccessMessage"] = "Booking deleted successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Error deleting booking: {ex.Message}");
+                var booking = await bookingService.GetByIdAsync(id);
+                return View(booking);
+            }
         }
     }
 }

@@ -42,9 +42,9 @@
                                 <li class="list-group-item">
                                     <strong>Quantity:</strong> @Model.Quantity
                                 </li>
-                                @* <li class="list-group-item"> *@
-                                @*     <strong>Total Price:</strong> @Model.TotalPrice.ToString("C") *@
-                                @* </li> *@
+                                <li class="list-group-item">
+									<strong>Total Price:</strong> @Model.TotalPrice.ToString("C")
+                                </li>
                                 <li class="list-group-item">
                                     <strong>Booked On:</strong> @Model.BookingDate.ToString("g")
                                 </li>
@@ -53,8 +53,8 @@
                     </div>
 
                     <div class="text-center mt-4">
-                        <a asp-action="PrintTicket" asp-controller="Booking" asp-route-id="@Model.BookingId" class="btn btn-primary mr-2">
-                            <i class="fas fa-print"></i> Print Ticket
+                        <a asp-action="Edit" asp-route-id="@Model.BookingId" class="btn btn-primary">
+                            <i class="fas fa-edit"></i> Modify Booking
                         </a>
                         <a asp-action="Index" asp-controller="Event" class="btn btn-outline-secondary">
                             <i class="fas fa-calendar-alt"></i> View Other Events

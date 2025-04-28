@@ -9,9 +9,12 @@ namespace Tixora.Repositories
     public class BookingRepository : IBookingRepository
     {
         private readonly TixoraContext context;
-        public BookingRepository(TixoraContext _context)
+        private readonly ITicketRepository ticketRepository;
+        public BookingRepository(TixoraContext _context,
+            ITicketRepository _ticketRepository)
         {
             context = _context;
+            ticketRepository = _ticketRepository;
         }
 
         public async Task<IEnumerable<Booking>> GetAllAsync()
@@ -56,7 +59,8 @@ namespace Tixora.Repositories
         {
             var booking = await context.Bookings.FindAsync(id);
 
-            var ticket = await context.Tickets.FindAsync(booking.TicketId); // Return tickets to available quantity
+            var ticket = await ticketRepository.GetById(booking.TicketId);
+            ticket.AvailableQuantity += booking.Amount; // Return tickets to available quantity
             context.Bookings.Remove(booking);
         }
         public async Task<IEnumerable<Booking>> GetByUserIdAsync(string userId)
