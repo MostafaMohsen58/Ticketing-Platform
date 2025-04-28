@@ -1,7 +1,8 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Services.Interface;
-using Tixora.ViewModels;
+using Tixora.ViewModels.UserViewModels;
 
 namespace Tixora.Services
 {
@@ -43,7 +44,6 @@ namespace Tixora.Services
 
             return identityResult;
         }
-
         public async Task<SignInResult> LoginUserAsync(LoginViewModel model, bool rememberMe)
         {
             ApplicationUser user = await _userManager.FindByEmailAsync(model.Email);
@@ -65,21 +65,36 @@ namespace Tixora.Services
         {
             await _signInManager.SignOutAsync();
         }
-        public async Task<ApplicationUser> GetUserByIdAsync(string userId)
+
+
+        public EditProfileViewModel? GetUserById(string userId)
         {
-            return await _userManager.FindByIdAsync(userId);
+            var user = _userManager.FindByIdAsync(userId);
+
+            if (user.Result != null)
+            {
+                var userViewModel = new EditProfileViewModel()
+                {
+                    Id = user.Result.Id,
+                    Email = user.Result.Email,
+                    ProfileUrl = user.Result.ProfileUrl,
+                    Address = user.Result.Address,
+                    City = user.Result.City,
+                    PhoneNumber = user.Result.PhoneNumber
+                };
+                return userViewModel;
+            }
+            return null;
         }
-        public async Task<IdentityResult> UpdateUserProfileAsync(string userId, EditProfileViewModel model)
+        public async Task<IdentityResult> UpdateUserAsync(EditProfileViewModel model)
         {
-            var user = await GetUserByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(model.Id);
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
             }
 
-            user.FirstName = model.FirstName;
-            user.LastName = model.LastName;
-            user.Gender = model.Gender;
+
             user.ProfileUrl = model.ProfileUrl;
             user.Address = model.Address;
             user.City = model.City;
@@ -90,7 +105,7 @@ namespace Tixora.Services
 
         public async Task<IdentityResult> DeleteUserAsync(string userId)
         {
-            var user = await GetUserByIdAsync(userId);
+            var user = await _userManager.FindByIdAsync(userId);
             if (user == null)
             {
                 return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
@@ -103,5 +118,114 @@ namespace Tixora.Services
             }
             return result;
         }
+        public List<EditProfileViewModel> GetAllUsers()
+        {
+            var users = _userManager.Users.ToList();
+            var userViewModels = new List<EditProfileViewModel>();
+            foreach (var user in users)
+            {
+                var userVM = new EditProfileViewModel()
+                {
+                    Id = user.Id,
+                    Email = user.Email,
+                    ProfileUrl = user.ProfileUrl,
+                    Address = user.Address,
+                    City = user.City,
+                    PhoneNumber = user.PhoneNumber
+                };
+                userViewModels.Add(userVM);
+            }
+            return userViewModels;
+
+        }
+
+
+        public UserProfileViewModel? GetUserProfileById(string userId)
+        {
+            var user = _userManager.Users.FirstOrDefault(u => u.Id == userId);
+            if (user != null)
+            {
+                var viewModel = new UserProfileViewModel
+                {
+                    PersonalInfo = new PersonalInformation
+                    {
+                        FanName = string.Concat(user.FirstName, ' ', user.LastName),
+                        Email = user.Email,
+                        PhoneNumber = user.PhoneNumber
+                    },
+                    AccountInfo = new AccountInformation
+                    {
+                        City = user.City,
+                        Address = user.Address
+                    },
+                    ProfileImagePath = user.ProfileUrl
+                };
+                return viewModel;
+            }
+            else
+            {
+                return null;
+            }
+        }
+        public async Task<IdentityResult> UpdateUserProfileAsync(UserProfileViewModel model)
+        {
+            var user = await _userManager.FindByIdAsync(model.PersonalInfo.UserId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
+            }
+            
+            user.ProfileUrl = model.ProfileImagePath;
+
+            return await _userManager.UpdateAsync(user);
+        }
+        public async Task<IdentityResult> UpdateUserProfilePersonalInfo(PersonalInformation model)
+        {
+            var user =await _userManager.Users.FirstOrDefaultAsync(u => u.Id == model.UserId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
+            }
+            
+            user.FirstName = model.FanName.Split(' ')[0];
+            user.LastName = model.FanName.Split(' ')[1];
+            user.Email = model.Email;
+            user.PhoneNumber = model.PhoneNumber;
+
+            return await _userManager.UpdateAsync(user);
+        }
+        public async Task<IdentityResult> UpdateUserProfileAccountInfo(AccountInformation model,string userId)
+        {
+            var user = await _userManager.Users.FirstOrDefaultAsync(u => u.Id == userId);
+            if (user == null)
+            {
+                return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "User not found." } });
+            }
+            user.Address = model.Address;
+            user.City = model.City;
+            await _userManager.UpdateAsync(user);
+
+            bool found = await _userManager.CheckPasswordAsync(user, model.OldPassword);
+            if(!found)
+            {
+                return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "Password is incorrect." } });
+            }
+            if (model.OldPassword != null)
+            {
+                var passwordChangeResult = await _userManager.ChangePasswordAsync(user, model.OldPassword, model.Password);
+
+                if (passwordChangeResult.Succeeded)
+                {
+                    return passwordChangeResult;
+                }
+
+            }
+            return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "Please enter password." } });
+
+        }
+        
+
+
+        
     }
 }

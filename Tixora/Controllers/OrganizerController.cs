@@ -15,27 +15,27 @@ namespace Tixora.Controllers
             _service = service;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var organizers = _service.GetAll();
+            var organizers =await _service.GetAll();
             return View(organizers);
         }
 
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var org = _service.GetById(id);
+            var org =await _service.GetById(id);
             if (org == null) return NotFound();
             return View(org);
         }
 
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             return View(new Organizer());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create(Organizer organizer)
+        public async Task<IActionResult> Create(Organizer organizer)
         {
            
             if (ModelState.ContainsKey("Events"))
@@ -53,7 +53,7 @@ namespace Tixora.Controllers
                         organizer.Events = new List<Event>();
                     }
 
-                    _service.Add(organizer);
+                    await _service.Add(organizer);
                     TempData["SuccessMessage"] = "Organizer created successfully";
                     return RedirectToAction(nameof(Index));
                 }
@@ -65,16 +65,16 @@ namespace Tixora.Controllers
             return View(organizer);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var organizer = _service.GetById(id);
+            var organizer =await _service.GetById(id);
             if (organizer == null) return NotFound();
             return View(organizer);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Edit(int id, Organizer organizer)
+        public async Task<IActionResult> Edit(int id, Organizer organizer)
         {
             if (id != organizer.Id)
             {
@@ -90,7 +90,7 @@ namespace Tixora.Controllers
             {
                 try
                 {
-                    var existingOrganizer = _service.GetById(id);
+                    var existingOrganizer =await _service.GetById(id);
                     if (existingOrganizer != null && existingOrganizer.Events != null)
                     {
                         organizer.Events = existingOrganizer.Events;
@@ -100,7 +100,7 @@ namespace Tixora.Controllers
                         organizer.Events = new List<Event>();
                     }
 
-                    _service.Update(organizer);
+                    await _service.Update(organizer);
                     TempData["SuccessMessage"] = "Organizer updated successfully";
                     return RedirectToAction(nameof(Index));
                 }
@@ -112,20 +112,20 @@ namespace Tixora.Controllers
             return View(organizer);
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var org = _service.GetById(id);
+            var org =await _service.GetById(id);
             if (org == null) return NotFound();
             return View(org);
         }
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             try
             {
-                _service.Delete(id);
+                await _service.Delete(id);
                 TempData["SuccessMessage"] = "Organizer deleted successfully";
                 return RedirectToAction(nameof(Index));
             }

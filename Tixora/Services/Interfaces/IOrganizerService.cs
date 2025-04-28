@@ -1,13 +1,15 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Tixora.Models;
 
 namespace Tixora.Services.Interfaces
 {
     public interface IOrganizerService
     {
-        Organizer GetById(int id);
-        List<Organizer> GetAll();
-        void Add(Organizer organizer);
-        void Update(Organizer organizer);
-        void Delete(int id);
+        Task<Organizer> GetById(int id);
+        Task<List<Organizer>> GetAll();
+        Task Add(Organizer organizer);
+        Task Update(Organizer organizer);
+        Task Delete(int id);
+        List<SelectListItem> Organizers();
     }
 }

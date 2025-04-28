@@ -12,9 +12,9 @@ namespace Tixora.Controllers
         {
             _venueService = venueService;
         }
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            var venues = _venueService.GetAll();
+            var venues =await _venueService.GetAll();
             return View(venues);
         }
 
@@ -23,62 +23,62 @@ namespace Tixora.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Create(Venue venue)
+        public async Task<IActionResult> Create(Venue venue)
         {
-            if (_venueService.CheckVenueExistWithSameName(venue.Name)!=null)
+            if (await _venueService.CheckVenueExistWithSameName(venue.Name)!=null)
             {
                 ModelState.AddModelError("", "Venue with the same name already exists.");
             }
             if (ModelState.IsValid)
             {
-                _venueService.Create(venue);
+                await _venueService.Create(venue);
                 return RedirectToAction(nameof(Index));
             }
             return View(venue);
         }
         
-        public IActionResult Details(int id)
+        public async Task<IActionResult> Details(int id)
         {
-            var venue = GetVenueOrNotFound(id);
+            var venue =await GetVenueOrNotFound(id);
             return venue == null ? NotFound() : View(venue);
         }
 
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var venue = GetVenueOrNotFound(id);
+            var venue =await GetVenueOrNotFound(id);
             return venue == null ? NotFound() : View(venue);
         }
         [HttpPost]
-        public IActionResult Edit(int id, Venue venue)
+        public async Task<IActionResult> Edit(int id, Venue venue)
         {
-            if (_venueService.CheckVenueExistWithSameName(venue.Name) != null)
+            if (await _venueService.CheckVenueExistWithSameName(venue.Name) != null)
             {
                 ModelState.AddModelError("", "Venue with the same name already exists.");
             }
             if (ModelState.IsValid)
             {
-                _venueService.Update(venue);
+                await _venueService.Update(venue);
                 return RedirectToAction(nameof(Index));
             }
             return View(venue);
         }
         [HttpGet]
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            var venue = GetVenueOrNotFound(id);
+            var venue =await GetVenueOrNotFound(id);
             return venue == null ? NotFound() : View(venue);
         }
         [HttpPost,ActionName("Delete")]
         public IActionResult DeleteConfirmed(int id)
         {
-            _venueService.Delete(id);
+             _venueService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
 
         [NonAction]
-        private Venue GetVenueOrNotFound(int id)
+        private async Task<Venue> GetVenueOrNotFound(int id)
         {
-            return _venueService.GetById(id);
+            return await _venueService.GetById(id);
         }
 
     }

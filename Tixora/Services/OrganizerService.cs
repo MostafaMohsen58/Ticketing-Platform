@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Transactions;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Tixora.Models;
+using Tixora.Repositories;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
 
@@ -16,17 +18,22 @@ namespace Tixora.Services
             _repository = repository;
         }
 
-        public Organizer GetById(int id)
+        public async Task<Organizer> GetById(int id)
         {
-            return _repository.GetById(id);
+            return await _repository.GetById(id);
         }
 
-        public List<Organizer> GetAll()
+        public async Task<List<Organizer>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
-        public void Add(Organizer organizer)
+        public List<SelectListItem> Organizers()
+        {
+            return _repository.GetOrganizers();
+        }
+        
+        public async Task Add(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
@@ -35,7 +42,7 @@ namespace Tixora.Services
             {
                 try
                 {
-                    _repository.Add(organizer);
+                    await _repository.AddAsync(organizer);
                     scope.Complete();
                 }
                 catch (Exception)
@@ -46,7 +53,7 @@ namespace Tixora.Services
             }
         }
 
-        public void Update(Organizer organizer)
+        public async Task Update(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
@@ -55,7 +62,7 @@ namespace Tixora.Services
             {
                 try
                 {
-                    _repository.Update(organizer);
+                    await _repository.UpdateAsync(organizer);
                     scope.Complete();
                 }
                 catch (Exception)
@@ -66,13 +73,13 @@ namespace Tixora.Services
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
             using (var scope = new TransactionScope())
             {
                 try
                 {
-                    _repository.Delete(id);
+                    await _repository.Delete(id);
                     scope.Complete();
                 }
                 catch (Exception)

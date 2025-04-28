@@ -1,4 +1,6 @@
-﻿using Tixora.Models;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
+using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
 
@@ -11,33 +13,41 @@ namespace Tixora.Repositories
         {
             _context = context;
         }
-        public void Add(Venue obj)
+        public async Task AddAsync(Venue obj)
         {
-            _context.Venues.Add(obj);
+            await _context.Venues.AddAsync(obj);
         }
 
-        public void Update(Venue obj)
+        public async Task UpdateAsync(Venue obj)
         {
             _context.Venues.Update(obj);
         }
 
         public void Delete(Venue venue)
         {
-                _context.Venues.Remove(venue);
+            _context.Venues.Remove(venue);
         }
 
-        public Venue GetById(int id)
+        public async Task<Venue> GetById(int id)
         {
-            return _context.Venues.FirstOrDefault(v => v.Id == id);                
+            return await _context.Venues.FirstOrDefaultAsync(v => v.Id == id);                
         }
 
-        public List<Venue> GetAll()
+        public async Task<List<Venue>> GetAll()
         {
-            return _context.Venues.ToList();
+            return await _context.Venues.ToListAsync();
         }
-        public int Save()
+        public List<SelectListItem> GetVenues()
         {
-            return _context.SaveChanges();
+            return _context.Venues.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
+        }
+        public async Task<int> SaveAsync()
+        {
+            return await _context.SaveChangesAsync();
         }
     }
 }

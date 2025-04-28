@@ -6,12 +6,12 @@ namespace Tixora.Repositories.Interfaces
 {
     public interface ITicketRepository : IRepository<Ticket>
     {
-        List<Ticket> GetAll();
-        Ticket GetById(int id);
-        bool Delete(int id);
+
+        Task<List<Ticket>> GetAll();
+        Task<Ticket> GetById(int id);
+        Task<bool> Delete(int id);
         IEnumerable<Ticket> GetTicketsByUser(string username);
-
-
+       
 
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tixora.Services;
 using Tixora.Services.Interfaces;
 using Tixora.ViewModels.EventViewModel;
 
@@ -7,64 +8,72 @@ namespace Tixora.Controllers
     public class EventController : Controller
     {
         private readonly IEventsService _eventsService;
-        public EventController(IEventsService eventsService)
+        private readonly IVenueService _venueService;
+        private readonly IOrganizerService _organizerService;
+        public EventController(IEventsService eventsService , IVenueService venueService, IOrganizerService organizerService)
         {
             _eventsService = eventsService;
+            _venueService = venueService;
+            _organizerService = organizerService;
         }
 
-        public  IActionResult Index()
+        public  async Task<IActionResult> Index()
         {            
-            return View( _eventsService.GetAll());
+            return View(await _eventsService.GetAll());
         }
         [HttpGet]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
             AddEventViewModel modelCopy = new AddEventViewModel()
             {
-                Venues = _eventsService.Venues(),
-                Organizers = _eventsService.Organizers(),
+                Venues =await _eventsService.Venues(),
+                Organizers =await _eventsService.Organizers(),
             };
             return View(modelCopy);
         }
 
         [HttpPost]
-        public IActionResult Create(AddEventViewModel model)
+        public async Task<IActionResult> Create(AddEventViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 AddEventViewModel modelCopy = new AddEventViewModel()
                 {
-                    Venues = _eventsService.Venues(),
-                    Organizers = _eventsService.Organizers(),
+                    Venues =await _eventsService.Venues(),
+                    Organizers =await _eventsService.Organizers(),
                 };
                 return View(modelCopy);
             }
-            _eventsService.Add(model);
+            await _eventsService.Add(model);
             return RedirectToAction("Index");
         }
         [HttpGet]
-        public IActionResult Edit(int id)
+        public async Task<IActionResult> Edit(int id)
         {
-            var SingleEvent = _eventsService.GetById(id);
+            var SingleEvent =await _eventsService.GetById(id);
             EditEventViewModel modelCopy = new EditEventViewModel()
             {
                 Id = SingleEvent.Id,
                 Title = SingleEvent.Title,
                 Category = SingleEvent.Category,
                 Description = SingleEvent.Description,
-
+                VenueId = SingleEvent.VenueId,
+                OrganizerId = SingleEvent.OrganizerId,
+                Organizers = _organizerService.Organizers(),
+                Venues= _venueService.Venues(),
             };
-            return View(SingleEvent);
+
+            return View(modelCopy);
         }
         [HttpPost]
-        public IActionResult Edit(EditEventViewModel model)
+        public async Task<IActionResult> Edit(EditEventViewModel model)
         {
             if (!ModelState.IsValid)
             {
                 EditEventViewModel viewModel = new EditEventViewModel()
                 {
-                  Venues = _eventsService.Venues(),
-                  Organizers = _eventsService.Organizers()
+                  Venues =await _eventsService.Venues(),
+                  Organizers =await _eventsService.Organizers()
                 };
                 return View(viewModel);
             }
@@ -72,11 +81,21 @@ namespace Tixora.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public IActionResult Delete(int id)
+        public async Task<IActionResult> Delete(int id)
         {
-            _eventsService.Delete(id);
+            var Event = await _eventsService.GetById(id); 
+            return View(Event);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _eventsService.Delete(id);
             return RedirectToAction(nameof(Index));
         }
-
+        public async Task<IActionResult> Details(int id)
+        {          
+            return View(await _eventsService.GetById(id));
+        }
     }
 }

@@ -14,38 +14,38 @@ namespace Tixora.Services
             _repository = repository;
         }
 
-        public List<TicketCategory> GetAll()
+        public async Task<List<TicketCategory>> GetAll()
         {
-            return _repository.GetAll();
+            return await _repository.GetAll();
         }
 
-        public TicketCategory GetById(int id)
+        public async Task<TicketCategory> GetById(int id)
         {
-            return _repository.GetByID(id);
+            return await _repository.GetByID(id);
         }
 
-        public void Add(TicketCategory category)
+        public async Task Add(TicketCategory category)
         {
             if (category != null)
             {
-                _repository.Add(category);
+                await _repository.AddAsync(category);
                 
             }
         }
 
-        public void Update(TicketCategory category)
+        public async Task Update(TicketCategory category)
         {
             if (category != null)
             {
-                _repository.Update(category);
-                _repository.Save();
+                await _repository.UpdateAsync(category);
+                await _repository.SaveAsync();
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            _repository.Delete(id);
-            _repository.Save();
+            await _repository.Delete(id);
+            await _repository.SaveAsync();
         }
     }
 }

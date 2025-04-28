@@ -1,4 +1,5 @@
-﻿using Tixora.Models;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Tixora.Models;
 using Tixora.Repositories;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
@@ -8,62 +9,74 @@ namespace Tixora.Services
 {
     public class VenueService : IVenueService
     {
+        
         private readonly IVenueRepository venueRepository;
 
         public VenueService(IVenueRepository venueRepository)
         {
             this.venueRepository = venueRepository;
         }
-        public void Create(Venue venue)
+        public async Task Create(Venue venue)
         {
-            venueRepository.Add(venue);
-            venueRepository.Save();
+            await venueRepository.AddAsync(venue);
+            await venueRepository.SaveAsync();
         }
-        public Venue? CheckVenueExistWithSameName(string name)
+        public async Task<Venue?> CheckVenueExistWithSameName(string name)
         {
-            var venue = venueRepository.GetAll().FirstOrDefault(v => v.Name == name);
-            return venue;
+            var venue = await venueRepository.GetAll();
+            //.FirstOrDefault(v => v.Name == name);
+            foreach (var v in venue)
+            {
+                if (v.Name == name)
+                {
+                    return v;
+                }
+            }
+            return null;
         }
 
-        public void Update(Venue venue)
+        public async Task Update(Venue venue)
         {
-            var venueFromDb = GetById(venue.Id);
+            var venueFromDb =await GetById(venue.Id);
             if(venueFromDb != null)
             {
                 venueFromDb.Name = venue.Name;
                 venueFromDb.Address = venue.Address;
                 venueFromDb.Capacity = venue.Capacity;
 
-                venueRepository.Update(venueFromDb);
-                venueRepository.Save();
+                await venueRepository.UpdateAsync(venueFromDb);
+                await venueRepository.SaveAsync();
             }
         }
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            var venueFromDb = GetById(id);
+            var venueFromDb =await GetById(id);
             if (venueFromDb != null)
             {
                 venueRepository.Delete(venueFromDb);
-                venueRepository.Save();
+                await venueRepository.SaveAsync();
             }
             
         }
-        public Venue GetById(int id)
+        public async Task<Venue> GetById(int id)
         {
-            Venue venue =venueRepository.GetById(id);
+            Venue venue = await venueRepository.GetById(id);
             if (venue == null)
             {
                 return null;
             }
             return venue;
         }
-        public List<Venue> GetAll()
+        public async Task<List<Venue>> GetAll()
         {
-            List<Venue> venues= venueRepository.GetAll();
+            List<Venue> venues=await venueRepository.GetAll();
             return venues;
         }
+        public List<SelectListItem> Venues()
+        {
+            return venueRepository.GetVenues();
+        }
 
-        
 
     }
 }

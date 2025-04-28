@@ -3,17 +3,14 @@ using Tixora.Models;
 
 namespace Tixora.Repositories.Interfaces
 {
-    public interface IEventRepository 
+    public interface IEventRepository  : IRepository<Event>
     {
-        void Add(Event obj);
-        void Update(Event obj);
-        int Save();
-        void Delete(int id);
-        Event GetById(int id);
-        List<Event> GetAll();
-        public List<SelectListItem> GetVenues();
-        public List<SelectListItem> GetOrganizers();
-
+        Task Delete(int id);
+        Task<Event> GetById(int id);
+        Task<List<Event>> GetAll();
+        public Task<List<SelectListItem>> GetVenues();
+        public Task<List<SelectListItem>> GetOrganizers();
+        Task<List<Ticket>> GetAvailableTicketsAsync(int eventId);
     }
 }
 

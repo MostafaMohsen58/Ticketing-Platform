@@ -17,11 +17,11 @@ namespace Tixora.Services
             _ticketRepository = ticketRepository;
         }
 
-        public List<Ticket> GetAll()
+        public async Task<List<Ticket>> GetAll()
         {
             try
             {
-                return _ticketRepository.GetAll();
+                return await _ticketRepository.GetAll();
             }
             catch (Exception ex)
             {
@@ -29,11 +29,11 @@ namespace Tixora.Services
             }
         }
 
-        public Ticket GetById(int id)
+        public async Task<Ticket> GetById(int id)
         {
             try
             {
-                return _ticketRepository.GetById(id);
+                return await _ticketRepository.GetById(id);
             }
             catch (Exception ex)
             {
@@ -41,12 +41,12 @@ namespace Tixora.Services
             }
         }
 
-        public void Add(Ticket ticket)
+        public async Task Add(Ticket ticket)
         {
             try
             {
-                _ticketRepository.Add(ticket);
-                _ticketRepository.Save();
+                await _ticketRepository.AddAsync(ticket);
+                await _ticketRepository.SaveAsync();
             }
             catch (Exception ex)
             {
@@ -54,12 +54,12 @@ namespace Tixora.Services
             }
         }
 
-        public void Update(Ticket ticket)
+        public async Task Update(Ticket ticket)
         {
             try
             {
-                _ticketRepository.Update(ticket);
-                _ticketRepository.Save();
+                await _ticketRepository.UpdateAsync(ticket);
+                await _ticketRepository.SaveAsync();
             }
             catch (Exception ex)
             {
@@ -67,14 +67,14 @@ namespace Tixora.Services
             }
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
             try
             {
-                var result = _ticketRepository.Delete(id);
+                var result =await _ticketRepository.Delete(id);
                 if (result)
                 {
-                    _ticketRepository.Save();
+                    _ticketRepository.SaveAsync();
                 }
                 return result;
             }

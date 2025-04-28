@@ -4,8 +4,8 @@ namespace Tixora.Repositories.Interfaces
 {
     public interface ITicketCategoryRepository : IRepository<TicketCategory>
     {
-        List<TicketCategory> GetAll();
-        TicketCategory GetByID(int id);
-        void Delete(int id);
+        Task<List<TicketCategory>> GetAll();
+        Task<TicketCategory> GetByID(int id);
+        Task Delete(int id);
     }
 }

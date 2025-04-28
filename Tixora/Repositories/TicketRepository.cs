@@ -24,51 +24,43 @@ namespace Tixora.Repositories
                 .Include(t => t.Event);
         }
 
-        public List<Ticket> GetAll()
+        public async Task<List<Ticket>> GetAll()
         {
-                return IncludeRelatedData().ToList();
-        
+            return await IncludeRelatedData().ToListAsync();
+            
         }
 
-        public Ticket GetById(int id)
+        public async Task<Ticket> GetById(int id)
         {
-        
-                return IncludeRelatedData().FirstOrDefault(t => t.Id == id);
-        }
-
-        public void Add(Ticket ticket)
-        {
+            return await IncludeRelatedData().FirstOrDefaultAsync(t => t.Id == id);
            
-                _context.Tickets.Add(ticket);
-         
         }
 
-        public void Update(Ticket ticket)
+        public async Task AddAsync(Ticket ticket)
         {
-           
-                _context.Tickets.Update(ticket);
-          
+            await _context.Tickets.AddAsync(ticket);
+        }
+        public async Task UpdateAsync(Ticket ticket)
+        {
+       
+             _context.Tickets.Update(ticket);
         }
 
-        public bool Delete(int id)
+        public async Task<bool> Delete(int id)
         {
-           
-                var ticket = GetById(id);
-                if (ticket != null)
-                {
-                    _context.Tickets.Remove(ticket);
-                    return true;
-                }
-                return false;
-          
+            var ticket =await GetById(id);
+            if (ticket != null)
+            {
+                _context.Tickets.Remove(ticket);
+                return true;
+
+            }
+            return false;
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
-        
-                return _context.SaveChanges();
-        
-          
+            return await _context.SaveChangesAsync();
         }
         public IEnumerable<Ticket> GetTicketsByUser(string username)
         {

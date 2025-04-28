@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,17 +18,7 @@ namespace Tixora.Repositories
             _context = context;
         }
 
-        public Organizer GetById(int id)
-        {
-            return _context.Organizers.Include(o => o.Events).FirstOrDefault(o => o.Id == id);
-        }
-
-        public List<Organizer> GetAll()
-        {
-            return _context.Organizers.Include(o => o.Events).ToList();
-        }
-
-        public void Add(Organizer organizer)
+        public async Task AddAsync(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
@@ -40,8 +31,8 @@ namespace Tixora.Repositories
 
             try
             {
-                _context.Organizers.Add(organizer);
-                Save();
+                await _context.Organizers.AddAsync(organizer);
+                await SaveAsync();
             }
             catch (Exception ex)
             {
@@ -49,14 +40,14 @@ namespace Tixora.Repositories
             }
         }
 
-        public void Update(Organizer organizer)
+        public async Task UpdateAsync(Organizer organizer)
         {
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
 
             try
             {
-                var existingOrganizer = GetById(organizer.Id);
+                var existingOrganizer =await GetById(organizer.Id);
                 if (existingOrganizer == null)
                 {
                     throw new Exception($"Organizer with ID {organizer.Id} not found");
@@ -75,7 +66,7 @@ namespace Tixora.Repositories
                 }
 
                 _context.Entry(existingOrganizer).State = EntityState.Modified;
-                Save();
+                await SaveAsync();
             }
             catch (Exception ex)
             {
@@ -83,33 +74,47 @@ namespace Tixora.Repositories
             }
         }
 
-        public void Delete(int id)
+        public async Task Delete(int id)
         {
-            try
+            var organizer =await GetById(id);
+            if (organizer != null)
             {
-                var org = GetById(id);
+                _context.Organizers.Remove(organizer);
+                var org =await GetById(id);
                 if (org != null)
                 {
                     _context.Organizers.Remove(org);
-                    Save();
+                    await SaveAsync();
                 }
             }
-            catch (Exception ex)
-            {
-                throw new Exception($"Error deleting organizer: {ex.Message}", ex);
-            }
+        }
+        public async Task<Organizer> GetById(int id)
+        {
+            return await _context.Organizers.FirstOrDefaultAsync(o => o.Id == id);
+        }
+        public async Task<List<Organizer>> GetAll()
+        {
+            return await _context.Organizers.ToListAsync();
         }
 
-        public int Save()
+        public async Task<int> SaveAsync()
         {
             try
             {
-                return _context.SaveChanges();
+                return await _context.SaveChangesAsync();
             }
             catch (DbUpdateException ex)
             {
                 throw new Exception($"Database update error: {ex.InnerException?.Message ?? ex.Message}", ex);
             }
+        }
+        public List<SelectListItem> GetOrganizers()
+        {
+            return _context.Organizers.Select(x => new SelectListItem
+            {
+                Value = x.Id.ToString(),
+                Text = x.Name
+            }).OrderBy(x => x.Text).AsNoTracking().ToList();
         }
     }
 }

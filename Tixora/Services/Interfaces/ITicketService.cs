@@ -5,11 +5,11 @@ namespace Tixora.Services.Interfaces
 {
     public interface ITicketService
     {
-        List<Ticket> GetAll();
-        Ticket GetById(int id);
-        void Add(Ticket ticket);
-        void Update(Ticket ticket);
-        bool Delete(int id);
+        Task<List<Ticket>> GetAll();
+        Task<Ticket> GetById(int id);
+        Task Add(Ticket ticket);
+        Task Update(Ticket ticket);
+        Task<bool> Delete(int id);
 
         IEnumerable<Ticket> GetTicketsByUser(string username);
 
