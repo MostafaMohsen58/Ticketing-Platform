@@ -35,7 +35,7 @@ namespace Tixora.Services
         public async Task<bool> Delete(int id)
         {
             await _eventRepository.Delete(id);
-            await _eventRepository.SaveAsync();
+           var n = await _eventRepository.SaveAsync();
             return true;
         }
 

@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tixora.Services;
 using Tixora.Services.Interfaces;
 using Tixora.ViewModels.EventViewModel;
 
@@ -81,6 +82,13 @@ namespace Tixora.Controllers
         }
 
         public async Task<IActionResult> Delete(int id)
+        {
+            var Event = await _eventsService.GetById(id); 
+            return View(Event);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _eventsService.Delete(id);
             return RedirectToAction(nameof(Index));

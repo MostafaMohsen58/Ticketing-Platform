@@ -41,7 +41,8 @@ namespace Tixora.Repositories
 
         public async Task<int> SaveAsync()
         {
-            return await _context.SaveChangesAsync();
+            var n = await _context.SaveChangesAsync();
+            return n;
         }
 
         public async Task<List<SelectListItem>> GetVenues()
