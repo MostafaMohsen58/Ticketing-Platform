@@ -1,0 +1,178 @@
+﻿@model Tixora.Models.Booking
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div class="booking-details-container">
+    <div class="booking-card">
+        <div class="booking-header">
+            <h2><i class="fas fa-ticket-alt"></i> Booking Confirmation</h2>
+        </div>
+        
+        <div class="booking-body">
+            <div class="booking-info">
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-hashtag"></i> Tickets:</span>
+                    <span class="info-value">@Model.Amount</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-calendar-day"></i> Booking Date:</span>
+                    <span class="info-value">@Model.BookedAt.ToString("MMMM dd, yyyy h:mm tt")</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-tag"></i> Ticket Type:</span>
+                    <span class="info-value">
+                        @Model.Ticket.TicketCategory?.Name
+                        <span class="text-muted">($@Model.Ticket.Price each)</span>
+                    </span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label"><i class="fas fa-receipt"></i> Transaction:</span>
+                    <span class="info-value">#@Model.TransactionId.ToString("D8")</span>
+                </div>
+            </div>
+            
+            <div class="event-info">
+                <h4><i class="fas fa-calendar-alt"></i> Event Information</h4>
+                @if (Model.Ticket?.Event != null)
+                {
+                    <p>@Model.Ticket.Event.Title</p>
+                    <p class="text-muted">
+                        <i class="fas fa-map-marker-alt"></i> @Model.Ticket.Event.Venue.Name
+                    </p>
+                    <p class="text-muted">
+                        <i class="fas fa-clock"></i> @Model.Ticket.Event.StartDate.ToString("MMMM dd, yyyy h:mm tt")
+                    </p>
+                }
+                else
+                {
+                    <p class="text-warning">Event information not available</p>
+                }
+            </div>
+        </div>
+        
+        <div class="booking-footer">
+            <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+                <i class="fas fa-edit"></i> Modify Booking
+            </a>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-list"></i> View All Bookings
+            </a>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .booking-details-container {
+            max-width: 800px;
+            margin: 30px auto;
+            padding: 0 15px;
+        }
+        
+        .booking-card {
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+            overflow: hidden;
+        }
+        
+        .booking-header {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            padding: 20px;
+        }
+        
+        .booking-header h2 {
+            margin: 0;
+            font-weight: 600;
+        }
+        
+        .booking-body {
+            padding: 25px;
+        }
+        
+        .booking-info {
+            margin-bottom: 30px;
+        }
+        
+        .info-row {
+            display: flex;
+            margin-bottom: 15px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid #f0f0f0;
+        }
+        
+        .info-label {
+            width: 200px;
+            font-weight: 500;
+            color: #555;
+        }
+        
+        .info-value {
+            flex: 1;
+        }
+        
+        .event-info {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .event-info h4 {
+            margin-bottom: 15px;
+            color: #444;
+        }
+        
+        .booking-footer {
+            padding: 20px;
+            border-top: 1px solid #eee;
+            display: flex;
+            gap: 15px;
+        }
+        
+        .btn {
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            color: white;
+            border: none;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(37, 117, 252, 0.2);
+        }
+        
+        .btn-secondary {
+            background: #f8f9fa;
+            color: #555;
+            border: 1px solid #ddd;
+        }
+        
+        .btn-secondary:hover {
+            background: #e9ecef;
+        }
+        
+        .text-muted {
+            color: #6c757d;
+        }
+        
+        .text-warning {
+            color: #dc3545;
+        }
+    </style>
+}

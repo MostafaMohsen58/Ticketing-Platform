@@ -1,128 +1,104 @@
-﻿@model Tixora.ViewModels.BookingViewModel.EditBookingViewModel
+﻿@model EditBookingViewModel
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<div class="container py-4">
-    <div class="row justify-content-center">
-        <div class="col-lg-8">
-            <div class="card shadow-sm">
-                <div class="card-header bg-primary text-white">
-                    <h3 class="mb-0">Edit Booking</h3>
+<div class="container mt-4">
+    <h2>Edit Booking</h2>
+    <hr />
+    
+    <form asp-action="Edit" class="needs-validation" novalidate>
+        <input type="hidden" asp-for="Id" />
+        <input type="hidden" asp-for="EventId" />
+        
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label asp-for="EventTitle" class="form-label">Event</label>
+                    <input asp-for="EventTitle" class="form-control" readonly />
                 </div>
                 
-                <form asp-action="Edit" class="needs-validation" novalidate>
-                    <input type="hidden" asp-for="Id" />
-                    <input type="hidden" asp-for="EventId" />
-                    
-                    <div class="card-body">
-                        <!-- Event Information Section -->
-                        <div class="mb-4">
-                            <h5 class="text-primary mb-3">
-                                <i class="fas fa-calendar-alt me-2"></i>Event Information
-                            </h5>
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control-plaintext border-bottom pb-2" 
-                                               id="eventName" value="@Model.EventTitle" readonly>
-                                        <label for="eventName">Event Name</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Current Ticket Section -->
-                        <div class="mb-4">
-                            <h5 class="text-primary mb-3">
-                                <i class="fas fa-ticket-alt me-2"></i>Current Ticket
-                            </h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control-plaintext border-bottom pb-2" 
-                                               id="currentType" value="@Model.CurrentTicketType" readonly>
-                                        <label for="currentType">Ticket Type</label>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input type="text" class="form-control-plaintext border-bottom pb-2" 
-                                               id="currentQty" value="@Model.CurrentQuantity" readonly>
-                                        <label for="currentQty">Quantity</label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- New Ticket Section -->
-                        <div class="mb-4">
-                            <h5 class="text-primary mb-3">
-                                <i class="fas fa-edit me-2"></i>Update Ticket
-                            </h5>
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <select asp-for="TicketId" asp-items="Model.AvailableTickets" 
-                                                class="form-select" id="ticketType" required>
-                                            <option value="" selected disabled>Select ticket type</option>
-                                        </select>
-                                        <label for="ticketType">New Ticket Type</label>
-                                        <span asp-validation-for="TicketId" class="text-danger small"></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-floating mb-3">
-                                        <input asp-for="CurrentQuantity" class="form-control" id="quantity" 
-                                               min="1" required placeholder=" ">
-                                        <label for="quantity">New Quantity</label>
-                                        <span asp-validation-for="CurrentQuantity" class="text-danger small"></span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="card-footer bg-light">
-                        <div class="d-flex justify-content-between">
-                            <a asp-action="Details" asp-route-id="@Model.Id" 
-                               class="btn btn-outline-secondary">
-                                <i class="fas fa-arrow-left me-2"></i>Back to Details
-                            </a>
-                            <button type="submit" class="btn btn-primary px-4">
-                                <i class="fas fa-save me-2"></i>Save Changes
-                            </button>
-                        </div>
-                    </div>
-                </form>
+                <div class="form-group mb-3">
+                    <label asp-for="CurrentTicketType" class="form-label">Current Ticket Type</label>
+                    <input asp-for="CurrentTicketType" class="form-control" readonly />
+                </div>
+            </div>
+            
+            <div class="col-md-6">
+                <div class="form-group mb-3">
+                    <label asp-for="CurrentQuantity" class="form-label">Current Quantity</label>
+                    <input asp-for="CurrentQuantity" class="form-control" readonly />
+                </div>
+                
+                <div class="form-group mb-3">
+                    <label asp-for="NewQuantity" class="form-label">New Quantity *</label>
+                    <input asp-for="NewQuantity" class="form-control" min="1" />
+                    <span asp-validation-for="NewQuantity" class="text-danger"></span>
+                </div>
             </div>
         </div>
-    </div>
+        
+        <div class="form-group mb-4">
+            <label asp-for="TicketId" class="form-label">Select New Ticket Type *</label>
+            <select asp-for="TicketId" asp-items="Model.AvailableTickets" class="form-select">
+                <option value="">-- Select Ticket --</option>
+            </select>
+            <span asp-validation-for="TicketId" class="text-danger"></span>
+        </div>
+        
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary me-2">
+                <i class="fas fa-save"></i> Save Changes
+            </button>
+            <a asp-action="Index" class="btn btn-secondary">
+                <i class="fas fa-arrow-left"></i> Back to List
+            </a>
+        </div>
+    </form>
 </div>
-
-@section Styles {
-    <style>
-        .form-control-plaintext {
-            background-color: transparent;
-            border: none;
-            box-shadow: none;
-            padding-left: 0;
-            padding-right: 0;
-        }
-        
-        .border-bottom {
-            border-bottom: 1px solid #dee2e6 !important;
-        }
-        
-        .card {
-            border-radius: 0.5rem;
-            overflow: hidden;
-        }
-
-    </style>
-}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    
+    </script>
 }
+
+@* <form asp-action="Edit"> *@
+@*     <input type="hidden" asp-for="Id" /> *@
+@*     <input type="hidden" asp-for="EventId" /> *@
+@* 	<input type="hidden" asp-for="AvailableTickets" /> *@
+    
+@*     <div class="form-group"> *@
+@*         <label asp-for="EventTitle" class="control-label"></label> *@
+@*         <input asp-for="EventTitle" class="form-control" readonly /> *@
+@*     </div> *@
+    
+@*     <div class="form-group"> *@
+@*         <label asp-for="CurrentTicketType" class="control-label"></label> *@
+@*         <input asp-for="CurrentTicketType" class="form-control" readonly /> *@
+@*     </div> *@
+    
+@*     <div class="form-group"> *@
+@*         <label asp-for="CurrentQuantity" class="control-label"></label> *@
+@*         <input asp-for="CurrentQuantity" class="form-control" readonly /> *@
+@*     </div> *@
+    
+@*     <div class="form-group"> *@
+@*         <label asp-for="NewQuantity" class="control-label"></label> *@
+@*         <input asp-for="NewQuantity" class="form-control" /> *@
+@*         <span asp-validation-for="NewQuantity" class="text-danger"></span> *@
+@*     </div> *@
+    
+@*     <div class="form-group"> *@
+@*         <label asp-for="TicketId" class="control-label"></label> *@
+@*         <select asp-for="TicketId" asp-items="Model.AvailableTickets" class="form-control"> *@
+@*             <option value="">-- Select Ticket --</option> *@
+@*         </select> *@
+@*         <span asp-validation-for="TicketId" class="text-danger"></span> *@
+@*     </div> *@
+    
+@*     <div class="form-group"> *@
+@*         <input type="submit" value="Save" class="btn btn-primary" /> *@
+@*     </div> *@
+@* </form> *@

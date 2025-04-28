@@ -1,18 +1,29 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System.ComponentModel.DataAnnotations;
 
-namespace Tixora.ViewModels.BookingViewModel
+public class EditBookingViewModel
 {
-    public class EditBookingViewModel
-    {
-        public int Id { get; set; }
-        public int EventId { get; set; }
-        [Display(Name = "Ticket Type")]
-        public int TicketId { get; set; }
-        public int CurrentQuantity { get; set; }
-        public string EventTitle { get; set; }
-        public string CurrentTicketType { get; set; }
-        public List<SelectListItem> AvailableTickets { get; set; }
+    public int Id { get; set; }
 
-    }
+    [Required(ErrorMessage = "Event ID is required")]
+    public int EventId { get; set; }
+
+    public string EventTitle { get; set; }
+
+    [Required(ErrorMessage = "Current quantity is required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+    public int CurrentQuantity { get; set; }
+
+    [Required(ErrorMessage = "New quantity is required")]
+    [Range(1, int.MaxValue, ErrorMessage = "Quantity must be at least 1")]
+    public int NewQuantity { get; set; }
+
+    [Required(ErrorMessage = "Ticket selection is required")]
+    public int TicketId { get; set; }
+
+    public string CurrentTicketType { get; set; }
+
+    [ValidateNever]
+    public IEnumerable<SelectListItem> AvailableTickets { get; set; } = new List<SelectListItem>();
 }

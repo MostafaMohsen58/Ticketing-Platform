@@ -43,19 +43,6 @@ namespace Tixora.Repositories
         }
         public async Task UpdateAsync(Booking updatedBooking)
         {
-            var existingBooking = await context.Bookings.FindAsync(updatedBooking.Id);
-            if (existingBooking.TicketId != updatedBooking.TicketId ||
-                existingBooking.Amount != updatedBooking.Amount)
-            {
-                var oldTicket = await context.Tickets.FindAsync(existingBooking.TicketId);
-                var newTicket = await context.Tickets.FindAsync(updatedBooking.TicketId);
-                if (newTicket.AvailableQuantity < updatedBooking.Amount)
-                {
-                    throw new InvalidOperationException("Not enough tickets available");
-                }
-                oldTicket.AvailableQuantity += existingBooking.Amount; // Return quantity to old ticket
-                newTicket.AvailableQuantity -= updatedBooking.Amount;
-            }
             await context.Bookings
             .Where(b => b.Id == updatedBooking.Id)
             .ExecuteUpdateAsync(setters => setters

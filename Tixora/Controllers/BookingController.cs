@@ -156,38 +156,49 @@ namespace Tixora.Controllers
         public async Task<IActionResult> Edit(int id, EditBookingViewModel viewModel)
         {
             var booking = await bookingService.GetByIdAsync(id);
+            viewModel.EventTitle = booking.Ticket.Event.Title;
+            viewModel.EventId = booking.Ticket.EventId;
+            viewModel.CurrentTicketType = booking.Ticket.TicketCategory.Name;
+            viewModel.CurrentQuantity = booking.Amount;
+            viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
+            ModelState.Remove("AvailableTickets");
+
             if (!ModelState.IsValid)
             {
-                viewModel.EventTitle = booking.Ticket.Event.Title;
-                viewModel.EventId = booking.Ticket.EventId;
-                viewModel.CurrentTicketType = booking.Ticket.TicketCategory.Name;
-                viewModel.CurrentQuantity = booking.Amount;
-                viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                 return View(viewModel);
             }
+
             try
             {
-                var ticket = await ticketRepository.GetById(viewModel.TicketId);
+                var newTicket = await ticketRepository.GetById(viewModel.TicketId);
                 if (viewModel.TicketId != booking.TicketId)
                 {
-                    if (viewModel.CurrentQuantity > ticket.AvailableQuantity)
+                    if (viewModel.NewQuantity > newTicket.AvailableQuantity)
                     {
-                        ModelState.AddModelError("CurrentQuantity", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
+                        ModelState.AddModelError("NewQuantity", $"Not enough tickets available. Only {newTicket.AvailableQuantity} left.");
                         viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                         return View(viewModel);
                     }
+                    var oldTicket = await ticketRepository.GetById(booking.TicketId);
+                    oldTicket.AvailableQuantity += booking.Amount; // Increase the available quantity of the old ticket
+                    await ticketRepository.UpdateAsync(oldTicket); // Update the old ticket's available quantity
                 }
-                else if (viewModel.CurrentQuantity > booking.Amount + ticket.AvailableQuantity)
+                else
                 {
-                    ModelState.AddModelError("CurrentQuantity", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
-                    viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
-                    return View(viewModel);
+                    int quantityDifference = viewModel.NewQuantity - booking.Amount;
+                    if (quantityDifference > newTicket.AvailableQuantity)
+                    {
+                        ModelState.AddModelError("NewQuantity", $"Not enough tickets available. Only {newTicket.AvailableQuantity} left.");
+                        //viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
+                        return View(viewModel);
+                    }
                 }
+                newTicket.AvailableQuantity -= (viewModel.NewQuantity - (viewModel.TicketId == booking.TicketId ? booking.Amount : 0)); // Decrease the available quantity of the new ticket
                 var result = await bookingService.UpdateAsync(viewModel, id);
                 if (!result)
                 {
                     ModelState.AddModelError("", "Error updating booking.");
-                    viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
+                    //viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                     return View(viewModel);
                 }
                 await bookingService.SaveAsync();
@@ -196,7 +207,7 @@ namespace Tixora.Controllers
             catch (Exception ex)
             {
                 ModelState.AddModelError("", $"Error updating booking: {ex.Message}");
-                viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.Id);
+                //viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.Id);
                 return View(viewModel);
             }
         }
@@ -220,6 +231,7 @@ namespace Tixora.Controllers
                 .OrderBy(t => t.Text)
                 .ToList();
         }
+        // Booking/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);

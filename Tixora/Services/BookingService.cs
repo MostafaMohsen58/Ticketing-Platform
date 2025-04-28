@@ -66,18 +66,14 @@ namespace Tixora.Services
         {
             var booking = await bookingRepository.GetByIdAsync(bookingId);
             var newticket =await ticketRepository.GetById(viewModel.TicketId);
-            if (booking.TicketId != viewModel.TicketId)
+            if (viewModel.NewQuantity <= 0)
             {
-                var oldTicket =await ticketRepository.GetById(booking.TicketId);
-                oldTicket.AvailableQuantity += booking.Amount; // Increase the available quantity of the old ticket
-                await ticketRepository.UpdateAsync(oldTicket); // Update the old ticket's available quantity
+                throw new ArgumentException("Quantity must be greater than zero");
             }
-            newticket.AvailableQuantity -= viewModel.CurrentQuantity; // Decrease the available quantity of the new ticket
-            await ticketRepository.UpdateAsync(newticket); // Update the new ticket's available quantity
-
             booking.BookedAt = DateTime.UtcNow;
             booking.TicketId = viewModel.TicketId;
-            booking.Amount = viewModel.CurrentQuantity;
+            booking.Amount = viewModel.NewQuantity;
+
             await bookingRepository.UpdateAsync(booking);
             await bookingRepository.SaveAsync(); // Save the changes to the database
 
