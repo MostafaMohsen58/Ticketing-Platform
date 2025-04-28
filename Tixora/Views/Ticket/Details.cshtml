@@ -12,20 +12,22 @@
             <dt class="col-sm-3">ID</dt>
             <dd class="col-sm-9">@Model.Id</dd>
 
+            <dt class="col-sm-3">Event</dt>
+            <dd class="col-sm-9">@Model.Event?.Title</dd>
+
+            <dt class="col-sm-3">Ticket Category</dt>
+            <dd class="col-sm-9">@Model.TicketCategory?.Name</dd>
+            
+
             <dt class="col-sm-3">Price</dt>
             <dd class="col-sm-9">@Model.Price</dd>
 
             <dt class="col-sm-3">Available Quantity</dt>
             <dd class="col-sm-9">@Model.AvailableQuantity</dd>
 
-            <dt class="col-sm-3">Status</dt>
-            <dd class="col-sm-9">@Model.Status</dd>
 
-            <dt class="col-sm-3">Event</dt>
-            <dd class="col-sm-9">@Model.Event?.Title</dd>
 
-            <dt class="col-sm-3">Ticket Category</dt>
-            <dd class="col-sm-9">@Model.TicketCategory?.Name</dd>
+           
         </dl>
         <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
         <a asp-action="Index" class="btn btn-secondary">Back to List</a>

@@ -25,31 +25,10 @@ namespace Tixora.Controllers
         {
             var tickets = _ticketService.GetAll();
 
-            if (price.HasValue)
-            {
-                tickets = tickets.Where(t => t.Price == price).ToList();
-            }
-
-            if (status.HasValue)
-            {
-                TicketStatus convertedStatus = (TicketStatus)status.Value;
-                tickets = tickets.Where(t => t.Status == convertedStatus).ToList();
-            }
-
-            var availableCount = tickets.Count(t => t.Status == TicketStatus.Available);
-            var soldOutCount = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
-
-            var viewModel = new TicketIndexViewModel
-            {
-                Price = price,
-                Status = status,
-                Tickets = tickets,
-                AvailableCount = availableCount,
-                SoldOutCount = soldOutCount
-            };
-
-            return View(viewModel);
+            return View(tickets);
         }
+    
+           
 
 
         public IActionResult Details(int id)
@@ -74,7 +53,8 @@ namespace Tixora.Controllers
             return View(model);
         }
 
-     
+
+
         [HttpPost]
         public IActionResult Create(TicketViewModel model)
         {
@@ -82,25 +62,21 @@ namespace Tixora.Controllers
             {
                 var ticket = new Ticket
                 {
-                    Status = model.Status,
                     Price = model.Price,
                     AvailableQuantity = model.AvailableQuantity,
                     EventId = model.EventId,
                     TicketCategoryId = model.TicketCategoryId
                 };
 
-                 _ticketService.Add(ticket);
-
-                return RedirectToAction("Index"); 
+                _ticketService.Add(ticket);
+                TempData["SuccessMessage"] = "Ticket created successfully.";
+                return RedirectToAction("Index");
             }
 
-            model.Events =  _eventService.GetAll(); 
-            model.TicketCategories =  _ticketCategoryService.GetAll();
-
+            model.Events = _eventService.GetAll();
+            model.TicketCategories = _ticketCategoryService.GetAll();
             return View(model);
         }
-
-      
 
         public IActionResult Edit(int id)
         {
@@ -113,7 +89,7 @@ namespace Tixora.Controllers
             var model = new TicketViewModel
             {
                 Id = ticket.Id,
-                Status = ticket.Status,
+                //Status = ticket.Status,
                 Price = ticket.Price,
                 AvailableQuantity = ticket.AvailableQuantity,
                 EventId = ticket.EventId,
@@ -133,7 +109,7 @@ namespace Tixora.Controllers
                 var ticket = new Ticket
                 {
                     Id = model.Id,
-                    Status = model.Status,
+                    //Status = model.Status,
                     Price = model.Price,
                     AvailableQuantity = model.AvailableQuantity,
                     EventId = model.EventId,
@@ -174,24 +150,24 @@ namespace Tixora.Controllers
             return NotFound();
         }
 
-        public IActionResult Report()
-        {
+        //public IActionResult Report()
+        //{
             
-            var tickets = _ticketService.GetAll();
+        //    var tickets = _ticketService.GetAll();
 
-            var totalRevenue = tickets.Sum(t => t.Price);
-            var totalSold = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
+        //    var totalRevenue = tickets.Sum(t => t.Price);
+        //    var totalSold = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
 
            
-            var reportViewModel = new ReportViewModel
-            {
-                TotalRevenue = totalRevenue,
-                TotalSold = totalSold
-            };
+        //    var reportViewModel = new ReportViewModel
+        //    {
+        //        TotalRevenue = totalRevenue,
+        //        TotalSold = totalSold
+        //    };
 
             
-            return View(reportViewModel);
-        }
+        //    return View(reportViewModel);
+        //}
 
         public IActionResult History()
         {
