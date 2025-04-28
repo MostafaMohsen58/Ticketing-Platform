@@ -23,16 +23,21 @@ namespace Tixora.Controllers
 
         public async Task<IActionResult> Index(float? price, TicketStatus? status)
         {
-            var tickets =await _ticketService.GetAll();
-
-            return View(tickets);
-        }
-    
            
+            var tickets = await _ticketService.GetAll();
 
+            var viewModel = new TicketIndexViewModel
+            {
+                Price = price,
+                Status = status,
+                Tickets = tickets
+            };
 
+          
             return View(viewModel);
         }
+
+
 
 
         public async Task<IActionResult> Details(int id)
@@ -156,25 +161,6 @@ namespace Tixora.Controllers
             }
             return NotFound();
         }
-
-        public async Task<IActionResult> Report()
-        {
-            
-            var tickets = await _ticketService.GetAll();
-
-        //    var totalRevenue = tickets.Sum(t => t.Price);
-        //    var totalSold = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
-
-           
-        //    var reportViewModel = new ReportViewModel
-        //    {
-        //        TotalRevenue = totalRevenue,
-        //        TotalSold = totalSold
-        //    };
-
-            
-        //    return View(reportViewModel);
-        //}
 
         public IActionResult History()
         {

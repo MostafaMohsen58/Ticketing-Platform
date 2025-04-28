@@ -4,49 +4,73 @@
     ViewData["Title"] = "Edit Ticket";
 }
 
-<h1>Edit Ticket</h1>
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Edit Ticket
+                </h2>
 
+                <form asp-action="Edit" method="post">
+                    <input type="hidden" asp-for="Id" />
 
-<form asp-action="Edit" method="post">
-    <input type="hidden" asp-for="Id" />
+                    <div class="mb-3">
+                        <label asp-for="EventId" class="form-label" style="font-weight: bold;"></label>
+                        <select asp-for="EventId" class="form-select" asp-items="@(new SelectList(Model.Events, "Id", "Title", Model.EventId))">
+                            <option value="">-- Select Event --</option>
+                        </select>
+                        <span asp-validation-for="EventId" class="text-danger"></span>
+                    </div>
 
+                    <div class="mb-3">
+                        <label asp-for="TicketCategoryId" class="form-label" style="font-weight: bold;"></label>
+                        <select asp-for="TicketCategoryId" class="form-select" asp-items="@(new SelectList(Model.TicketCategories, "Id", "Name", Model.TicketCategoryId))">
+                            <option value="">-- Select Ticket Category --</option>
+                        </select>
+                        <span asp-validation-for="TicketCategoryId" class="text-danger"></span>
+                    </div>
 
-    <div class="mb-3">
-        <label asp-for="EventId" class="form-label"></label>
-        <select asp-for="EventId" class="form-select" asp-items="@(new SelectList(Model.Events, "Id", "Title", Model.EventId))">
-            <option value="">-- Select Event --</option>
-        </select>
-        <span asp-validation-for="EventId" class="text-danger"></span>
+                    <div class="mb-3">
+                        <label asp-for="Price" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Price" class="form-control" />
+                        <span asp-validation-for="Price" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="AvailableQuantity" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="AvailableQuantity" class="form-control" />
+                        <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <button type="submit" class="btn"
+                                style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Save
+                        </button>
+                        <a asp-action="Index" class="btn"
+                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Back to List
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="TicketCategoryId" class="form-label"></label>
-        <select asp-for="TicketCategoryId" class="form-select" asp-items="@(new SelectList(Model.TicketCategories, "Id", "Name", Model.TicketCategoryId))">
-            <option value="">-- Select Ticket Category --</option>
-        </select>
-        <span asp-validation-for="TicketCategoryId" class="text-danger"></span>
-    </div>
-
-
-
-    <div class="mb-3">
-        <label asp-for="Price" class="form-label"></label>
-        <input asp-for="Price" class="form-control" />
-        <span asp-validation-for="Price" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="AvailableQuantity" class="form-label"></label>
-        <input asp-for="AvailableQuantity" class="form-control" />
-        <span asp-validation-for="AvailableQuantity" class="text-danger"></span>
-    </div>
-
-   
-
-    <button type="submit" class="btn btn-primary">Save</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</form>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
