@@ -1,65 +1,84 @@
 ﻿@model EditProfileViewModel
 
 @{
+    Layout = "_AdminLayout";
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<section>
+    <div class="container" data-aos="fade-up">
+        <div class="row justify-content-center">
+            <div class="col-lg-6">
+                <div class="card shadow-lg rounded-4 border-0">
+                    <div class="card-body p-5">
+                        <h2 class="mb-4 text-center">Edit User</h2>
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <input asp-for="Id" class="form-control" hidden />
-            </div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            @* <div class="form-group">
-                <label asp-for="ProfileUrl" class="control-label"></label>
-                <input asp-for="ProfileUrl" class="form-control" />
-                <span asp-validation-for="ProfileUrl" class="text-danger"></span>
-            </div> *@
-            <div class="mb-3">
-                <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
-                @if (!string.IsNullOrEmpty(Model?.ProfileUrl))
-                {
-                    <div>
-                        <img src="/images/user/@Model.ProfileUrl" alt="User Image" width="150" height="150" />
+                        <form asp-action="Edit" method="post" enctype="multipart/form-data">
+                            <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                            <!-- Hidden fields for Id and ProfileUrl -->
+                            <input asp-for="Id" type="hidden" />
+                            <input asp-for="ProfileUrl" type="hidden" />
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Email" class="form-label"></label>
+                                <input asp-for="Email" class="form-control" />
+                                <span asp-validation-for="Email" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
+
+                                @if (!string.IsNullOrEmpty(Model?.ProfileUrl))
+                                {
+                                    <div class="mb-3 text-center">
+                                        <img src='/images/user/@Model.ProfileUrl' alt="User Image" class="rounded-circle" style="width: 120px; height: 120px; object-fit: cover;" />
+                                    </div>
+                                }
+
+                                <input type="file" class="form-control" id="ImageUrl" name="ImageUrl" />
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="Address" class="form-label"></label>
+                                <input asp-for="Address" class="form-control" />
+                                <span asp-validation-for="Address" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="City" class="form-label"></label>
+                                <input asp-for="City" class="form-control" />
+                                <span asp-validation-for="City" class="text-danger small"></span>
+                            </div>
+
+                            <div class="form-group mb-3">
+                                <label asp-for="PhoneNumber" class="form-label"></label>
+                                <input asp-for="PhoneNumber" class="form-control" />
+                                <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                            </div>
+
+                            <div class="d-grid mb-3">
+                                <button type="submit" class="btn btn-primary btn-lg rounded-3" style="background: #bb2d3b;">
+                                    <i class="bi bi-save"></i> Save Changes
+                                </button>
+                            </div>
+
+                            <div class="text-center">
+                                <a asp-action="Index" class="btn btn-outline-primary btn-back">
+                                    <i class="bi bi-arrow-left me-2"></i>Back to List
+                                </a>
+                            </div>
+                        </form>
+
                     </div>
-                }
-                <input type="file" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model?.ProfileUrl" />
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Address" class="control-label"></label>
-                <input asp-for="Address" class="form-control" />
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="City" class="control-label"></label>
-                <input asp-for="City" class="form-control" />
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PhoneNumber" class="control-label"></label>
-                <input asp-for="PhoneNumber" class="form-control" />
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        </div>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+</section>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
 }

@@ -42,7 +42,7 @@ namespace Tixora.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
 
                 foreach (var error in result.Errors)
@@ -50,7 +50,19 @@ namespace Tixora.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            return View("Register", viewModel);
+            //must to do
+            //if(User.IsInRole("Admin"))
+            //{
+            //    return View("Create", viewModel);
+            //}
+            //else
+            //{
+            //    return View("Register", viewModel);
+            //}
+            //to test create new user for admin
+            return View("Create", viewModel);
+
+
         }
         [NonAction]
         private string? UploadFile(IFormFile ImageUrl)
@@ -112,41 +124,126 @@ namespace Tixora.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public IActionResult Index()
+        //public IActionResult Index(int pageNumber = 1, int pageSize = 4)
+        //{
+        //    var users = _userService.GetAllUsers();
+        //    var totalUsers = users.Count;
+
+        //    var pagedUsers = users
+        //        .Skip((pageNumber - 1) * pageSize)
+        //        .Take(pageSize)
+        //        .ToList();
+
+        //    ViewBag.CurrentPage = pageNumber;
+        //    ViewBag.PageSize = pageSize;
+        //    ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+
+        //    return View(pagedUsers);
+        //}
+
+        //public IActionResult Index(string searchEmail)
+        //{
+        //    var users = _userService.GetAllUsers();
+
+        //    if (!string.IsNullOrEmpty(searchEmail))
+        //    {
+        //        users = users
+        //            .Where(u => u.Email != null && u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase))
+        //            .ToList();
+        //    }
+
+        //    return View(users);
+        //}
+
+        public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 4)
         {
             var users = _userService.GetAllUsers();
-            return View(users);
+
+            if (!string.IsNullOrEmpty(searchEmail))
+            {
+                users = users
+                    .Where(u => u.Email != null && u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            var totalUsers = users.Count;
+
+            var pagedUsers = users
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.SearchEmail = searchEmail;
+
+            return View(pagedUsers);
         }
+
         public IActionResult Edit(string id)
         {
             var user = _userService.GetUserById(id);
             return View(user);
         }
+        //[HttpPost]
+        //public IActionResult Edit(EditProfileViewModel model, IFormFile ImageUrl)
+        //{
+        //    string uniqueFileName = UploadFile(ImageUrl);
+        //    if (uniqueFileName != null)
+        //    {
+        //        model.ProfileUrl = uniqueFileName;
+        //    }
+        //    else
+        //    {
+        //        ModelState.AddModelError("", "Image upload failed");
+        //        return View("Edit", model);
+        //    }
+        //    if (ModelState.IsValid)
+        //    {
+        //        var result = _userService.UpdateUserAsync(model);
+        //        if (result.Result.Succeeded)
+        //        {
+        //            return RedirectToAction("Index", "Account");
+        //        }
+        //        foreach (var error in result.Result.Errors)
+        //        {
+        //            ModelState.AddModelError("", error.Description);
+        //        }
+        //    }
+        //    return View(model);
+        //}
         [HttpPost]
-        public IActionResult Edit(EditProfileViewModel model, IFormFile ImageUrl)
+        public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile? ImageUrl)
         {
-            string uniqueFileName = UploadFile(ImageUrl);
-            if (uniqueFileName != null)
+            if (ImageUrl != null && ImageUrl.Length > 0)
             {
-                model.ProfileUrl = uniqueFileName;
+                string uniqueFileName = UploadFile(ImageUrl);
+                if (!string.IsNullOrEmpty(uniqueFileName))
+                {
+                    model.ProfileUrl = uniqueFileName;
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Image upload failed.");
+                    return View("Edit", model);
+                }
             }
-            else
-            {
-                ModelState.AddModelError("", "Image upload failed");
-                return View("Edit", model);
-            }
+
+            // If no new image uploaded, keep the old ProfileUrl (already bound from hidden input)
             if (ModelState.IsValid)
             {
-                var result = _userService.UpdateUserAsync(model);
-                if (result.Result.Succeeded)
+                var result = await _userService.UpdateUserAsync(model);
+                if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Account");
                 }
-                foreach (var error in result.Result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
+
             return View(model);
         }
 
@@ -180,6 +277,9 @@ namespace Tixora.Controllers
             return NotFound("There is no Account for this id");
 
         }
-
+        public IActionResult Create()
+        {
+            return View();
+        }
     }
 }
