@@ -23,33 +23,21 @@ namespace Tixora.Controllers
 
         public async Task<IActionResult> Index(float? price, TicketStatus? status)
         {
-            var tickets =await _ticketService.GetAll();
-
-            if (price.HasValue)
-            {
-                tickets = tickets.Where(t => t.Price == price).ToList();
-            }
-
-            if (status.HasValue)
-            {
-                TicketStatus convertedStatus = (TicketStatus)status.Value;
-                tickets = tickets.Where(t => t.Status == convertedStatus).ToList();
-            }
-
-            var availableCount = tickets.Count(t => t.Status == TicketStatus.Available);
-            var soldOutCount = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
+           
+            var tickets = await _ticketService.GetAll();
 
             var viewModel = new TicketIndexViewModel
             {
                 Price = price,
                 Status = status,
-                Tickets = tickets,
-                AvailableCount = availableCount,
-                SoldOutCount = soldOutCount
+                Tickets = tickets
             };
 
+          
             return View(viewModel);
         }
+
+
 
 
         public async Task<IActionResult> Details(int id)
@@ -74,7 +62,8 @@ namespace Tixora.Controllers
             return View(model);
         }
 
-     
+
+
         [HttpPost]
         public async Task<IActionResult> Create(TicketViewModel model)
         {
@@ -82,7 +71,6 @@ namespace Tixora.Controllers
             {
                 var ticket = new Ticket
                 {
-                    Status = model.Status,
                     Price = model.Price,
                     AvailableQuantity = model.AvailableQuantity,
                     EventId = model.EventId,
@@ -113,7 +101,7 @@ namespace Tixora.Controllers
             var model = new TicketViewModel
             {
                 Id = ticket.Id,
-                Status = ticket.Status,
+                //Status = ticket.Status,
                 Price = ticket.Price,
                 AvailableQuantity = ticket.AvailableQuantity,
                 EventId = ticket.EventId,
@@ -133,7 +121,7 @@ namespace Tixora.Controllers
                 var ticket = new Ticket
                 {
                     Id = model.Id,
-                    Status = model.Status,
+                    //Status = model.Status,
                     Price = model.Price,
                     AvailableQuantity = model.AvailableQuantity,
                     EventId = model.EventId,
@@ -172,25 +160,6 @@ namespace Tixora.Controllers
                 return RedirectToAction("Index");
             }
             return NotFound();
-        }
-
-        public async Task<IActionResult> Report()
-        {
-            
-            var tickets = await _ticketService.GetAll();
-
-            var totalRevenue = tickets.Sum(t => t.Price);
-            var totalSold = tickets.Count(t => t.Status == TicketStatus.NonAvailable);
-
-           
-            var reportViewModel = new ReportViewModel
-            {
-                TotalRevenue = totalRevenue,
-                TotalSold = totalSold
-            };
-
-            
-            return View(reportViewModel);
         }
 
         public IActionResult History()

@@ -4,30 +4,53 @@
     ViewData["Title"] = "Ticket Details";
 }
 
-<h1>Ticket Details</h1>
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color:#2f3549 ; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Ticket Details
+                </h2>
 
-<div class="card">
-    <div class="card-body">
-        <dl class="row">
-            <dt class="col-sm-3">ID</dt>
-            <dd class="col-sm-9">@Model.Id</dd>
+                <dl class="row">
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">ID</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Id</dd>
 
-            <dt class="col-sm-3">Price</dt>
-            <dd class="col-sm-9">@Model.Price</dd>
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Event</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Event?.Title</dd>
 
-            <dt class="col-sm-3">Available Quantity</dt>
-            <dd class="col-sm-9">@Model.AvailableQuantity</dd>
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Ticket Category</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.TicketCategory?.Name</dd>
 
-            <dt class="col-sm-3">Status</dt>
-            <dd class="col-sm-9">@Model.Status</dd>
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Price</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Price.ToString("C")</dd>
 
-            <dt class="col-sm-3">Event</dt>
-            <dd class="col-sm-9">@Model.Event?.Title</dd>
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Available Quantity</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.AvailableQuantity</dd>
+                </dl>
 
-            <dt class="col-sm-3">Ticket Category</dt>
-            <dd class="col-sm-9">@Model.TicketCategory?.Name</dd>
-        </dl>
-        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
-        <a asp-action="Index" class="btn btn-secondary">Back to List</a>
+                <div class="mt-4 text-right">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn"
+                       style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        Update
+                    </a>
+                    <a asp-action="Index" class="btn"
+                       style="border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; border: 1px solid #0e1b4d; color: #0e1b4d; transition: all 0.3s ease;">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
