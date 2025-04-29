@@ -4,23 +4,6 @@
 }
 
 <div class="container">
-    <div class="row">
-        <div class="col-md-12">
-            @if (TempData["SuccessMessage"] != null)
-            {
-                <div class="alert alert-success">
-                    @TempData["SuccessMessage"]
-                </div>
-            }
-            @if (TempData["ErrorMessage"] != null)
-            {
-                <div class="alert alert-danger">
-                    @TempData["ErrorMessage"]
-                </div>
-            }
-        </div>
-    </div>
-
     <div class="row mb-4">
         <div class="col-md-12 text-center">
             <div class="profile-image-container">

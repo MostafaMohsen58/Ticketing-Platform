@@ -1,0 +1,35 @@
+﻿/* Set sidebar background color */
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #010821d1 !important;
+}
+#wrapper {
+    display: flex;
+    min-height: 100vh;
+}
+
+/* Set background and text color of sidebar items */
+#sidebar-wrapper .list-group-item {
+    background-color: transparent !important; /* So parent background shows */
+    color: #ffffff !important;
+    border: none;
+}
+
+/* Hover effect for sidebar items */
+#sidebar-wrapper .list-group-item:hover,
+#sidebar-wrapper .list-group-item:focus {
+    background-color: #0a1930 !important;
+    color: #ffffff !important;
+}
+
+/* Optional: style active item */
+#sidebar-wrapper .list-group-item.active {
+    background-color: #0d2d4a !important;
+    color: #ffffff !important;
+    font-weight: bold;
+}
+
+#wrapper.toggled #sidebar-wrapper {
+    margin-left: -250px;
+}

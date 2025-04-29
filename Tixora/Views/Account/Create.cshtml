@@ -1,33 +1,12 @@
-﻿@using Tixora.ViewModels.UserViewModels
+﻿
 
-@model RegisterViewModel
+ @model RegisterViewModel
 
 @{
-    Layout = "_AuthLayout";
-    ViewData["Title"] = "Register";
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Create User";
 }
 
-<style>
-    body {
-        background-image: url('/images/crowded_people.jpg');
-        background-size: cover;
-        background-position: center;
-        background-repeat: no-repeat;
-    }
-
-    .register-container {
-        max-width: 520px;
-        background-color: rgba(255, 255, 255, 0.9);
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        margin: auto;
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-</style>
 <section>
     <div class="container py-5">
         <div class="row justify-content-center">
@@ -40,14 +19,14 @@
                     </div>
                 </div>
 
-                <!-- Step Indicators -->
+                <!-- Steps Indicator -->
                 <div class="d-flex justify-content-between mb-4">
-                    <div id="stepIndicator1" class="step-indicator text-primary fw-bold">1. Account Info</div>
-                    <div id="stepIndicator2" class="step-indicator text-secondary">2. Personal Info</div>
-                    <div id="stepIndicator3" class="step-indicator text-secondary">3. Contact Info</div>
+                    <div id="stepIndicator1" class="text-primary fw-bold">1. Account Info</div>
+                    <div id="stepIndicator2" class="text-secondary">2. Personal Info</div>
+                    <div id="stepIndicator3" class="text-secondary">3. Contact Info</div>
                 </div>
 
-                <!-- Form Start -->
+                <!-- Form -->
                 <form asp-action="Register" method="post" enctype="multipart/form-data" id="createForm">
                     <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
@@ -88,8 +67,10 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="Gender" class="form-label"></label>
-                            <select asp-for="Gender" class="form-select" asp-items="Html.GetEnumSelectList<Gender>()">
-                                <option value="">-- Select Gender --</option>
+                            <select asp-for="Gender" class="form-select">
+                                <option value="0">-- Select Gender --</option>
+                                <option value="1">Male</option>
+                                <option value="2">Female</option>
                             </select>
                             <span asp-validation-for="Gender" class="text-danger small"></span>
                         </div>
@@ -128,7 +109,7 @@
                         </div>
                         <div class="mb-3">
                             <label asp-for="DateOfBrith" class="form-label"></label>
-                            <input asp-for="DateOfBrith" class="form-control" type="date" />
+                            <input asp-for="DateOfBrith" class="form-control" />
                             <span asp-validation-for="DateOfBrith" class="text-danger small"></span>
                         </div>
 
@@ -137,6 +118,7 @@
                             <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </div>
+
                 </form>
 
             </div>
@@ -158,12 +140,16 @@
             }).form();
 
             if (valid) {
+                // Only mark completed when VALID
                 markStepCompleted(currentStep);
+
                 $("#step" + currentStep).hide();
                 currentStep++;
                 $("#step" + currentStep).show();
+
                 updateProgress(currentStep);
             } else {
+                // Scroll ONLY when there is an error
                 $('html, body').animate({
                     scrollTop: $("#createForm").offset().top - 50
                 }, 300);
@@ -174,6 +160,7 @@
             $("#step" + currentStep).hide();
             currentStep--;
             $("#step" + currentStep).show();
+
             updateProgress(currentStep);
         });
 
@@ -184,32 +171,38 @@
                 .attr("aria-valuenow", progress)
                 .text("Step " + step + " of 3");
 
-            $(".step-indicator").removeClass("text-primary fw-bold").addClass("text-secondary");
-            $("#stepIndicator" + step)
-                .removeClass("text-secondary")
-                .addClass("text-primary fw-bold");
-
             if (progress === 100) {
                 $("#progressBar").removeClass("bg-primary").addClass("bg-success");
             } else {
                 $("#progressBar").removeClass("bg-success").addClass("bg-primary");
             }
+
+            // Update step indicators
+            $(".step-indicator").removeClass("text-primary fw-bold").addClass("text-secondary");
+            $("#stepIndicator" + step)
+                .removeClass("text-secondary")
+                .addClass("text-primary fw-bold");
         }
 
         function markStepCompleted(step) {
-            var indicator = $("#stepIndicator" + step);
-            if (!indicator.hasClass("completed")) {
-                indicator.html(indicator.text() + " ✅");
-                indicator.addClass("completed");
+            var stepIndicator = $("#stepIndicator" + step);
+
+            // Only add ✅ once
+            if (!stepIndicator.hasClass('completed')) {
+                stepIndicator.html(stepIndicator.text() + " ✅");
+                stepIndicator.addClass('completed');
             }
         }
 
-        $("input, select").on("input change", function () {
+        // Live validation to clear errors immediately
+        $('input, select').on('input change', function () {
             var field = $(this);
             if (field.valid()) {
-                field.removeClass("input-validation-error");
-                field.next("span.field-validation-error").text('');
+                field.removeClass('input-validation-error');
+                field.next('span.field-validation-error').text('');
             }
         });
+
     </script>
 }
+
