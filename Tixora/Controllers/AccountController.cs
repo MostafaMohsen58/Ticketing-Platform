@@ -124,37 +124,6 @@ namespace Tixora.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        //public IActionResult Index(int pageNumber = 1, int pageSize = 4)
-        //{
-        //    var users = _userService.GetAllUsers();
-        //    var totalUsers = users.Count;
-
-        //    var pagedUsers = users
-        //        .Skip((pageNumber - 1) * pageSize)
-        //        .Take(pageSize)
-        //        .ToList();
-
-        //    ViewBag.CurrentPage = pageNumber;
-        //    ViewBag.PageSize = pageSize;
-        //    ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
-
-        //    return View(pagedUsers);
-        //}
-
-        //public IActionResult Index(string searchEmail)
-        //{
-        //    var users = _userService.GetAllUsers();
-
-        //    if (!string.IsNullOrEmpty(searchEmail))
-        //    {
-        //        users = users
-        //            .Where(u => u.Email != null && u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase))
-        //            .ToList();
-        //    }
-
-        //    return View(users);
-        //}
-
         public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 4)
         {
             var users = _userService.GetAllUsers();
@@ -186,33 +155,7 @@ namespace Tixora.Controllers
             var user = _userService.GetUserById(id);
             return View(user);
         }
-        //[HttpPost]
-        //public IActionResult Edit(EditProfileViewModel model, IFormFile ImageUrl)
-        //{
-        //    string uniqueFileName = UploadFile(ImageUrl);
-        //    if (uniqueFileName != null)
-        //    {
-        //        model.ProfileUrl = uniqueFileName;
-        //    }
-        //    else
-        //    {
-        //        ModelState.AddModelError("", "Image upload failed");
-        //        return View("Edit", model);
-        //    }
-        //    if (ModelState.IsValid)
-        //    {
-        //        var result = _userService.UpdateUserAsync(model);
-        //        if (result.Result.Succeeded)
-        //        {
-        //            return RedirectToAction("Index", "Account");
-        //        }
-        //        foreach (var error in result.Result.Errors)
-        //        {
-        //            ModelState.AddModelError("", error.Description);
-        //        }
-        //    }
-        //    return View(model);
-        //}
+        
         [HttpPost]
         public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile? ImageUrl)
         {
