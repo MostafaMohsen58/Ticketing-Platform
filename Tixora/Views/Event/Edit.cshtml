@@ -1,77 +1,158 @@
-﻿@using Tixora.Settings
+﻿@* @using Tixora.Settings *@
+@* @model Tixora.ViewModels.EventViewModel.EditEventViewModel *@
+
+@* @{ *@
+@*     ViewData["Title"] = "Edit"; *@
+@* } *@
+
+
+@* <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data"> *@
+@*     <div asp-validation-summary="All" class="text-danger"></div> *@
+@*     <div class="row"> *@
+@*         <div class="col-md-6"> *@
+@*             <div asp-validation-summary="All" class="text-danger"></div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Title" class="control-label"></label> *@
+@*                 <input asp-for="Title" class="form-control" /> *@
+@*                 <span asp-validation-for="Title" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Description" class="control-label"></label> *@
+@*                 <input asp-for="Description" class="form-control" /> *@
+@*                 <span asp-validation-for="Description" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="StartDate" class="control-label"></label> *@
+@*                 <input asp-for="StartDate" class="form-control" /> *@
+@*                 <span asp-validation-for="StartDate" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group"> *@
+@*                 <label asp-for="Category" class="control-label"></label> *@
+@*                 <input asp-for="Category" class="form-control" /> *@
+@*                 <span asp-validation-for="Category" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group mb-3"> *@
+@*                 <label asp-for="VenueId" class="control-label text-secondary"></label> *@
+@*                 <select asp-for="VenueId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Venues" *@
+@*                         data-placeholder="Select a category" data-minimum-results-for-search="Infinity"> *@
+@*                     <option value=""></option> *@
+@*                 </select> *@
+@*                 <span asp-validation-for="VenueId" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group mb-3"> *@
+@*                 <label asp-for="OrganizerId" class="control-label text-secondary"></label> *@
+@*                 <select asp-for="OrganizerId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Organizers" *@
+@*                         data-placeholder="Select a Organizer" data-minimum-results-for-search="Infinity"> *@
+@*                     <option value=""></option> *@
+@*                 </select> *@
+@*                 <span asp-validation-for="VenueId" class="text-danger"></span> *@
+@*             </div> *@
+@*             <div class="form-group mb-3"> *@
+@*                 <label asp-for="Cover" class="form-label text-secondary "></label> *@
+@*                 <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file" *@
+@*                        data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)" *@
+@*                        data-msg-extension="not allowed extension" *@
+@*                        data-rule-filesize="@FileSettings.maxSizeByByets" *@
+@*                        data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" /> *@
+@*                 <span asp-validation-for="Cover" class="text-danger"></span> *@
+@*             </div> *@
+
+@*             <div class="form-group mt-4"> *@
+@*                 <input type="submit" value="Update" class="btn btn-primary btn-lg w-100 shadow" /> *@
+@*             </div> *@
+@*         </div> *@
+@*         <div class="col-md-6"> *@
+@*             <div class="col-md-6 d-flex justify-content-center align-items-center"> *@
+@*                 <img class="cover-preview d-none w-75" alt="Cover" /> *@
+@*             </div> *@
+@*             </<div> *@
+@*             </div> *@
+@*         </div> *@
+@*     </div> *@
+@* </form> *@
+
+@* @section Scripts { *@
+@*     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
+@*     <script src="~/js/site.js"></script> *@
+@* } *@
+
+@using Tixora.Settings
 @model Tixora.ViewModels.EventViewModel.EditEventViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Event";
 }
 
+    <h2>Edit Event</h2>
+<div class="container event-container">
+    <form asp-action="Edit" method="post" enctype="multipart/form-data">
+        <input type="hidden" asp-for="Id" />
+        <div class="row">
+            <div class="col-md-6">
+                <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-<form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="row">
-        <div class="col-md-6">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="VenueId" class="control-label text-secondary"></label>
-                <select asp-for="VenueId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Venues"
-                        data-placeholder="Select a category" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="VenueId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="OrganizerId" class="control-label text-secondary"></label>
-                <select asp-for="OrganizerId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Organizers"
-                        data-placeholder="Select a Organizer" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="VenueId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Cover" class="form-label text-secondary "></label>
-                <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file"
-                       data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)"
-                       data-msg-extension="not allowed extension"
-                       data-rule-filesize="@FileSettings.maxSizeByByets"
-                       data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" />
-                <span asp-validation-for="Cover" class="text-danger"></span>
-            </div>
+                <div class="form-group mb-3">
+                    <label asp-for="Title" class="form-label"></label>
+                    <input asp-for="Title" class="form-control" placeholder="Enter event title" />
+                    <span asp-validation-for="Title" class="text-danger"></span>
+                </div>
 
-            <div class="form-group mt-4">
-                <input type="submit" value="Update" class="btn btn-primary btn-lg w-100 shadow" />
+                <div class="form-group mb-3">
+                    <label asp-for="Description" class="form-label"></label>
+                    <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe your event"></textarea>
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="StartDate" class="form-label"></label>
+                    <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                    <span asp-validation-for="StartDate" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Category" class="form-label"></label>
+                    <input asp-for="Category" class="form-control" placeholder="Event category" />
+                    <span asp-validation-for="Category" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="VenueId" class="form-label"></label>
+                    <select asp-for="VenueId" class="form-select" asp-items="Model.Venues">
+                        <option value="">Select a venue</option>
+                    </select>
+                    <span asp-validation-for="VenueId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="OrganizerId" class="form-label"></label>
+                    <select asp-for="OrganizerId" class="form-select" asp-items="Model.Organizers">
+                        <option value="">Select an organizer</option>
+                    </select>
+                    <span asp-validation-for="OrganizerId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Cover" class="form-label"></label>
+                    <input asp-for="Cover" class="form-control" type="file" accept=".jpg,.jpeg,.png" />
+                    <span asp-validation-for="Cover" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mt-4">
+                    <button type="submit" class="btn btn-primary w-100">Update Event</button>
+                </div>
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <img class="cover-preview d-none w-75" alt="Cover" />
-            </div>
-            </<div>
+                <div class="cover-preview-container">
+                    <img class="cover-preview d-none w-75" alt="Cover" />
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</div>
 
 @section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
     <script src="~/js/site.js"></script>
 }
