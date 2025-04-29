@@ -19,6 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Views\TicketCategory\NewFolder\" />
     <Folder Include="wwwroot\images\user\" />
   </ItemGroup>
 
