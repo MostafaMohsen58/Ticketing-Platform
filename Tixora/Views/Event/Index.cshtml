@@ -1,113 +1,45 @@
-﻿@* @model IEnumerable<Tixora.Models.Event> *@
-
-@* @{ *@
-@*     ViewData["Title"] = "Index"; *@
-@* } *@
-
-@* <h1>Index</h1> *@
-
-@* <p> *@
-@*     <a asp-action="Create">Create New</a> *@
-@* </p> *@
-@* <table class="table"> *@
-@*     <thead> *@
-@*         <tr> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.Id) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.Title) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.Description) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.StartDate) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.ImageUrl) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.Category) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.VenueId) *@
-@*             </th> *@
-@*             <th> *@
-@*                 @Html.DisplayNameFor(model => model.OrganizerId) *@
-@*             </th> *@
-@*             <th></th> *@
-@*         </tr> *@
-@*     </thead> *@
-@*     <tbody> *@
-@* @foreach (var item in Model) { *@
-@*         <tr> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.Id) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.Title) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.Description) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.StartDate) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.ImageUrl) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.Category) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.Venue.Name) *@
-@*             </td> *@
-@*             <td> *@
-@*                 @Html.DisplayFor(modelItem => item.Organizer.Name) *@
-@*             </td> *@
-@*             <td> *@
-@*                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> | *@
-@*                 <a asp-action="Details" asp-route-id="@item.Id">Details</a> | *@
-@*                     <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>  *@
-@*             </td> *@
-@*         </tr> *@
-@* } *@
-@*     </tbody> *@
-@* </table> *@
-@using Tixora.Settings
+﻿@using Tixora.Settings
 @model IEnumerable<Tixora.Models.Event>
 
 @{
-    ViewData["Title"] = "Events List";
+    ViewData["Title"] = "Index";
 }
 
-    <h2>Events List</h2>
-<div class="container event-container">
-    <div class="mb-3 text-end">
-        <a asp-action="Create" class="btn btn-primary">Create New Event</a>
+<h1 class="text-center myудалить-4">Event List</h1>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        @TempData["SuccessMessage"]
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
+}
+
+<div class="container mt-5">
+    <p>
+        <a asp-action="Create" class="btn btn-details">Create New</a>
+    </p>
     <div class="table-responsive">
-        <table class="table table-hover event-table">
+        <table class="table table-bordered table-hover text-center">
             <thead>
                 <tr>
-                    <th>@Html.DisplayNameFor(model => model.Id)</th>
                     <th>@Html.DisplayNameFor(model => model.Title)</th>
+                    <th>@Html.DisplayNameFor(model => model.Description)</th>
                     <th>@Html.DisplayNameFor(model => model.StartDate)</th>
-                    <th>@Html.DisplayNameFor(model => model.ImageUrl)</th>
+                    <th>Image</th>
                     <th>@Html.DisplayNameFor(model => model.Category)</th>
-                    <th>@Html.DisplayNameFor(model => model.Venue.Name)</th>
-                    <th>@Html.DisplayNameFor(model => model.Organizer.Name)</th>
-                    <th>Actions</th>
+                    <th>@Html.DisplayNameFor(model => model.VenueId)</th>
+                    <th>@Html.DisplayNameFor(model => model.OrganizerId)</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model)
                 {
                     <tr>
-                        <td>@Html.DisplayFor(modelItem => item.Id)</td>
                         <td>@Html.DisplayFor(modelItem => item.Title)</td>
-                        <td>@Html.DisplayFor(modelItem => item.StartDate)</td>
+                        <td>@Html.DisplayFor(modelItem => item.Description)</td>
+                        <td>@item.StartDate.ToString("dd/MM/yyyy")</td>
                         <td>
                             @if (!string.IsNullOrEmpty(item.ImageUrl))
                             {
@@ -121,10 +53,16 @@
                         <td>@Html.DisplayFor(modelItem => item.Category)</td>
                         <td>@Html.DisplayFor(modelItem => item.Venue.Name)</td>
                         <td>@Html.DisplayFor(modelItem => item.Organizer.Name)</td>
-                        <td class="d-flex gap-2">
-                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-sm btn-primary">Edit</a>
-                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-sm btn-info">Details</a>
-                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-sm btn-danger">Delete</a>
+                        <td class="text-center">
+                            <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details">
+                                <i class="fas fa-eye"></i> Details
+                            </a>
+                            <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit">
+                                <i class="fas fa-edit"></i> Update
+                            </a>
+                            <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-delete btn-sm">
+                                <i class="fas fa-trash-alt"></i> Delete
+                            </a>
                         </td>
                     </tr>
                 }
@@ -133,9 +71,89 @@
     </div>
 </div>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
-    <script src="~/js/site.js"></script>
+@section Styles {
+    <style>
+        .table {
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+            .table td, .table th {
+                padding: 12px 15px;
+                text-align: center;
+                font-size: 16px;
+                color: #222533;
+            }
+
+            .table thead {
+                background-color: #2f3138;
+            }
+
+                .table thead th {
+                    color: #ffffff;
+                    font-weight: bold;
+                    text-transform: uppercase;
+                    letter-spacing: 1px;
+                    background-color: #0e1b4d;
+                    transition: background-color 0.3s ease;
+                }
+
+            .table tbody tr:hover {
+                background-color: #f0f0f0;
+                cursor: pointer;
+            }
+
+            .table tbody td {
+                background-color: #ffffff;
+                transition: background-color 0.3s ease;
+            }
+
+        .btn {
+            border-radius: 5px;
+            padding: 8px 16px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+            font-size: 14px;
+        }
+
+            .btn:hover {
+                opacity: 0.8;
+                font-weight: bold;
+                transform: scale(1.05);
+            }
+
+            .btn:focus {
+                outline: none;
+                box-shadow: none;
+            }
+
+        .btn-details {
+            background-color: #94B4C1;
+            color: #ffffff;
+            margin-bottom: 5px;
+            margin-left: 5px;
+            margin-top: 5px;
+        }
+
+        .btn-edit {
+            background-color: #547792;
+            color: #ffffff;
+            margin-left: 5px;
+            margin-bottom: 5px;
+            margin-top: 5px;
+        }
+
+        .btn-delete {
+            background-color: #F82249;
+            color: #ffffff;
+            margin-left: 5px;
+        }
+
+        .event-thumbnail {
+            max-width: 100px;
+            max-height: 100px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+        }
+    </style>
 }

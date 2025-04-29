@@ -46,7 +46,7 @@ namespace Tixora.Controllers
             var viewModel = new CreateBookingViewModel
             {
                 EventId = eventId,
-                EventTitle = eventDetails.Title,
+                EventTitle = eventDetails!.Title,
                 EventImageUrl = Url.Content($"~/images/{eventDetails.ImageUrl}"),
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
