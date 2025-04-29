@@ -47,7 +47,6 @@ namespace Tixora.Services
                 }
                 catch (Exception)
                 {
-                    // Transaction will automatically be rolled back
                     throw;
                 }
             }
@@ -67,7 +66,6 @@ namespace Tixora.Services
                 }
                 catch (Exception)
                 {
-                    // Transaction will automatically be rolled back
                     throw;
                 }
             }
@@ -84,7 +82,6 @@ namespace Tixora.Services
                 }
                 catch (Exception)
                 {
-                    // Transaction will automatically be rolled back
                     throw;
                 }
             }

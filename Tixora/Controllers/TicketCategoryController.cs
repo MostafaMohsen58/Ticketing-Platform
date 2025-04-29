@@ -15,16 +15,15 @@ namespace Tixora.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var categories =await _service.GetAll();
+            var categories = await _service.GetAll();
             return View(categories);
         }
 
         public async Task<IActionResult> Details(int id)
         {
-            var category =await _service.GetById(id);
+            var category = await _service.GetById(id);
             if (category == null)
                 return NotFound();
-
             return View(category);
         }
 
@@ -35,7 +34,6 @@ namespace Tixora.Controllers
         public async Task<IActionResult> Create(TicketCategory category)
         {
             ModelState.Remove("Tickets");
-
             if (ModelState.IsValid)
             {
                 try
@@ -44,7 +42,6 @@ namespace Tixora.Controllers
                     {
                         category.Tickets = new List<Ticket>();
                     }
-
                     await _service.Add(category);
                     TempData["SuccessMessage"] = "Category created successfully";
                     return RedirectToAction(nameof(Index));
@@ -62,7 +59,6 @@ namespace Tixora.Controllers
             var category = await _service.GetById(id);
             if (category == null)
                 return NotFound();
-
             return View(category);
         }
 
@@ -88,10 +84,9 @@ namespace Tixora.Controllers
 
         public async Task<IActionResult> Delete(int id)
         {
-            var category =await _service.GetById(id);
+            var category = await _service.GetById(id);
             if (category == null)
                 return NotFound();
-
             return View(category);
         }
 
@@ -103,13 +98,12 @@ namespace Tixora.Controllers
             {
                 await _service.Delete(id);
                 TempData["SuccessMessage"] = "Ticket category has been successfully deleted.";
-                return RedirectToAction(nameof(Index));
             }
             catch (Exception ex)
             {
                 TempData["ErrorMessage"] = $"An error occurred while deleting: {ex.Message}";
-                return RedirectToAction(nameof(Index));
             }
+            return RedirectToAction(nameof(Index));
         }
     }
 }
