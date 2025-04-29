@@ -16,14 +16,14 @@ namespace Tixora.Controllers
     {
         private readonly IBookingService bookingService;
         private readonly IEventsService eventsService;
-        private readonly ITicketRepository ticketRepository;
+        private readonly ITicketService ticketService;
         public BookingController(IBookingService _bookingService,
             IEventsService _eventsService,
-            ITicketRepository _ticketRepository)
+            ITicketService _ticketService)
         {
             bookingService = _bookingService;
             eventsService = _eventsService;
-            ticketRepository = _ticketRepository;
+            ticketService = _ticketService;
         }
         // Booking
         public async Task<IActionResult> Index()
@@ -70,7 +70,7 @@ namespace Tixora.Controllers
             }
             try
             {
-                var ticket =await ticketRepository.GetById(viewModel.TicketId);
+                var ticket =await ticketService.GetById(viewModel.TicketId);
                 if (ticket.AvailableQuantity < viewModel.Amount)
                 {
                     ModelState.AddModelError("Amount", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
@@ -173,7 +173,7 @@ namespace Tixora.Controllers
 
             try
             {
-                var newTicket = await ticketRepository.GetById(viewModel.TicketId);
+                var newTicket = await ticketService.GetById(viewModel.TicketId);
                 if (viewModel.TicketId != booking.TicketId)
                 {
                     if (viewModel.NewQuantity > newTicket.AvailableQuantity)
@@ -182,9 +182,9 @@ namespace Tixora.Controllers
                         viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                         return View(viewModel);
                     }
-                    var oldTicket = await ticketRepository.GetById(booking.TicketId);
+                    var oldTicket = await ticketService.GetById(booking.TicketId);
                     oldTicket.AvailableQuantity += booking.Amount; // Increase the available quantity of the old ticket
-                    await ticketRepository.UpdateAsync(oldTicket); // Update the old ticket's available quantity
+                    await ticketService.Update(oldTicket); // Update the old ticket's available quantity
                 }
                 else
                 {
@@ -217,7 +217,7 @@ namespace Tixora.Controllers
         private async Task<List<SelectListItem>> GetAvailableTicketsForEdit(int eventId, int currentTicketId)
         {
             var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
-            var currentTicket =await ticketRepository.GetById(currentTicketId);
+            var currentTicket =await ticketService.GetById(currentTicketId);
             if (currentTicket != null)
             {
                 availableTickets = availableTickets
