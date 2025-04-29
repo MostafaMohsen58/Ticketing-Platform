@@ -53,8 +53,9 @@ namespace Tixora.Controllers
             var SingleEvent =await _eventsService.GetById(id);
             EditEventViewModel modelCopy = new EditEventViewModel()
             {
-                Id = SingleEvent.Id,
+                Id = SingleEvent!.Id,
                 Title = SingleEvent.Title,
+                Curuntcover = SingleEvent.ImageUrl,
                 Category = SingleEvent.Category,
                 Description = SingleEvent.Description,
                 VenueId = SingleEvent.VenueId,
@@ -77,7 +78,7 @@ namespace Tixora.Controllers
                 };
                 return View(viewModel);
             }
-            _eventsService.Edit(model);
+           await _eventsService.Edit(model);
             return RedirectToAction(nameof(Index));
         }
 

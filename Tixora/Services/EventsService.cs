@@ -27,6 +27,7 @@ namespace Tixora.Services
                 Title = model.Title,
                 Description = model.Description,
                 StartDate = model.StartDate,
+                ImageUrl = Covername,
                 VenueId = model.VenueId,
                 OrganizerId = model.OrganizerId,
             };

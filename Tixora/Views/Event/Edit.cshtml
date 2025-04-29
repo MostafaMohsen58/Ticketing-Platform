@@ -1,82 +1,4 @@
-﻿@* @using Tixora.Settings *@
-@* @model Tixora.ViewModels.EventViewModel.EditEventViewModel *@
-
-@* @{ *@
-@*     ViewData["Title"] = "Edit"; *@
-@* } *@
-
-
-@* <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data"> *@
-@*     <div asp-validation-summary="All" class="text-danger"></div> *@
-@*     <div class="row"> *@
-@*         <div class="col-md-6"> *@
-@*             <div asp-validation-summary="All" class="text-danger"></div> *@
-@*             <div class="form-group"> *@
-@*                 <label asp-for="Title" class="control-label"></label> *@
-@*                 <input asp-for="Title" class="form-control" /> *@
-@*                 <span asp-validation-for="Title" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group"> *@
-@*                 <label asp-for="Description" class="control-label"></label> *@
-@*                 <input asp-for="Description" class="form-control" /> *@
-@*                 <span asp-validation-for="Description" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group"> *@
-@*                 <label asp-for="StartDate" class="control-label"></label> *@
-@*                 <input asp-for="StartDate" class="form-control" /> *@
-@*                 <span asp-validation-for="StartDate" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group"> *@
-@*                 <label asp-for="Category" class="control-label"></label> *@
-@*                 <input asp-for="Category" class="form-control" /> *@
-@*                 <span asp-validation-for="Category" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group mb-3"> *@
-@*                 <label asp-for="VenueId" class="control-label text-secondary"></label> *@
-@*                 <select asp-for="VenueId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Venues" *@
-@*                         data-placeholder="Select a category" data-minimum-results-for-search="Infinity"> *@
-@*                     <option value=""></option> *@
-@*                 </select> *@
-@*                 <span asp-validation-for="VenueId" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group mb-3"> *@
-@*                 <label asp-for="OrganizerId" class="control-label text-secondary"></label> *@
-@*                 <select asp-for="OrganizerId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Organizers" *@
-@*                         data-placeholder="Select a Organizer" data-minimum-results-for-search="Infinity"> *@
-@*                     <option value=""></option> *@
-@*                 </select> *@
-@*                 <span asp-validation-for="VenueId" class="text-danger"></span> *@
-@*             </div> *@
-@*             <div class="form-group mb-3"> *@
-@*                 <label asp-for="Cover" class="form-label text-secondary "></label> *@
-@*                 <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file" *@
-@*                        data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)" *@
-@*                        data-msg-extension="not allowed extension" *@
-@*                        data-rule-filesize="@FileSettings.maxSizeByByets" *@
-@*                        data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" /> *@
-@*                 <span asp-validation-for="Cover" class="text-danger"></span> *@
-@*             </div> *@
-
-@*             <div class="form-group mt-4"> *@
-@*                 <input type="submit" value="Update" class="btn btn-primary btn-lg w-100 shadow" /> *@
-@*             </div> *@
-@*         </div> *@
-@*         <div class="col-md-6"> *@
-@*             <div class="col-md-6 d-flex justify-content-center align-items-center"> *@
-@*                 <img class="cover-preview d-none w-75" alt="Cover" /> *@
-@*             </div> *@
-@*             </<div> *@
-@*             </div> *@
-@*         </div> *@
-@*     </div> *@
-@* </form> *@
-
-@* @section Scripts { *@
-@*     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");} *@
-@*     <script src="~/js/site.js"></script> *@
-@* } *@
-
-@using Tixora.Settings
+﻿@using Tixora.Settings
 @model Tixora.ViewModels.EventViewModel.EditEventViewModel
 
 @{
@@ -130,20 +52,23 @@
                     </select>
                     <span asp-validation-for="OrganizerId" class="text-danger"></span>
                 </div>
-
-                <div class="form-group mb-3">
-                    <label asp-for="Cover" class="form-label"></label>
-                    <input asp-for="Cover" class="form-control" type="file" accept=".jpg,.jpeg,.png" />
+                <div class="form-group">
+                    <label asp-for="Cover" class="form-label mt-4"></label>
+                    <input asp-for="Cover" class="form-control" type="file"
+                           data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)"
+                           data-msg-extension="not allowed extension"
+                           data-rule-filesize="@FileSettings.maxSizeByByets"
+                           data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" />
                     <span asp-validation-for="Cover" class="text-danger"></span>
                 </div>
-
                 <div class="form-group mt-4">
                     <button type="submit" class="btn btn-primary w-100">Update Event</button>
                 </div>
             </div>
             <div class="col-md-6 d-flex justify-content-center align-items-center">
                 <div class="cover-preview-container">
-                    <img class="cover-preview d-none w-75" alt="Cover" />
+                    <img class="cover-preview" src="@($"{FileSettings.ImagePath}/{Model.Curuntcover}")" alt="Cover" />
+
                 </div>
             </div>
         </div>
