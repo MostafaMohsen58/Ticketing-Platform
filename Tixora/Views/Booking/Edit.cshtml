@@ -4,60 +4,6 @@
     ViewData["Title"] = "Edit";
 }
 
-@* <div class="container mt-4"> *@
-@*     <h2>Edit Booking</h2> *@
-@*     <hr /> *@
-    
-@*     <form asp-action="Edit" class="needs-validation" novalidate> *@
-@*         <input type="hidden" asp-for="Id" /> *@
-@*         <input type="hidden" asp-for="EventId" /> *@
-        
-@*         <div class="row"> *@
-@*             <div class="col-md-6"> *@
-@*                 <div class="form-group mb-3"> *@
-@*                     <label asp-for="EventTitle" class="form-label">Event</label> *@
-@*                     <input asp-for="EventTitle" class="form-control" readonly /> *@
-@*                 </div> *@
-                
-@*                 <div class="form-group mb-3"> *@
-@*                     <label asp-for="CurrentTicketType" class="form-label">Current Ticket Type</label> *@
-@*                     <input asp-for="CurrentTicketType" class="form-control" readonly /> *@
-@*                 </div> *@
-@*             </div> *@
-            
-@*             <div class="col-md-6"> *@
-@*                 <div class="form-group mb-3"> *@
-@*                     <label asp-for="CurrentQuantity" class="form-label">Current Quantity</label> *@
-@*                     <input asp-for="CurrentQuantity" class="form-control" readonly /> *@
-@*                 </div> *@
-                
-@*                 <div class="form-group mb-3"> *@
-@*                     <label asp-for="NewQuantity" class="form-label">New Quantity *</label> *@
-@*                     <input asp-for="NewQuantity" class="form-control" min="1" /> *@
-@*                     <span asp-validation-for="NewQuantity" class="text-danger"></span> *@
-@*                 </div> *@
-@*             </div> *@
-@*         </div> *@
-        
-@*         <div class="form-group mb-4"> *@
-@*             <label asp-for="TicketId" class="form-label">Select New Ticket Type *</label> *@
-@*             <select asp-for="TicketId" asp-items="Model.AvailableTickets" class="form-select"> *@
-@*                 <option value="">-- Select Ticket --</option> *@
-@*             </select> *@
-@*             <span asp-validation-for="TicketId" class="text-danger"></span> *@
-@*         </div> *@
-        
-@*         <div class="form-group"> *@
-@*             <button type="submit" class="btn btn-primary me-2"> *@
-@*                 <i class="fas fa-save"></i> Save Changes *@
-@*             </button> *@
-@*             <a asp-action="Index" class="btn btn-secondary"> *@
-@*                 <i class="fas fa-arrow-left"></i> Back to List *@
-@*             </a> *@
-@*         </div> *@
-@*     </form> *@
-@* </div> *@
-
 <section class="py-4">
     <div class="container">
         <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
@@ -85,12 +31,6 @@
                         <label asp-for="CurrentQuantity" class="form-label" style="font-weight: bold;"></label>
                         <input asp-for="CurrentQuantity" class="form-control" readonly />
                     </div>
-
-                    <div class="mb-3">
-                        <label asp-for="NewQuantity" class="form-label" style="font-weight: bold;"></label>
-                        <input asp-for="NewQuantity" class="form-control" />
-                        <span asp-validation-for="NewQuantity" class="text-danger"></span>
-                    </div>
                     
                     <div class="mb-3">
                         <label asp-for="TicketId" class="form-label" style="font-weight: bold;"></label>
@@ -98,6 +38,12 @@
                             <option value="">-- Select Ticket --</option>
                         </select>
                         <span asp-validation-for="TicketId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewQuantity" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="NewQuantity" class="form-control" />
+                        <span asp-validation-for="NewQuantity" class="text-danger"></span>
                     </div>
 
                     <div class="mt-4 text-right">
