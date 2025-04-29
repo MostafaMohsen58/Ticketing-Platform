@@ -4,39 +4,68 @@
     ViewData["Title"] = "Create Organizer";
 }
 
-<h1>Create Organizer</h1>
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Create Organizer
+                </h2>
 
-<form asp-action="Create" method="post" enctype="multipart/form-data">
+                <form asp-action="Create" method="post" enctype="multipart/form-data">
 
-    <div class="mb-3">
-        <label asp-for="Name" class="form-label"></label>
-        <input asp-for="Name" class="form-control" />
-        <span asp-validation-for="Name" class="text-danger"></span>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ContactEmail" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="ContactEmail" class="form-control" type="email" />
+                        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="ContactPhone" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="ContactPhone" class="form-control" placeholder="01xxxxxxxxx" />
+                        <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                        <small class="form-text text-muted">Phone number must start with "01" and be 11 digits long</small>
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="file" class="form-label" style="font-weight: bold;">Logo</label>
+                        <input type="file" id="file" name="file" class="form-control" accept="image/*" />
+                        <span asp-validation-for="LogoUrl" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <button type="submit" class="btn"
+                                style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Create
+                        </button>
+                        <a asp-action="Index" class="btn"
+                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Back to List
+                        </a>
+                    </div>
+                </form>
+            </div>
+        </div>
     </div>
-
-    <div class="mb-3">
-        <label asp-for="ContactEmail" class="form-label"></label>
-        <input asp-for="ContactEmail" class="form-control" type="email" />
-        <span asp-validation-for="ContactEmail" class="text-danger"></span>
-    </div>
-
-    <div class="mb-3">
-        <label asp-for="ContactPhone" class="form-label"></label>
-        <input asp-for="ContactPhone" class="form-control" placeholder="01xxxxxxxxx" />
-        <span asp-validation-for="ContactPhone" class="text-danger"></span>
-        <small class="form-text text-muted">Phone number must start with "01" and be 11 digits long</small>
-    </div>
-
-    <div class="mb-3">
-        <label for="file" class="form-label">Logo</label>
-        <input type="file" id="file" name="file" class="form-control" accept="image/*" />
-        <span asp-validation-for="LogoUrl" class="text-danger"></span>
-    </div>
-
-    <button type="submit" class="btn btn-success">Create</button>
-    <a asp-action="Index" class="btn btn-secondary">Back to List</a>
-</form>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
