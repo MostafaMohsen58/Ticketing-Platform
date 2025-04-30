@@ -1,157 +1,89 @@
-﻿@* @using Tixora.Settings
+﻿
+ @using Tixora.Settings
 @model Tixora.ViewModels.EventViewModel.EditEventViewModel
 
 @{
-    ViewData["Title"] = "Edit";
-}
-
-
-<form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data">
-    <div asp-validation-summary="All" class="text-danger"></div>
-    <div class="row">
-        <div class="col-md-6">
-            <div asp-validation-summary="All" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="VenueId" class="control-label text-secondary"></label>
-                <select asp-for="VenueId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Venues"
-                        data-placeholder="Select a category" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="VenueId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="OrganizerId" class="control-label text-secondary"></label>
-                <select asp-for="OrganizerId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Organizers"
-                        data-placeholder="Select a Organizer" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="VenueId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Cover" class="form-label text-secondary "></label>
-                <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file"
-                       data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)"
-                       data-msg-extension="not allowed extension"
-                       data-rule-filesize="@FileSettings.maxSizeByByets"
-                       data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" />
-                <span asp-validation-for="Cover" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-4">
-                <input type="submit" value="Update" class="btn btn-primary btn-lg w-100 shadow" />
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <img class="cover-preview d-none w-75" alt="Cover" />
-            </div>
-            </<div>
-            </div>
-        </div>
-    </div>
-</form>
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    <script src="~/js/site.js"></script>
-}
- *@
- @model Tixora.ViewModels.EventViewModel.EditEventViewModel
-
-@{
     ViewData["Title"] = "Edit Event";
-    Layout = "_AdminLayout";
+	Layout = "_AdminLayout";
 }
 
 <section class="py-4">
     <div class="container">
-        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 800px; margin: 0 auto;">
             <div class="card-body">
                 <h2 class="card-title mb-4" style="background-color: #7C4585; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
                     Edit Event
                 </h2>
 
-                <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data" method="post">
+                <form asp-action="Edit" method="post" enctype="multipart/form-data">
                     <input type="hidden" asp-for="Id" />
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div asp-validation-summary="ModelOnly" class="text-danger mb-3"></div>
 
-                    <div class="mb-3">
-                        <label asp-for="Title" class="form-label" style="font-weight: bold;"></label>
-                        <input asp-for="Title" class="form-control" />
-                        <span asp-validation-for="Title" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label asp-for="Title" class="form-label" style="font-weight: bold;"></label>
+                                <input asp-for="Title" class="form-control" placeholder="Enter event title" />
+                                <span asp-validation-for="Title" class="text-danger"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Description" class="form-label" style="font-weight: bold;"></label>
-                        <input asp-for="Description" class="form-control" />
-                        <span asp-validation-for="Description" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label asp-for="Description" class="form-label" style="font-weight: bold;"></label>
+                                <textarea asp-for="Description" class="form-control" rows="4" placeholder="Describe your event"></textarea>
+                                <span asp-validation-for="Description" class="text-danger"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label asp-for="StartDate" class="form-label" style="font-weight: bold;"></label>
-                        <input asp-for="StartDate" class="form-control" />
-                        <span asp-validation-for="StartDate" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label asp-for="StartDate" class="form-label" style="font-weight: bold;"></label>
+                                <input asp-for="StartDate" class="form-control" type="datetime-local" />
+                                <span asp-validation-for="StartDate" class="text-danger"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Category" class="form-label" style="font-weight: bold;"></label>
-                        <input asp-for="Category" class="form-control" />
-                        <span asp-validation-for="Category" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label asp-for="Category" class="form-label" style="font-weight: bold;"></label>
+                                <input asp-for="Category" class="form-control" placeholder="Event category" />
+                                <span asp-validation-for="Category" class="text-danger"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label asp-for="VenueId" class="form-label text-secondary" style="font-weight: bold;"></label>
-                        <select asp-for="VenueId" class="form-select" asp-items="Model.Venues">
-                            <option value="">-- Select Venue --</option>
-                        </select>
-                        <span asp-validation-for="VenueId" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label asp-for="VenueId" class="form-label" style="font-weight: bold;"></label>
+                                <select asp-for="VenueId" class="form-select" asp-items="Model.Venues">
+                                    <option value="">Select a venue</option>
+                                </select>
+                                <span asp-validation-for="VenueId" class="text-danger"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label asp-for="OrganizerId" class="form-label text-secondary" style="font-weight: bold;"></label>
-                        <select asp-for="OrganizerId" class="form-select" asp-items="Model.Organizers">
-                            <option value="">-- Select Organizer --</option>
-                        </select>
-                        <span asp-validation-for="OrganizerId" class="text-danger"></span>
-                    </div>
+                            <div class="mb-3">
+                                <label asp-for="OrganizerId" class="form-label" style="font-weight: bold;"></label>
+                                <select asp-for="OrganizerId" class="form-select" asp-items="Model.Organizers">
+                                    <option value="">Select an organizer</option>
+                                </select>
+                                <span asp-validation-for="OrganizerId" class="text-danger"></span>
+                            </div>
 
-                    <div class="mb-3">
-                        <label asp-for="Cover" class="form-label text-secondary" style="font-weight: bold;"></label>
-                        <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file" />
-                        <span asp-validation-for="Cover" class="text-danger"></span>
+                            <div class="mb-3">
+                                <label asp-for="Cover" class="form-label" style="font-weight: bold;"></label>
+                                <input asp-for="Cover" class="form-control" type="file" data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)" data-msg-extension="not allowed extension" data-rule-filesize="@FileSettings.maxSizeByByets" data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" />
+                                <span asp-validation-for="Cover" class="text-danger"></span>
+                            </div>
+                        </div>
+                        <div class="col-md-6 d-flex justify-content-center align-items-center">
+                            <div class="cover-preview-container" style="width: 100%; max-width: 300px; text-align: center;">
+                                <img class="cover-preview img-fluid" src="@($"{FileSettings.ImagePath}/{Model.Curuntcover}")" alt="Current Cover" style="max-width: 100%; border-radius: 0.5rem; @(string.IsNullOrEmpty(Model.Curuntcover) ? "display: none;" : "display: block;")" />
+                                <p class="text-muted mt-2" id="preview-placeholder" style="@(string.IsNullOrEmpty(Model.Curuntcover) ? "display: block;" : "display: none;")">No image selected</p>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="mt-4 text-right">
-                        <button type="submit" class="btn"
-                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
-                            Update
+                        <button type="submit" class="btn" style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Update Event
                         </button>
-                        <a asp-action="Index" class="btn"
-                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        <a asp-action="Index" class="btn" style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Back to List
                         </a>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>
@@ -160,6 +92,26 @@
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
     <script src="~/js/site.js"></script>
+    <script>
+        $(document).ready(function () {
+            const preview = $('.cover-preview');
+            const placeholder = $('#preview-placeholder');
+            $('input[type="file"]').on('change', function (e) {
+                const file = e.target.files[0];
+                if (file && file.type.startsWith('image/')) {
+                    const reader = new FileReader();
+                    reader.onload = function (e) {
+                        preview.attr('src', e.target.result).css('display', 'block');
+                        placeholder.hide();
+                    };
+                    reader.readAsDataURL(file);
+                } else {
+                    preview.css('display', 'none').attr('src', '');
+                    placeholder.show();
+                }
+            });
+        });
+    </script>
 }
 
 <style>
@@ -172,19 +124,10 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     }
 
-    .form-select, .form-control {
+    .cover-preview-container {
+        border: 1px solid #ddd;
         border-radius: 0.5rem;
-        box-shadow: none;
-        border: 1px solid #ccc;
-    }
-
-        .form-select:focus, .form-control:focus {
-            border-color: #7C4585;
-            outline: none;
-        }
-
-    .form-label {
-        font-size: 1rem;
-        color: #333;
+        padding: 10px;
+        background-color: #f9f9f9;
     }
 </style>

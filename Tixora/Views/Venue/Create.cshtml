@@ -1,4 +1,4 @@
-﻿@model Tixora.Models.Venue
+﻿@* @model Tixora.Models.Venue
 
 @{
     Layout = "_AdminLayout";
@@ -42,174 +42,70 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }
+ *@
+@model Tixora.Models.Venue
 
+@{
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Create Venue";
+}
 
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Create Venue
+                </h2>
 
+                <form asp-action="Create" method="post">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
 
-@* <style>
-    .card {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
-        border-radius: 10px;
-        overflow: hidden;
-        margin-bottom: 2rem;
-    }
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
 
-    .card-header {
-        background-color: #0e1b4d;
-        color: white;
-        padding: 1.2rem 1.5rem;
-        font-size: 1.2rem;
-        font-weight: 600;
-        border: none;
-    }
+                    <div class="mb-3">
+                        <label asp-for="Address" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Address" class="form-control" />
+                        <span asp-validation-for="Address" class="text-danger"></span>
+                    </div>
 
-    .card-body {
-        padding: 2rem;
-        background-color: #ffffff;
-    }
+                    <div class="mb-3">
+                        <label asp-for="Capacity" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Capacity" class="form-control" type="number" />
+                        <span asp-validation-for="Capacity" class="text-danger"></span>
+                    </div>
 
-    .form-group {
-        margin-bottom: 1.5rem;
-    }
-
-    .control-label {
-        font-weight: 600;
-        margin-bottom: 0.5rem;
-        color: #0e1b4d;
-    }
-
-    .form-control {
-        padding: 0.75rem 1rem;
-        border-radius: 5px;
-        border: 1px solid #ced4da;
-        transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-    }
-
-    .form-control:focus {
-        border-color: #0e1b4d;
-        box-shadow: 0 0 0 0.25rem rgba(14, 27, 77, 0.25);
-    }
-
-    .text-danger {
-        font-size: 0.875rem;
-        margin-top: 0.25rem;
-    }
-
-    .btn {
-        border-radius: 5px;
-        padding: 8px 16px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        font-size: 14px;
-        font-weight: 600;
-    }
-
-    .btn:hover {
-        opacity: 0.8;
-        font-weight: bold;
-        transform: scale(1.05);
-    }
-
-    .btn:focus {
-        outline: none;
-        box-shadow: none;
-    }
-
-    .btn-create {
-        background-color: #f82249;
-        color: #ffffff;
-        border: none;
-        padding: 10px 24px;
-        font-size: 16px;
-    }
-
-    .btn-back {
-        background-color: #547792;
-        color: #ffffff;
-        padding: 8px 16px;
-        margin-top: 1rem;
-        display: inline-block;
-        text-decoration: none;
-    }
-
-    .btn-back:hover {
-        color: #ffffff;
-        text-decoration: none;
-    }
-
-    .page-header {
-        margin-bottom: 2rem;
-    }
-
-    .page-title {
-        color: #0e1b4d;
-        font-weight: 700;
-    }
-
-    .page-subtitle {
-        color: #546797;
-    }
-</style>
-
-<div class="container mt-5">
-    <div class="page-header">
-        <h1 class="page-title">Create</h1>
-        <h4 class="page-subtitle">Ticket Category</h4>
-        <hr />
-    </div>
-
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-header">
-                    Add New Ticket Category
-                </div>
-                <div class="card-body">
-                    <form asp-action="Create" method="post">
-                        <div asp-validation-summary="All" class="text-danger"></div>
-                        
-                        <div class="form-group">
-                            <label asp-for="Name" class="control-label">Category Name</label>
-                            <input asp-for="Name" class="form-control" placeholder="Enter category name" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label asp-for="Description" class="control-label">Description</label>
-                            <textarea asp-for="Description" class="form-control" rows="4" placeholder="Enter category description"></textarea>
-                            <span asp-validation-for="Description" class="text-danger"></span>
-                        </div>
-                        
-                        <div class="form-group">
-                            <label asp-for="PriceMultiplier" class="control-label">Price Multiplier</label>
-                            <input asp-for="PriceMultiplier" class="form-control" placeholder="Enter a value between 0.1 and 10.0" />
-                            <span asp-validation-for="PriceMultiplier" class="text-danger"></span>
-                            <small class="form-text text-muted">This value will be used to calculate ticket prices relative to the base price</small>
-                        </div>
-                        
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-create">Create Category</button>
-                            <a asp-action="Index" class="btn btn-back ms-2">Back to List</a>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-        
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-header">
-                    Information
-                </div>
-                <div class="card-body">
-                    <p><strong>Category Name:</strong> Enter a unique and descriptive name for this ticket category.</p>
-                    <p><strong>Description:</strong> Provide details about what makes this ticket category special or what access it provides.</p>
-                    <p><strong>Price Multiplier:</strong> This value determines how the price of tickets in this category relates to the base ticket price. For example, a multiplier of 1.5 means tickets will cost 50% more than the base price.</p>
-                </div>
+                    <div class="mt-4 text-right">
+                        <button type="submit" class="btn"
+                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Create
+                        </button>
+                        <a asp-action="Index" class="btn"
+                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Back to List
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
-} *@
+}
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
