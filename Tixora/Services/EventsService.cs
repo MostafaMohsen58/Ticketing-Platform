@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
@@ -9,21 +10,24 @@ namespace Tixora.Services
     
     public class EventsService : IEventsService 
     {
-        
+        private readonly FileService _fileService;
         private readonly IEventRepository _eventRepository;
-        public EventsService( IEventRepository eventRepository)
+        public EventsService( IEventRepository eventRepository , FileService fileService)
         {
+            _fileService = fileService;
             _eventRepository = eventRepository;
         }
 
         public async Task Add(AddEventViewModel model)
         {
+            var Covername = await _fileService.SaveCoverAsync(model.Cover);
             var NewEvent = new Event()
             {
                 Category = model.Category,
                 Title = model.Title,
                 Description = model.Description,
                 StartDate = model.StartDate,
+                ImageUrl = Covername,
                 VenueId = model.VenueId,
                 OrganizerId = model.OrganizerId,
             };
@@ -39,25 +43,53 @@ namespace Tixora.Services
             return true;
         }
 
-        public Event Edit(EditEventViewModel model)
+       
+          public async Task<Event> Edit(EditEventViewModel model)
         {
-            Event e = new Event()
-            {
-                Category = model.Category,
-                Title = model.Title,
-                Description = model.Description,
-                StartDate = model.StartDate,
-                VenueId = model.VenueId,
-                OrganizerId = model.OrganizerId,
+            var ev = await GetById(model.Id!.Value);
 
-            };
-             _eventRepository.UpdateAsync(e);
-            return e;
+            if (ev == null)
+            {
+                return null!;
+            }
+            var newimg = model.Cover !=null;
+            var oldimg = ev.ImageUrl;
+            if(oldimg==null)return null!;
+
+
+            ev.Category = model.Category;
+            ev.Title = model.Title;
+            ev.Description = model.Description;
+            ev.StartDate = model.StartDate;
+            ev.VenueId = model.VenueId;
+            ev.OrganizerId = model.OrganizerId;
+
+            if (newimg)
+            {
+                ev.ImageUrl = await _fileService.SaveCoverAsync(model.Cover!);
+            }
+            int ER = await _eventRepository.SaveAsync();
+            if (ER > 0)
+            {
+                if (newimg)
+                {
+                    _fileService.DeleteCover(oldimg);
+                }
+                return ev;
+            }
+            else
+            {
+                _fileService.DeleteCover(ev.ImageUrl);
+                return null!;
+            }
         }
 
-        public async Task<Event> GetById(int id)
+
+        
+
+        public async Task<Event?> GetById(int id)
         {
-            return await _eventRepository.GetById(id);
+            return await _eventRepository.GetById(id)!;
         }
 
         public async Task<List<Event>> GetAll()
