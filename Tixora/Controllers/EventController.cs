@@ -10,15 +10,15 @@ namespace Tixora.Controllers
         private readonly IEventsService _eventsService;
         private readonly IVenueService _venueService;
         private readonly IOrganizerService _organizerService;
-        public EventController(IEventsService eventsService , IVenueService venueService, IOrganizerService organizerService)
+        public EventController(IEventsService eventsService, IVenueService venueService, IOrganizerService organizerService)
         {
             _eventsService = eventsService;
             _venueService = venueService;
             _organizerService = organizerService;
         }
 
-        public  async Task<IActionResult> Index()
-        {            
+        public async Task<IActionResult> Index()
+        {
             return View(await _eventsService.GetAll());
         }
         [HttpGet]
@@ -26,8 +26,8 @@ namespace Tixora.Controllers
         {
             AddEventViewModel modelCopy = new AddEventViewModel()
             {
-                Venues =await _eventsService.Venues(),
-                Organizers =await _eventsService.Organizers(),
+                Venues = await _eventsService.Venues(),
+                Organizers = await _eventsService.Organizers(),
             };
             return View(modelCopy);
         }
@@ -39,8 +39,8 @@ namespace Tixora.Controllers
             {
                 AddEventViewModel modelCopy = new AddEventViewModel()
                 {
-                    Venues =await _eventsService.Venues(),
-                    Organizers =await _eventsService.Organizers(),
+                    Venues = await _eventsService.Venues(),
+                    Organizers = await _eventsService.Organizers(),
                 };
                 return View(modelCopy);
             }
@@ -50,17 +50,18 @@ namespace Tixora.Controllers
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
-            var SingleEvent =await _eventsService.GetById(id);
+            var SingleEvent = await _eventsService.GetById(id);
             EditEventViewModel modelCopy = new EditEventViewModel()
             {
-                Id = SingleEvent.Id,
+                Id = SingleEvent!.Id,
                 Title = SingleEvent.Title,
+                Curuntcover = SingleEvent.ImageUrl,
                 Category = SingleEvent.Category,
                 Description = SingleEvent.Description,
                 VenueId = SingleEvent.VenueId,
                 OrganizerId = SingleEvent.OrganizerId,
                 Organizers = _organizerService.Organizers(),
-                Venues= _venueService.Venues(),
+                Venues = _venueService.Venues(),
             };
 
             return View(modelCopy);
@@ -72,18 +73,18 @@ namespace Tixora.Controllers
             {
                 EditEventViewModel viewModel = new EditEventViewModel()
                 {
-                  Venues =await _eventsService.Venues(),
-                  Organizers =await _eventsService.Organizers()
+                    Venues = await _eventsService.Venues(),
+                    Organizers = await _eventsService.Organizers()
                 };
                 return View(viewModel);
             }
-            _eventsService.Edit(model);
+            await _eventsService.Edit(model);
             return RedirectToAction(nameof(Index));
         }
 
         public async Task<IActionResult> Delete(int id)
         {
-            var Event = await _eventsService.GetById(id); 
+            var Event = await _eventsService.GetById(id);
             return View(Event);
         }
         [HttpPost]
@@ -94,7 +95,7 @@ namespace Tixora.Controllers
             return RedirectToAction(nameof(Index));
         }
         public async Task<IActionResult> Details(int id)
-        {          
+        {
             return View(await _eventsService.GetById(id));
         }
         

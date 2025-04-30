@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<EditProfileViewModel>
 
-    @{
-	Layout = "_AdminLayout";
-    }
+ @{
+    Layout = "_AdminLayout";
+ }
 
 <!DOCTYPE html>
 <html lang="en">
@@ -28,7 +28,7 @@
 
             .users-table thead {
                 background-color: #f8f9fa;
-                text-align:center;
+                text-align: center;
             }
 
             .users-table th {
@@ -42,11 +42,19 @@
             .users-table td {
                 padding: 1rem;
                 vertical-align: middle;
+                text-align: center;
+                word-wrap: break-word; /* Breaks long words */
+                word-break: break-all; /* Allows breaking anywhere if needed */
+                overflow-wrap: break-word; /* Ensures breaking when necessary */
+                max-width: 300px; /* Adjusted width */
+                text-overflow: ellipsis; /* Show "..." if text is too long */
+                white-space: nowrap; /* Prevents line breaks */
+                overflow: hidden; /* Hides overflow text */
             }
 
             .users-table tbody tr {
                 transition: background-color 0.2s ease;
-				text-align: center;
+                text-align: center;
             }
 
                 .users-table tbody tr:hover {
@@ -88,49 +96,55 @@
             justify-content: center;
             margin-top: 2rem;
         }
-        
+
         /* Custom modal styling */
         .modal-header {
-            background-color: #0e1b4d; 
-            color: white; 
+            background-color: #0e1b4d;
+            color: white;
             padding: 8px 20px;
         }
-        
+
         .modal-title {
             font-size: 16px;
         }
-        
+
         .modal-body {
-            background-color: #ffffff; 
-            color: #0e1b4d; 
-            font-weight: bold; 
-            font-size: 16px; 
+            background-color: #ffffff;
+            color: #0e1b4d;
+            font-weight: bold;
+            font-size: 16px;
             padding: 20px;
         }
-        
+
         .modal-footer {
-            background-color: #ffffff; 
+            background-color: #ffffff;
             padding: 8px 10px;
         }
-        
+
         .btn-confirm-delete {
-            background-color: #f82249; 
-            color: white; 
-            border: 2px solid #f82249; 
-            border-radius: 5px; 
-            padding: 8px 16px; 
+            background-color: #f82249;
+            color: white;
+            border: 2px solid #f82249;
+            border-radius: 5px;
+            padding: 8px 16px;
             font-size: 16px;
         }
-        
+
         .btn-cancel-delete {
-            background-color: #ffffff; 
-            color: #f82249; 
-            border: 2px solid #f82249; 
-            border-radius: 5px; 
-            padding: 8px 16px; 
+            background-color: #ffffff;
+            color: #f82249;
+            border: 2px solid #f82249;
+            border-radius: 5px;
+            padding: 8px 16px;
             font-size: 16px;
+        }
+
+        #search:hover {
+            background-color: #7C4585;
+            color: white;
         }
     </style>
+
 </head>
 <body>
     <div class="container users-section">
@@ -140,7 +154,7 @@
                 <form method="get" asp-action="Index" class="d-flex flex-grow-1 gap-2">
                     <div class="input-group flex-grow-1">
                         <input type="text" class="form-control" name="searchEmail" placeholder="Search users by email..." value="@Context.Request.Query["searchEmail"]">
-                        <button class="btn btn-outline-primary" type="submit">
+                        <button class="btn btn-outline-primary" type="submit" id="search">
                             <i class="bi bi-search"></i>
                         </button>
                     </div>
@@ -148,7 +162,7 @@
                         <i class="bi bi-x-circle me-1"></i> Clear
                     </a>
                 </form>
-                <a asp-action="Create" class="btn btn-primary d-flex align-items-center">
+                <a asp-action="Create" class="btn d-flex align-items-center" style="background-color:#7C4585; color:white">
                     <i class="bi bi-plus-circle me-2"></i>Add New User
                 </a>
             </div>
@@ -197,21 +211,22 @@
                                 </td>
                                 <td>
                                     <div class="action-buttons">
-                                        <a href="/Account/Edit?id=@item.Id" class="btn btn-primary btn-action">
+                                    <a href="/Account/Edit?id=@item.Id" class="btn btn-action" style="background-color:#7C4585; color:white">
                                             <i class="bi bi-pencil me-1"></i>Edit
                                         </a>
-                                        <a href="/Account/Details?id=@item.Id" class="btn btn-warning btn-action">
+                                    <a href="/Account/Details?id=@item.Id" class="btn btn-action" style="background-color:#F7AD45;">
                                             <i class="bi bi-eye me-1"></i>Details
                                         </a>
                                         <button type="button"
-                                                class="btn btn-danger btn-action"
+                                                class="btn btn-action"
                                                 data-bs-toggle="modal"
                                                 data-bs-target="#deleteModal"
                                                 data-id="@item.Id"
                                                 data-email="@item.Email"
                                                 data-address="@item.Address"
                                                 data-city="@item.City"
-                                                data-phone="@item.PhoneNumber">
+                                                data-phone="@item.PhoneNumber"
+                                            style="background-color:#BB3E00;color:white">
                                             <i class="bi bi-trash me-1"></i>Delete
                                         </button>
 
@@ -231,21 +246,21 @@
                 <ul class="pagination">
                     @if (ViewBag.CurrentPage > 1)
                     {
-                        <li class="page-item">
+                    <li class="page-item" style="background-color:#7C4585; color:white">
                             <a class="page-link" href="?searchEmail=@ViewBag.SearchEmail&pageNumber=@(ViewBag.CurrentPage - 1)">Previous</a>
                         </li>
                     }
 
                     @for (int i = 1; i <= ViewBag.TotalPages; i++)
                     {
-                        <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")">
+                    <li class="page-item @(i == ViewBag.CurrentPage ? "active" : "")" style="background-color:#7C4585; color:white">
                             <a class="page-link" href="?searchEmail=@ViewBag.SearchEmail&pageNumber=@i">@i</a>
                         </li>
                     }
 
                     @if (ViewBag.CurrentPage < ViewBag.TotalPages)
                     {
-                        <li class="page-item">
+                    <li class="page-item" style="background-color:#7C4585; color:white">
                             <a class="page-link" href="?searchEmail=@ViewBag.SearchEmail&pageNumber=@(ViewBag.CurrentPage + 1)">Next</a>
                         </li>
                     }
@@ -277,9 +292,9 @@
                     <form id="deleteUserForm" action="/Account/ConfirmDelete" method="post">
                         <input type="hidden" name="id" id="userIdToDelete" />
                       
-                        <button type="submit" class="btn" style="background-color:#f82249; color: white; border: 2px solid #f82249; border-radius: 5px; padding: 8px 16px; font-size: 16px;">Yes</button>
+                        <button type="submit" class="btn" style="background-color:#BB3E00; color: white; border: 2px solid #BB3E00; border-radius: 5px; padding: 8px 16px; font-size: 16px;">Yes</button>
                       
-                        <button type="button" class="btn" style="background-color: #ffffff; color: #f82249; border: 2px solid #f82249; border-radius: 5px; padding: 8px 16px; font-size: 16px;" data-bs-dismiss="modal">No</button>
+                        <button type="button" class="btn" style="background-color: #ffffff; color: #BB3E00; border: 2px solid #BB3E00; border-radius: 5px; padding: 8px 16px; font-size: 16px;" data-bs-dismiss="modal">No</button>
                     </form>
                 </div>
             </div>

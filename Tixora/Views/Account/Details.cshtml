@@ -119,15 +119,83 @@
                 </div>
 
                 <div class="action-buttons">
-                    <a href="/Account/Edit?id=@Model.Id" class="btn btn-primary">
+                    <a href="/Account/Edit?id=@Model.Id" class="btn " style="background-color:#7C4585; color:white;">
                         <i class="bi bi-pencil me-2"></i>Edit Profile
                     </a>
-                    <a href="/Account/Delete?id=@Model.Id" class="btn btn-danger">
-                        <i class="bi bi-trash me-2"></i>Delete User
-                    </a>
+                    <button type="button"
+                            class="btn btn-action"
+                            data-bs-toggle="modal"
+                            data-bs-target="#deleteModal"
+                            data-id="@Model.Id"
+                            data-email="@Model.Email"
+                            data-address="@Model.Address"
+                            data-city="@Model.City"
+                            data-phone="@Model.PhoneNumber"
+                            style="background-color:#BB3E00;color:white">
+                        <i class="bi bi-trash me-1"></i>Delete
+                    </button>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 500px;">
+            <div class="modal-content" style="background-color: #ffffff;">
+                <div class="modal-header" style="background-color: #0e1b4d; color: white; padding: 8px 20px;">
+                    <h5 class="modal-title" id="deleteModalLabel" style="font-size: 16px;">Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold; font-size: 16px; padding: 20px;">
+                    Are you sure you want to delete this user ?
+                    <div class="modal-body">
+                        <p><strong>Email:</strong> <span id="userEmailToDelete"></span></p>
+                        <p><strong>Address:</strong> <span id="userAddressToDelete"></span></p>
+                        <p><strong>City:</strong> <span id="userCityToDelete"></span></p>
+                        <p><strong>Phone Number:</strong> <span id="userPhoneToDelete"></span></p>
+                        <p>Are you sure you want to delete this user?</p>
+                    </div>
+                </div>
+                <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
+                    <form id="deleteUserForm" action="/Account/ConfirmDelete" method="post">
+                        <input type="hidden" name="id" id="userIdToDelete" />
+
+                        <button type="submit" class="btn" style="background-color:#7C4585; color: white; border: 2px solid #7C4585; border-radius: 5px; padding: 8px 16px; font-size: 16px;">Yes</button>
+
+                        <button type="button" class="btn" style="background-color: #ffffff; color: #f82249; border: 2px solid #7C4585; border-radius: 5px; padding: 8px 16px; font-size: 16px;" data-bs-dismiss="modal">No</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap & jQuery Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // JavaScript for handling the delete confirmation modal
+        $(document).ready(function() {
+            // When the delete button is clicked, set the user ID and email in the modal
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
+
+                var userId = button.data('id');
+                var userEmail = button.data('email');
+                var userAddress = button.data('address');
+                var userCity = button.data('city');
+                var userPhone = button.data('phone');
+
+                // Update the modal's content
+                var modal = $(this);
+                modal.find('#userIdToDelete').val(userId);
+                modal.find('#userEmailToDelete').text(userEmail);
+                modal.find('#userAddressToDelete').text(userAddress);
+                modal.find('#userCityToDelete').text(userCity);
+                modal.find('#userPhoneToDelete').text(userPhone);
+            });
+        });
+    </script>
 </body>
 </html>

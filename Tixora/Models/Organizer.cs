@@ -29,6 +29,6 @@ namespace Tixora.Models
         [Display(Name = "Logo URL")]
         public string? LogoUrl { get; set; }
 
-        public virtual List<Event> Events { get; set; }
+        public virtual List<Event>? Events { get; set; }
     }
 }

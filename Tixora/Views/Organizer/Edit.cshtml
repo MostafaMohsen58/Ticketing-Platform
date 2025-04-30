@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Edit Organizer";
+    Layout = "_AdminLayout";
 }
 
 <section class="py-4">
@@ -51,7 +52,6 @@
                     <div class="mb-3">
                         <label asp-for="ContactPhone" class="form-label" style="font-weight: bold;"></label>
                         <input asp-for="ContactPhone" class="form-control" placeholder="01xxxxxxxxx" />
-                        <small class="form-text text-muted">Phone number must start with "01" and be 11 digits long</small>
                         <span asp-validation-for="ContactPhone" class="text-danger"></span>
                     </div>
 
@@ -72,7 +72,7 @@
 
                     <div class="mt-4 text-right">
                         <button type="submit" class="btn"
-                                style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Save
                         </button>
                         <a asp-action="Index" class="btn"

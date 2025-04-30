@@ -2,6 +2,7 @@
 
 @{
     ViewData["Title"] = "Organizer Details";
+    Layout = "_AdminLayout";
 }
 
 <section class="py-4">
@@ -57,7 +58,7 @@
 
                 <div class="mt-4 text-right">
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn"
-                       style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                       style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                         Update
                     </a>
                     <a asp-action="Index" class="btn"

@@ -22,21 +22,21 @@ namespace Tixora.Repositories
             _context.Events.Update(obj);
         }
 
-        public async Task  Delete(int id)
+        public async Task Delete(int id)
         {
-            var Event =await GetById(id);
+            var Event = await GetById(id);
             if (Event != null)
             {
-                 _context.Events.Remove(Event);
+                _context.Events.Remove(Event);
             }
         }
-        public async Task<Event> GetById(int id)
+        public async Task<Event?> GetById(int id)
         {
             return await _context.Events.FirstOrDefaultAsync(o => o.Id == id)!;
         }
         public async Task<List<Event>> GetAll()
         {
-            return await  _context.Events.ToListAsync();
+            return await _context.Events.ToListAsync();
         }
 
         public async Task<int> SaveAsync()

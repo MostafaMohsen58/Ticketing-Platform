@@ -2,6 +2,8 @@
 
 @{
     ViewData["Title"] = "Create Organizer";
+	Layout = "_AdminLayout";
+    
 }
 
 <section class="py-4">
@@ -15,7 +17,7 @@
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
 
                     <div class="mb-3">
-                        <label asp-for="Name" class="form-label" style="font-weight: bold;"></label>
+                        <label asp-for="Name" class="form-label"></label>
                         <input asp-for="Name" class="form-control" />
                         <span asp-validation-for="Name" class="text-danger"></span>
                     </div>
@@ -30,7 +32,6 @@
                         <label asp-for="ContactPhone" class="form-label" style="font-weight: bold;"></label>
                         <input asp-for="ContactPhone" class="form-control" placeholder="01xxxxxxxxx" />
                         <span asp-validation-for="ContactPhone" class="text-danger"></span>
-                        <small class="form-text text-muted">Phone number must start with "01" and be 11 digits long</small>
                     </div>
 
                     <div class="mb-3">
@@ -41,7 +42,7 @@
 
                     <div class="mt-4 text-right">
                         <button type="submit" class="btn"
-                                style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Create
                         </button>
                         <a asp-action="Index" class="btn"
