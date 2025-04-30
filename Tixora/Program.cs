@@ -66,7 +66,6 @@ namespace Tixora
             builder.Services.AddScoped<IOrganizerService, OrganizerService>();
             builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
-            builder.Services.AddSingleton<FileService>();
             var app = builder.Build();
 
 

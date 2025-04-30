@@ -30,7 +30,7 @@ namespace Tixora.Repositories
                  _context.Events.Remove(Event);
             }
         }
-        public async Task<Event?> GetById(int id)
+        public async Task<Event> GetById(int id)
         {
             return await _context.Events.FirstOrDefaultAsync(o => o.Id == id)!;
         }

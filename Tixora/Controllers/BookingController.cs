@@ -41,12 +41,12 @@ namespace Tixora.Controllers
         [HttpGet]
         public async Task<IActionResult> Create(int eventId)
         {
-           var eventDetails =await eventsService.GetById(eventId);
+            var eventDetails =await eventsService.GetById(eventId);
             var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
             var viewModel = new CreateBookingViewModel
             {
                 EventId = eventId,
-                EventTitle = eventDetails!.Title,
+                EventTitle = eventDetails.Title,
                 EventImageUrl = Url.Content($"~/images/{eventDetails.ImageUrl}"),
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
