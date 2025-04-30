@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Tixora.Models.Event>
+
+@{
+    ViewData["Title"] = "Explore Events";
+}
+
+<div class="container py-4">
+    <div class="bg-white p-4 shadow rounded mb-4"> 
+        <form asp-action="Explore" method="get" class="row g-3">
+            <div class="col-md-4">
+                <label for="startDate" class="form-label">Events from</label>
+                <input type="date" class="form-control" id="startDate" name="startDate" />
+            </div>
+            <div class="col-md-4">
+                <label for="location" class="form-label">Location</label>
+                <input type="text" class="form-control" id="location" name="location" placeholder="e.g. Opera House" />
+            </div>
+            <div class="col-md-4">
+                <label for="search" class="form-label">Search</label>
+                <input type="text" class="form-control" id="search" name="search" placeholder="Keywords" />
+            </div>
+            <div class="col-12 mt-3 text-end">
+                <button type="submit" class="btn btn-primary px-4">Search Event</button>
+            </div>
+        </form>
+            </div>
+    
+    @foreach (var ev in Model)
+    {
+        <div class="row bg-white shadow-sm mb-4 rounded p-3">
+            <div class="col-md-4">
+                @if (!string.IsNullOrEmpty(ev.ImageUrl))
+                {
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Logo</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">
+                        <img src="/images/user/@ev.ImageUrl" alt="@ev.Title" class="img-fluid rounded" />
+
+                    </dd>
+                }
+
+            </div>
+
+            <div class="col-md-8">
+                <h5 class="mb-2">@ev.Title</h5>
+                <p class="text-muted mb-1">
+                    <i class="bi bi-calendar-event me-1"></i> @ev.StartDate.ToString("MMMM dd, yyyy")
+                    <span class="ms-3"><i class="bi bi-geo-alt me-1"></i> @ev.Venue?.Name</span>
+                </p>
+                <p class="text-muted mb-2">
+                    <i class="bi bi-info-circle me-1"></i> @ev.Description
+                </p>
+                <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@ev.Id" class="btn btn-outline-primary">
+                    Buy Tickets
+                </a>
+
+            </div>
+        </div>
+    }
+</div>

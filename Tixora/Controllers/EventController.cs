@@ -97,5 +97,37 @@ namespace Tixora.Controllers
         {          
             return View(await _eventsService.GetById(id));
         }
+        
+        
+
+        [HttpGet]
+        public async Task<IActionResult> Explore(DateTime? startDate, string? location, string? search)
+        {
+            var events = await _eventsService.GetAll();
+
+            if (startDate.HasValue)
+            {
+                events = events.Where(e => e.StartDate >= startDate.Value).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(location))
+            {
+                events = events.Where(e => e.Venue != null && e.Venue.Name.Contains(location, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            if (!string.IsNullOrWhiteSpace(search))
+            {
+                events = events.Where(e =>
+                    (!string.IsNullOrEmpty(e.Title) && e.Title.Contains(search, StringComparison.OrdinalIgnoreCase)) ||
+                    (!string.IsNullOrEmpty(e.Description) && e.Description.Contains(search, StringComparison.OrdinalIgnoreCase))
+                ).ToList();
+            }
+
+            return View(events);
+        }
+
+
+
+
     }
 }

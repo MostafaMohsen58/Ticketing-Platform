@@ -68,5 +68,14 @@ namespace Tixora.Repositories
                 .Where(t => t.EventId == eventId && t.AvailableQuantity > 0 && t.Status == 0)
                 .ToListAsync();
         }
+        public async Task<List<Event>> GetUpcomingEventsAsync()
+        {
+            return await _context.Events
+                .Where(e => e.StartDate >= DateTime.Now)
+                .OrderBy(e => e.StartDate)
+                .ToListAsync();
+        }
+
+
     }
 }
