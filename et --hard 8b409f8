@@ -1,0 +1,103 @@
+[33m1fe9b6b[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m, [m[1;31morigin/ExternalLogin[m[33m, [m[1;32mExternalLogin[m[33m)[m AddExternal Login
+[33m896969e[m[33m ([m[1;31morigin/EBranch[m[33m)[m Merge branch 'main' of https://github.com/MostafaMohsen58/Ticketing-Platform
+[33m24afa80[m edit style 2
+[33m8b409f8[m remove comment
+[33m75bf09c[m Merge branch 'main' of https://github.com/MostafaMohsen58/Ticketing-Platform
+[33mae383d6[m edit style
+[33mad82bed[m Merge branch 'UserFeatures'
+[33mbcf5f60[m Merge pull request #27 from MostafaMohsen58/Ticket
+[33mba29028[m Merge pull request #26 from MostafaMohsen58/TicketCategory
+[33mb59d872[m Update Create view
+[33me10bd6e[m Update Views
+[33mafd8e0c[m AddDesign For All
+[33m30ec790[m Merge branch 'main' of https://github.com/MostafaMohsen58/Ticketing-Platform
+[33maf34942[m edit EditEvent
+[33m5eb4a0d[m addstyle
+[33me77a9f1[m Edit BookingViews
+[33ma0af8c6[m Edit Views
+[33m692c393[m CreateView
+[33mcf5e03e[m Merge branch 'main' of https://github.com/MostafaMohsen58/Ticketing-Platform
+[33m0a1f705[m BookingViews
+[33m2541a55[m Ticket-Views
+[33mbb6e494[m Commit Staged
+[33mde9fba8[m Add Index Layout
+[33m67e65f7[m add Comfirmtion
+[33m6092f21[m Add Details and Validations in Edit
+[33m049baf0[m Remove Preloader in layout
+[33m088a06d[m Merge branch 'main' of https://github.com/MostafaMohsen58/Ticketing-Platform
+[33m05d4b13[m Add DefaultLayout
+[33m464a5d0[m Merge pull request #25 from MostafaMohsen58/VenueCRUD
+[33m6ddafd0[m Add UserProfile And Adjust Auth
+[33me172548[m solve bugs after merge
+[33m0fba1c7[m merge ticketbranch
+[33m685bea7[m Solve Error
+[33m9690613[m merge EBranch
+[33m1075821[m Refactor to async
+[33mff24bd6[m "delete edit"
+[33m0e3efef[m Merge pull request #24 from MostafaMohsen58/TicketCategory
+[33md1ce286[m Merge pull request #23 from MostafaMohsen58/main
+[33m1ee8d99[m Merge pull request #22 from MostafaMohsen58/BookingBranch
+[33m9a2c247[m addDetailsAndActiveDelete
+[33m9d6b123[m update
+[33m6a53656[m update
+[33m3757f16[m ser_
+[33m0fb0f57[m ser_pull
+[33mddffc80[m Add Confirmation
+[33m8413dc6[m Add Create View
+[33m6d50d06[m Merge pull request #20 from MostafaMohsen58/EBranch
+[33m6f186ce[m[33m ([m[1;32meventsservice[m[33m)[m etid indexevent
+[33me693259[m Merge branch 'eventsservice' into main
+[33m30d88d7[m[33m ([m[1;31morigin/eventsservice[m[33m)[m commit edit
+[33mb3f5d90[m ser-pull-
+[33ma3d9764[m ser-pull
+[33mae6938a[m Merge pull request #18 from MostafaMohsen58/eventsservice
+[33m785226e[m Fix Issues
+[33m24b3408[m Merge branch 'main' into eventsservice
+[33m3384881[m edit servic
+[33ma70e4da[m replace async Await
+[33m837da7b[m Add BookingController
+[33m20091f5[m Add BookingController
+[33m92a68f0[m Merge pull request #17 from MostafaMohsen58/main
+[33m5fdafa3[m services-p
+[33m78b3360[m Merge pull request #16 from MostafaMohsen58/Add/user-venue-organizer_Repos
+[33mbbf2404[m Merge pull request #15 from MostafaMohsen58/eventsservice
+[33m69d1bcf[m Merge pull request #11 from MostafaMohsen58/main
+[33mf45916d[m Merge pull request #14 from MostafaMohsen58/TicketCategory
+[33m2f49167[m Add TicketCategory and Organizer Controllers
+[33m188bbb4[m addcontroller and actions
+[33mfb956d6[m ticketMerge
+[33m5ea3bc1[m ServiceMerge
+[33m3516ed5[m Add Venue Service And Controller
+[33m9e08a08[m[33m ([m[1;31morigin/Ticket[m[33m)[m last-up
+[33m79f5258[m Edit Relationship
+[33m7425425[m Solve Migration Conflict
+[33m08d72a3[m updateConnectionString
+[33m0f0de90[m Merge branch 'Ticket' into main
+[33mb16ff6e[m Merge pull request #12 from MostafaMohsen58/BookingBranch
+[33m27da6bb[m Merge branch 'Add/user-venue-organizer_Repos' into main
+[33mca1ffba[m[33m ([m[1;31morigin/BookingBranch[m[33m)[m Merge pull request #9 from MostafaMohsen58/main
+[33ma86adc5[m try delete .vs
+[33m3863a8e[m savechanges iin snap
+[33m1f0f2d2[m ConnectionStringUpdate
+[33m2c7b568[m Merge branch 'BookingBranch' into main
+[33m741b56a[m Merge pull request #8 from MostafaMohsen58/TicketCategory
+[33md04bdb9[m[33m ([m[1;31morigin/TicketCategory[m[33m)[m Merge pull request #7 from MostafaMohsen58/main
+[33m0921995[m Merge branch 'TicketCategory' into main
+[33m798199e[m Merge pull request #6 from MostafaMohsen58/EventBranch
+[33m615128f[m Merge branch 'EventBranch' of https://github.com/MostafaMohsen58/Ticketing-Platform into EventBranch
+[33me70e338[m addGitignore
+[33m7f91cd0[m delete
+[33m52255b4[m Merge pull request #4 from MostafaMohsen58/main
+[33m44a522f[m Edit in Migrations
+[33m46a9c2b[m update connectionstring
+[33m64b7457[m "update repo"
+[33m35c38db[m Added event-related repositories and modified organizer interface
+[33mb632778[m Add Libraries
+[33m57b906d[m Add User-Organizer-Venue Repo
+[33m1ec2235[m Add-TicketRepo
+[33mb87d2d5[m AddTicketRepo
+[33m6ccbbed[m Add Booking Repos
+[33mb386bdf[m "Add TicketCategory Repository"
+[33m255040b[m "add TicketCategory Repo"
+[33mf530d96[m[33m ([m[1;31morigin/Add/user-venue-organizer_Repos[m[33m)[m Add User, Venue And Organizer Repository
+[33mcd76100[m Add Models And Security Module

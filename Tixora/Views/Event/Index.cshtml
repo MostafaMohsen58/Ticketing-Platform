@@ -48,9 +48,9 @@
                         <td class="text-center">
                             <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-details">Details</a>
                             <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-edit">Edit</a>
-                            <button type="button" class="btn btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-id="@item.Id">
-                                Delete
-                            </button>
+                            <a asp-action="delete" asp-route-id="@item.Id" class="btn btn-delete">Delete</a>
+
+                          
                         </td>
                     </tr>
                 }
@@ -58,74 +58,6 @@
         </table>
     </div>
 </div>
-
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-    <div class="modal-dialog" style="max-width: 500px;">
-        <div class="modal-content" style="background-color: #ffffff;">
-            <div class="modal-header" style="background-color: #0e1b4d; color: white; padding: 8px 20px;">
-                <h5 class="modal-title" id="deleteModalLabel" style="font-size: 16px;">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white; font-size: 20px;"></button>
-            </div>
-            <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold; font-size: 16px; padding: 20px;">
-                Are you sure you want to delete this event?
-            </div>
-            <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
-                <form id="deleteForm" asp-action="Delete" method="post">
-                    <input type="hidden" id="eventId" name="id" />
-                    @Html.AntiForgeryToken()
-                    <button type="submit" class="btn" style="background-color: #f82249; color: white; border: 2px solid #f82249;">Yes</button>
-                    <button type="button" class="btn" style="background-color: #ffffff; color: #f82249; border: 2px solid #f82249;" data-bs-dismiss="modal">No</button>
-                </form>
-            </div>
-        </div>
-    </div>
-</div>
-
-<!-- Success Popup -->
-@if (TempData["SuccessMessage"] != null)
-{
-    <div id="successPopup" class="modal fade" tabindex="-1" aria-labelledby="successPopupLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content" style="background-color: #0e1b4d;">
-                <div class="modal-header" style="background-color: #0e1b4d; color: white;">
-                    <h5 class="modal-title" id="successPopupLabel">Success</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
-                </div>
-                <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold;">
-                    @TempData["SuccessMessage"]
-                </div>
-                <div class="modal-footer" style="background-color: #ffffff;">
-                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Close</button>
-                </div>
-            </div>
-        </div>
-    </div>
-}
-
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var deleteModal = document.getElementById('deleteModal');
-            deleteModal.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var id = button.getAttribute('data-id');
-                var input = deleteModal.querySelector('input[name="id"]');
-                input.value = id;
-            });
-
-        @if (TempData["SuccessMessage"] != null)
-        {
-            <text>
-                        $(document).ready(function () {
-                            $('#successPopup').modal('show');
-                        });
-            </text>
-        }
-        });
-    </script>
-}
 
 @section Styles {
     <style>
