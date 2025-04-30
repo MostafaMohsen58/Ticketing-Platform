@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Services.Interface;
@@ -8,10 +9,9 @@ namespace Tixora.Controllers
 {
     public class AccountController : Controller
     {
-        
         private readonly IUserService _userService;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, SignInManager<ApplicationUser> signInManager)
         {
             _userService = userService;
         }
@@ -92,9 +92,13 @@ namespace Tixora.Controllers
         }
         #region Login
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            return View();
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                Schemes = await _userService.AuthenticationSchemes()
+            };
+            return View(loginViewModel);
         }
 
         [HttpPost]
@@ -155,7 +159,7 @@ namespace Tixora.Controllers
             var user = _userService.GetUserById(id);
             return View(user);
         }
-        
+
         [HttpPost]
         public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile? ImageUrl)
         {
@@ -199,7 +203,7 @@ namespace Tixora.Controllers
         public IActionResult Delete(string id)
         {
             var user = _userService.GetUserById(id);
-            if(user == null)
+            if (user == null)
             {
                 return NotFound("There is no Account for this id");
             }
@@ -224,5 +228,57 @@ namespace Tixora.Controllers
         {
             return View();
         }
+
+        public async Task<IActionResult> ExternalLogin(string provider, string returnUrl = "")
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+
+            var properties = await _userService.MyConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = "", string remoteError = "")
+        {
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                Schemes = await _userService.AuthenticationSchemes()
+            };
+
+            if (!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError("", $"error yabny {remoteError}");
+                return View("login", loginViewModel);
+            }
+
+            var info = await _userService.MyGetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError("", $"error yabny {remoteError}");
+                return View("login", loginViewModel);
+            }
+
+            var signInResult = await _userService.MyExternalLoginSignInAsync(info);
+            if (signInResult.Succeeded)
+            {
+                return RedirectToAction("index", "Event");
+            }
+
+            else
+            {
+                var userEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (userEmail != null)
+                {
+                    var user = await _userService.MyFindByEmailAsync(userEmail);
+                    if (user != null)
+                    {
+                        return RedirectToAction("index", "Event");
+                    }
+
+                }
+                ModelState.AddModelError("", $"something error");
+                return View("login" , "Event");
+            }
+        }
     }
 }
+

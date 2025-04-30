@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Net;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Tixora.Models;
 using Tixora.ViewModels.UserViewModels;
 
@@ -18,5 +20,11 @@ namespace Tixora.Services.Interface
         Task<IdentityResult> UpdateUserProfileAsync(UserProfileViewModel model);
         Task<IdentityResult> UpdateUserProfilePersonalInfo(PersonalInformation model);
         Task<IdentityResult> UpdateUserProfileAccountInfo(AccountInformation model, string userId);
+
+        Task<IEnumerable<AuthenticationScheme>> AuthenticationSchemes();
+        Task<AuthenticationProperties?> MyConfigureExternalAuthenticationProperties(string provider, string redirectUrl);
+        Task<ExternalLoginInfo?> MyGetExternalLoginInfoAsync();
+        Task<SignInResult> MyExternalLoginSignInAsync(ExternalLoginInfo info);
+        Task<IdentityUser> MyFindByEmailAsync(string useremail);
     }
 }

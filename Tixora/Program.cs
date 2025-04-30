@@ -1,5 +1,6 @@
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using Tixora.Models;
 using Tixora.Models.Context;
 using Tixora.Repositories;
@@ -67,6 +68,14 @@ namespace Tixora
             builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddSingleton<FileService>();
+
+            builder.Services.AddAuthentication().AddGoogle(op =>
+            {
+                op.ClientId = builder.Configuration["Auth:Google:ClientId"];
+                op.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
+              //  op.CallbackPath = "/signin-google";
+            });
+
             var app = builder.Build();
 
 
