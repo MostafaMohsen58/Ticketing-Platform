@@ -1,104 +1,103 @@
-﻿@* @using Tixora.Settings *@
-@* @model Tixora.Models.Event *@
-
-@* @{ *@
-@*     ViewData["Title"] = "Details"; *@
-@* } *@
-
-@* <h1>Details</h1> *@
-
-@* <div> *@
-@*     <dl class="row"> *@
-@*         <div class="col-md-6"> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Title) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Title) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Description) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Description) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.StartDate) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.StartDate) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Category) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Category) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Venue.Name) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Venue.Name) *@
-@*         </dd> *@
-@*         <dt class = "col-sm-2"> *@
-@*             @Html.DisplayNameFor(model => model.Organizer.Name) *@
-@*         </dt> *@
-@*         <dd class = "col-sm-10"> *@
-@*             @Html.DisplayFor(model => model.Organizer.Name) *@
-@*         </dd> *@
-@*         </div> *@
-@*         <div class="col-md-6"> *@
-@*             <img src="@($"{FileSettings.ImagePath}/{Model.ImageUrl}")" alt="@Model.ImageUrl" style="width:400px" /> *@
-@*          </div> *@
-        
-@*     </dl> *@
-@* </div> *@
-@* <div> *@
-@*  <a asp-action="index">back to list</a> *@
-@* </div> *@
-
-@using Tixora.Settings
+﻿@using Tixora.Settings
 @model Tixora.Models.Event
 
 @{
     ViewData["Title"] = "Event Details";
 }
 
-    <h2>Event Details</h2>
-<div class="container event-container">
-    <div class="row">
-        <div class="col-md-6">
-            <dl class="row event-details">
-                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Title)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Title)</dd>
-                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Description)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Description)</dd>
-                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.StartDate)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.StartDate)</dd>
-                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Category)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Category)</dd>
-                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Venue.Name)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Venue.Name)</dd>
-                <dt class="col-sm-4">@Html.DisplayNameFor(model => model.Organizer.Name)</dt>
-                <dd class="col-sm-8">@Html.DisplayFor(model => model.Organizer.Name)</dd>
-            </dl>
-            <div class="mt-4">
-                <a asp-action="Index" class="btn btn-secondary w-100">Back to List</a>
-            </div>
-        </div>
-        <div class="col-md-6 d-flex justify-content-center align-items-center">
-            <div class="cover-preview-container">
-                <img class="cover-preview img-fluid"
-                     src="@(Model.ImageUrl != null ? $"{FileSettings.ImagePath}/{Model.ImageUrl}" : "/images/placeholder.jpg")"
-                     alt="@(Model.ImageUrl ?? "No Image")" />
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Event Details
+                </h2>
+
+                <div class="row">
+                    <div class="col-md-6">
+                        <dl class="row">
+                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Title)</dt>
+                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Title)</dd>
+                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Description)</dt>
+                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Description)</dd>
+                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.StartDate)</dt>
+                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.StartDate)</dd>
+                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Category)</dt>
+                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Category)</dd>
+                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Venue.Name)</dt>
+                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Venue.Name)</dd>
+                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Organizer.Name)</dt>
+                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Organizer.Name)</dd>
+                        </dl>
+                    </div>
+                    <div class="col-md-6 d-flex justify-content-center align-items-center">
+                        <div class="cover-preview-container" style="width: 100%; max-width: 250px; text-align: center; border: 1px solid #2f3138; border-radius: 0.5rem; padding: 10px; background-color: #f9f9f9;">
+                            <img class="cover-preview img-fluid"
+                                 src="@(Model.ImageUrl != null ? $"{FileSettings.ImagePath}/{Model.ImageUrl}" : "/images/placeholder.jpg")"
+                                 alt="@(Model.ImageUrl ?? "No Image")"
+                                 style="max-width: 100%; border-radius: 0.5rem;" />
+                        </div>
+                    </div>
+                </div>
+
+                @if (Model.Tickets != null && Model.Tickets.Any())
+                {
+                    <h4 class="mt-4" style="font-size: 1.2rem;">Associated Tickets</h4>
+                    <table class="table table-sm" style="font-size: 1rem;">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Ticket Category</th>
+                                <th>Price</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var ticket in Model.Tickets)
+                            {
+                                <tr>
+                                    <td>@ticket.Id</td>
+                                    <td>@(ticket.TicketCategory?.Name ?? "N/A")</td>
+                                    <td>@ticket.Price.ToString("C")</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                }
+
+                <div class="mt-4 text-right">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn"
+                       style="background-color: #f82249; color: #ffffff; border: none; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        Update
+                    </a>
+                    <a asp-action="Index" class="btn"
+                       style="border: 1px solid #0e1b4d; color: #0e1b4d; background-color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        Back to List
+                    </a>
+                </div>
             </div>
         </div>
     </div>
-</div>
+</section>
 
-@section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
     }
-    <script src="~/js/site.js"></script>
-}
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .btn:disabled {
+        background-color: #6c757d !important;
+        color: #ffffff !important;
+        opacity: 0.65;
+        cursor: not-allowed;
+    }
+
+    .btn {
+        background-color: #f82249 !important;
+        color: #ffffff !important;
+    }
+</style>
