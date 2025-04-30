@@ -1,77 +1,230 @@
 ﻿@model IEnumerable<Tixora.Models.Event>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Events";
+    Layout = "_AdminLayout";
 }
 
-<h1>Index</h1>
+<style>
+    .container {
+        padding: 2rem;
+    }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VenueId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrganizerId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Venue.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organizer.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+    .header-section {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+        .header-section h1 {
+            font-size: 2rem;
+            color: #333;
+            margin: 0;
+        }
+
+    .btn-add-new {
+        background-color: #7C4585;
+        color: white;
+        border-radius: 4px;
+        padding: 0.5rem 1rem;
+        text-decoration: none;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-weight: 500;
+    }
+
+    .table {
+        width: 100%;
+        border-collapse: separate;
+        border-spacing: 0;
+    }
+
+        .table th {
+            text-transform: uppercase;
+            font-size: 0.8rem;
+            font-weight: 600;
+            padding: 1rem 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+            color: #333;
+        }
+
+        .table td {
+            padding: 1rem 0.75rem;
+            vertical-align: middle;
+            border-bottom: 1px solid #f1f1f1;
+        }
+
+    .description-cell {
+        max-width: 300px;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: flex-end;
+    }
+
+    .btn-action {
+        border: none;
+        color: white;
+        padding: 0.5rem 1rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        border-radius: 4px;
+        text-decoration: none;
+        min-width: 100px;
+        justify-content: center;
+    }
+
+    .btn-edit {
+        background-color: #7C4585;
+    }
+
+    .btn-details {
+        background-color: #F7AD45;
+    }
+
+    .btn-delete {
+        background-color: #BB3E00;
+    }
+
+    /* Image Styling */
+    .event-image {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 5px;
+    }
+</style>
+
+<div class="container">
+    <div class="header-section">
+        <h1>Events Management</h1>
+        <a asp-action="Create" class="btn-add-new">
+            <i class="bi bi-plus-circle"></i>
+            Add New Event
+        </a>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert-warning" role="alert">
+            No events found.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Image</th> <!-- Add image column header -->
+                        <th>ID</th>
+                        <th>TITLE</th>
+                        <th>DESCRIPTION</th>
+                        <th>START DATE</th>
+                        <th>CATEGORY</th>
+                        <th>VENUE</th>
+                        <th>ORGANIZER</th>
+                        <th>ACTIONS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <!-- Image Column -->
+                            <td>
+                                @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                {
+                                    <img src="@Url.Content("~/images/events/" + item.ImageUrl)" alt="Event Image" class="event-image" />
+                                }
+                                else
+                                {
+                                    <span>No Image</span>
+                                }
+                            </td>
+                            <td>@item.Id</td>
+                            <td>@item.Title</td>
+                            <td class="description-cell">@item.Description</td>
+                            <td>@item.StartDate.ToString("MMM dd, yyyy")</td>
+                            <td>@item.Category</td>
+                            <td>@item.Venue?.Name</td>
+                            <td>@item.Organizer?.Name</td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="/Event/Edit?id=@item.Id" class="btn-action btn-edit">
+                                        <i class="bi bi-pencil"></i>
+                                        Edit
+                                    </a>
+                                    <a href="/Event/Details?id=@item.Id" class="btn-action btn-details" style="color:black">
+                                        <i class="bi bi-eye"></i>
+                                        Details
+                                    </a>
+                                    <button type="button"
+                                            class="btn-action btn-delete"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-id="@item.Id"
+                                            data-title="@item.Title"
+                                            data-image="@item.ImageUrl"
+                                            data-date="@item.StartDate.ToString("MMM dd, yyyy")"
+                                            data-venue="@item.Venue?.Name"
+                                            data-organizer="@item.Organizer?.Name"
+                                            >
+                                        <i class="bi bi-trash"></i>
+                                        Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- Add the delete confirmation modal and other modals here -->
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+    // JavaScript for handling the delete confirmation modal
+    $(document).ready(function() {
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+
+            var eventId = button.data('id');
+            var eventTitle = button.data('title');
+            var eventImage = button.data('image');
+            var eventDate = button.data('date');
+            var eventVenue = button.data('venue');
+            var eventOrganizer = button.data('organizer');
+
+            // Update the modal's content
+            var modal = $(this);
+            modal.find('#eventId').val(eventId);
+            modal.find('#eventIdToDelete').text(eventId);
+            modal.find('#eventTitleToDelete').text(eventTitle);
+            modal.find('#eventDateToDelete').text(eventDate);
+            modal.find('#eventVenueToDelete').text(eventVenue);
+            modal.find('#eventOrganizerToDelete').text(eventOrganizer);
+
+            var imageElement = modal.find('#eventImage');
+            if (eventImage) {
+                imageElement.attr('src', '/images/events/' + eventImage);
+                imageElement.show();
+            } else {
+                imageElement.hide();
+            }
+        });
+    });
+</script>

@@ -1,4 +1,4 @@
-﻿@using Tixora.Settings
+﻿@* @using Tixora.Settings
 @model Tixora.ViewModels.EventViewModel.EditEventViewModel
 
 @{
@@ -75,3 +75,116 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script src="~/js/site.js"></script>
 }
+ *@
+ @model Tixora.ViewModels.EventViewModel.EditEventViewModel
+
+@{
+    ViewData["Title"] = "Edit Event";
+    Layout = "_AdminLayout";
+}
+
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #7C4585; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Edit Event
+                </h2>
+
+                <form asp-action="Edit" asp-route-id="@Model.Id" enctype="multipart/form-data" method="post">
+                    <input type="hidden" asp-for="Id" />
+
+                    <div class="mb-3">
+                        <label asp-for="Title" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Description" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Description" class="form-control" />
+                        <span asp-validation-for="Description" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="StartDate" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="StartDate" class="form-control" />
+                        <span asp-validation-for="StartDate" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Category" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Category" class="form-control" />
+                        <span asp-validation-for="Category" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="VenueId" class="form-label text-secondary" style="font-weight: bold;"></label>
+                        <select asp-for="VenueId" class="form-select" asp-items="Model.Venues">
+                            <option value="">-- Select Venue --</option>
+                        </select>
+                        <span asp-validation-for="VenueId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="OrganizerId" class="form-label text-secondary" style="font-weight: bold;"></label>
+                        <select asp-for="OrganizerId" class="form-select" asp-items="Model.Organizers">
+                            <option value="">-- Select Organizer --</option>
+                        </select>
+                        <span asp-validation-for="OrganizerId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="Cover" class="form-label text-secondary" style="font-weight: bold;"></label>
+                        <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file" />
+                        <span asp-validation-for="Cover" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <button type="submit" class="btn"
+                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Update
+                        </button>
+                        <a asp-action="Index" class="btn"
+                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Back to List
+                        </a>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</section>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script src="~/js/site.js"></script>
+}
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-select, .form-control {
+        border-radius: 0.5rem;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+        .form-select:focus, .form-control:focus {
+            border-color: #7C4585;
+            outline: none;
+        }
+
+    .form-label {
+        font-size: 1rem;
+        color: #333;
+    }
+</style>

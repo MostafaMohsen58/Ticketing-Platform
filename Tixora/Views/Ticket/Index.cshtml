@@ -2,136 +2,310 @@
 
 @{
     ViewData["Title"] = "Tickets";
+    Layout = "_AdminLayout";
 }
-<style>
-    
-    .table {
-        border-collapse: collapse;
-        width: 100%;
+
+@* <style>
+    .users-section {
+        padding: 2rem 0;
     }
 
-      
-        .table td, .table th {
-            padding: 12px 15px;
+    .users-table {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .users-table thead {
+            background-color: #f8f9fa;
             text-align: center;
-            font-size: 16px;
-            color: #222533;
         }
 
-       
-        .table thead {
-            background-color: #2f3138;
+        .users-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 1rem;
+            border-bottom: 2px solid #dee2e6;
         }
 
-            .table thead th {
-                color: #ffffff;
-                font-weight: bold;
-                text-transform: uppercase;
-                letter-spacing: 1px;
-                background-color: #0e1b4d;
-                transition: background-color 0.3s ease;
+        .users-table td {
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .users-table tbody tr {
+            transition: background-color 0.2s ease;
+            text-align: center;
+        }
+
+            .users-table tbody tr:hover {
+                background-color: rgba(0, 123, 255, 0.05);
             }
 
-               
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
 
-        .table tbody tr:hover {
-            background-color: #f0f0f0;
-            cursor: pointer;
+    .btn-action {
+        min-width: 80px;
+    }
+
+    .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .search-container {
+        max-width: 300px;
+    }
+
+    .pagination-container {
+        display: flex;
+        justify-content: center;
+        margin-top: 2rem;
+    }
+    
+    /* Custom modal styling */
+    .modal-header {
+        background-color: #0e1b4d; 
+        color: white; 
+        padding: 8px 20px;
+    }
+    
+    .modal-title {
+        font-size: 16px;
+    }
+    
+    .modal-body {
+        background-color: #ffffff; 
+        color: #0e1b4d; 
+        font-weight: bold; 
+        font-size: 16px; 
+        padding: 20px;
+    }
+    
+    .modal-footer {
+        background-color: #ffffff; 
+        padding: 8px 10px;
+    }
+    
+    .btn-confirm-delete {
+        background-color: #f82249; 
+        color: white; 
+        border: 2px solid #f82249; 
+        border-radius: 5px; 
+        padding: 8px 16px; 
+        font-size: 16px;
+    }
+    
+    .btn-cancel-delete {
+        background-color: #ffffff; 
+        color: #f82249; 
+        border: 2px solid #f82249; 
+        border-radius: 5px; 
+        padding: 8px 16px; 
+        font-size: 16px;
+    }
+</style> *@
+
+<style>
+    .users-section {
+        padding: 2rem 0;
+    }
+
+    .users-table {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .users-table thead {
+            background-color: #f8f9fa;
+            text-align: center;
         }
 
-        .table tbody td {
-            background-color: #ffffff;
-            transition: background-color 0.3s ease;
+        .users-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 1rem;
+            border-bottom: 2px solid #dee2e6;
         }
 
-           
-  
-    .btn {
+        /* Ensure text inside cells wraps properly */
+        .users-table td {
+            word-wrap: break-word; /* Breaks long words */
+            word-break: break-all; /* Allows content to break anywhere if needed */
+            overflow-wrap: break-word; /* Ensures that long words will break when necessary */
+            max-width: 265px; /* Adjust as needed */
+            text-overflow: ellipsis; /* Truncate content with '...' if it overflows */
+            white-space: nowrap; /* Prevents text from breaking into multiple lines */
+            overflow: hidden; /* Hide content that overflows */
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        /* For long text fields (like name, email, etc.), you may want to force wrapping */
+        .users-table td {
+            word-wrap: break-word;
+            /* max-width: 30px; /* Adjust as needed */
+        }
+
+        .users-table tbody tr {
+            transition: background-color 0.2s ease;
+            text-align: center;
+            max-width: 265px;
+        }
+
+            .users-table tbody tr:hover {
+                background-color: rgba(0, 123, 255, 0.05);
+            }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .btn-action {
+        min-width: 80px;
+    }
+
+    .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .search-container {
+        max-width: 300px;
+    }
+
+    /* Custom modal styling */
+    .modal-header {
+        background-color: #0e1b4d;
+        color: white;
+        padding: 8px 20px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+    }
+
+    .modal-body {
+        background-color: #ffffff;
+        color: #0e1b4d;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 20px;
+    }
+
+    .modal-footer {
+        background-color: #ffffff;
+        padding: 8px 10px;
+    }
+
+    .btn-confirm-delete {
+        background-color: #f82249;
+        color: white;
+        border: 2px solid #f82249;
         border-radius: 5px;
         padding: 8px 16px;
-        transition: background-color 0.3s ease, transform 0.3s ease;
-        font-size: 14px;
+        font-size: 16px;
     }
 
-        
-        .btn:hover {
-            opacity: 0.8;
-			font-weight: bold;
-            transform: scale(1.05);
-        }
-
-        .btn:focus {
-            outline: none;
-            box-shadow: none;
-        }
-
-    .btn-details {
-        background-color: #94B4C1;
-        color: #ffffff
-    }
-
-    .btn-edit {
-        background-color: #547792;
-        color: #ffffff;
-        margin-left: 5px;
-    }
-
-    .btn-delete {
-        background-color: #0e1b4d;
-        color: #ffffff;
-        margin-left: 5px;
+    .btn-cancel-delete {
+        background-color: #ffffff;
+        color: #f82249;
+        border: 2px solid #f82249;
+        border-radius: 5px;
+        padding: 8px 16px;
+        font-size: 16px;
     }
 </style>
 
-
-
-
-
-<div class="container mt-5">
-    <div class="text-start mb-3">
-        <a asp-action="Create" class="btn" style="background-color: #f82249; color: #ffffff; font-size: 16px;">Create New Ticket</a>
+<div class="container users-section">
+    <div class="header-actions">
+        <h1>Tickets </h1>
+        <a asp-action="Create" class="btn d-flex align-items-center" style="background-color:#7C4585; color:white">
+            <i class="bi bi-plus-circle me-2"></i>Add New Ticket
+        </a>
     </div>
 
-    <div class="table-responsive">
-        <table class="table table-bordered table-hover text-center">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Price</th>
-                    <th>Available Quantity</th>
-                    <th>Event</th>
-                    <th>Ticket Category</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var ticket in Model.Tickets)
-                {
+    @if (Model.Tickets == null || !Model.Tickets.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            No tickets found.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive users-table" style="margin: 5rem; margin-top: 0px; margin-bottom:0px">
+            <table class="table table-borderless mb-3">
+                <thead>
                     <tr>
-                        <td>@ticket.Id</td>
-                        <td>@ticket.Price</td>
-                        <td>@ticket.AvailableQuantity</td>
-                        <td>@ticket.Event?.Title</td>
-                        <td>@ticket.TicketCategory?.Name</td>
-                        <td class="text-center">
-                            <a asp-action="Details" asp-route-id="@ticket.Id" class="btn btn-details">
-                                Details
-                            </a>
-
-                            <a asp-action="Edit" asp-route-id="@ticket.Id" class="btn btn-edit">
-                                Update
-                            </a>
-                            <button type="button" class="btn btn-delete" data-bs-toggle="modal" data-bs-target="#deleteModal" data-ticket-id="@ticket.Id">
-                                Delete
-                            </button>
-                        </td>
+                        <th>ID</th>
+                        <th>Price</th>
+                        <th>Available Quantity</th>
+                        <th>Event</th>
+                        <th>Ticket Category</th>
+                        <th>Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
-    </div>
+                </thead>
+                <tbody>
+                    @foreach (var ticket in Model.Tickets)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@ticket.Id</strong>
+                            </td>
+                            <td>
+                                @ticket.Price
+                            </td>
+                            <td>
+                                @ticket.AvailableQuantity
+                            </td>
+                            <td>
+                                @ticket.Event?.Title
+                            </td>
+                            <td>
+                                @ticket.TicketCategory?.Name
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a href="/Ticket/Edit?id=@ticket.Id" class="btn btn-action" style="background-color:#7C4585; color:white">
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </a>
+                                    <a href="/Ticket/Details?id=@ticket.Id" class="btn btn-warning btn-action" style="background-color:#F7AD45;">
+                                        <i class="bi bi-eye me-1"></i>Details
+                                    </a>
+                                    <button type="button"
+                                            class="btn btn-danger btn-action"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-id="@ticket.Id"
+                                            data-price="@ticket.Price"
+                                            data-quantity="@ticket.AvailableQuantity"
+                                            data-event="@ticket.Event?.Title"
+                                            data-category="@ticket.TicketCategory?.Name"
+                                            style="background-color:#BB3E00;color:white">
+                                        <i class="bi bi-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
 </div>
-
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -139,27 +313,28 @@
         <div class="modal-content" style="background-color: #ffffff;">
             <div class="modal-header" style="background-color: #0e1b4d; color: white; padding: 8px 20px;">
                 <h5 class="modal-title" id="deleteModalLabel" style="font-size: 16px;">Confirm Delete</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white; font-size: 20px; padding: 0 10px; margin-top: -5px;"></button>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold; font-size: 16px; padding: 20px;">
-                Are you sure you want to delete this ticket?
+                <p><strong>Ticket ID:</strong> <span id="ticketIdToDelete"></span></p>
+                <p><strong>Price:</strong> <span id="ticketPriceToDelete"></span></p>
+                <p><strong>Available Quantity:</strong> <span id="ticketQuantityToDelete"></span></p>
+                <p><strong>Event:</strong> <span id="ticketEventToDelete"></span></p>
+                <p><strong>Category:</strong> <span id="ticketCategoryToDelete"></span></p>
+                <p>Are you sure you want to delete this ticket?</p>
             </div>
             <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
                 <form asp-action="Delete" method="post">
                     <input type="hidden" name="id" id="ticketId" />
-                  
-                    <button type="submit" class="btn" style="background-color:#f82249 ; color: white; border: 2px solid #f82249; border-radius: 5px; padding: 8px 16px; font-size: 16px;">Yes</button>
-
-                  
+                    
+                    <button type="submit" class="btn" style="background-color:#f82249; color: white; border: 2px solid #f82249; border-radius: 5px; padding: 8px 16px; font-size: 16px;">Yes</button>
+                    
                     <button type="button" class="btn" style="background-color: #ffffff; color: #f82249; border: 2px solid #f82249; border-radius: 5px; padding: 8px 16px; font-size: 16px;" data-bs-dismiss="modal">No</button>
-
-
                 </form>
             </div>
         </div>
     </div>
 </div>
-
 
 @if (TempData["SuccessMessage"] != null)
 {
@@ -168,7 +343,7 @@
             <div class="modal-content" style="background-color: #0e1b4d;">
                 <div class="modal-header" style="background-color: #0e1b4d; color: white;">
                     <h5 class="modal-title" id="successPopupLabel">Success</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" style="color: white;"></button>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold;">
                     @TempData["SuccessMessage"]
@@ -179,30 +354,40 @@
             </div>
         </div>
     </div>
-
-
 }
 
-@section Scripts {
-    <partial name="_ValidationScriptsPartial" />
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            var deleteModal = document.getElementById('deleteModal');
-            deleteModal.addEventListener('show.bs.modal', function (event) {
-                var button = event.relatedTarget;
-                var ticketId = button.getAttribute('data-ticket-id');
-                var input = deleteModal.querySelector('input[name="id"]');
-                input.value = ticketId;
-            });
+<!-- Bootstrap & jQuery Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    // JavaScript for handling the delete confirmation modal
+    $(document).ready(function() {
+        // When the delete button is clicked, set the ticket data in the modal
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget); // Button that triggered the modal
+            
+            var ticketId = button.data('id');
+            var ticketPrice = button.data('price');
+            var ticketQuantity = button.data('quantity');
+            var ticketEvent = button.data('event');
+            var ticketCategory = button.data('category');
+
+            // Update the modal's content
+            var modal = $(this);
+            modal.find('#ticketId').val(ticketId);
+            modal.find('#ticketIdToDelete').text(ticketId);
+            modal.find('#ticketPriceToDelete').text(ticketPrice);
+            modal.find('#ticketQuantityToDelete').text(ticketQuantity);
+            modal.find('#ticketEventToDelete').text(ticketEvent);
+            modal.find('#ticketCategoryToDelete').text(ticketCategory);
+        });
 
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
-                        $(document).ready(function () {
-                            $('#successPopup').modal('show');
-                        });
+                $('#successPopup').modal('show');
             </text>
         }
-        });
-    </script>
-}
+    });
+</script>

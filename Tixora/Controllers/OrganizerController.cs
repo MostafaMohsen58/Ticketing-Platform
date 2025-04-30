@@ -79,7 +79,7 @@ namespace Tixora.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, Organizer organizer, IFormFile file)
+        public async Task<IActionResult> Edit(int id, Organizer organizer, IFormFile? file)
         {
             if (id != organizer.Id)
             {
@@ -95,24 +95,42 @@ namespace Tixora.Controllers
             {
                 try
                 {
+                    //var existingOrganizer = await _service.GetById(id);
+                    //if (existingOrganizer != null && existingOrganizer.Events != null)
+                    //{
+                    //    organizer.Events = existingOrganizer.Events;
+                    //}
+                    //else
+                    //{
+                    //    organizer.Events = new List<Event>();
+                    //}
+
+                    //if (file != null && file.Length > 0)
+                    //{
+                    //    organizer.LogoUrl = UploadFile(file);
+                    //}
+
+                    //await _service.Update(organizer);
+                    //TempData["SuccessMessage"] = "Organizer updated successfully";
+                    //return RedirectToAction(nameof(Index));
                     var existingOrganizer = await _service.GetById(id);
-                    if (existingOrganizer != null && existingOrganizer.Events != null)
+                    if (existingOrganizer != null )
                     {
-                        organizer.Events = existingOrganizer.Events;
+                        if (file != null && file.Length > 0)
+                        {
+                            organizer.LogoUrl = UploadFile(file);
+                        }
+
+                        await _service.Update(organizer);
+                        TempData["SuccessMessage"] = "Organizer updated successfully";
+                        return RedirectToAction(nameof(Index));
                     }
                     else
                     {
-                        organizer.Events = new List<Event>();
+                        ModelState.AddModelError("", "Organizer not found.");
                     }
 
-                    if (file != null && file.Length > 0)
-                    {
-                        organizer.LogoUrl = UploadFile(file);
-                    }
 
-                    await _service.Update(organizer);
-                    TempData["SuccessMessage"] = "Organizer updated successfully";
-                    return RedirectToAction(nameof(Index));
                 }
                 catch (Exception ex)
                 {
