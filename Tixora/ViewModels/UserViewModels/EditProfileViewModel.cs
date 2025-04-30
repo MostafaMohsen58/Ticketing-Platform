@@ -11,7 +11,7 @@ namespace Tixora.ViewModels.UserViewModels
         [EmailAddress]
         public string Email { get; set; }
 
-        [Url(ErrorMessage = "Invalid URL format")]
+        //[Url(ErrorMessage = "Invalid URL format")]
         [Display(Name = "Profile Picture")]
         public string? ProfileUrl { get; set; }
 
