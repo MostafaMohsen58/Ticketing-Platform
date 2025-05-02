@@ -2,7 +2,6 @@
 using Tixora.Services;
 using Tixora.Services.Interfaces;
 using Tixora.ViewModels.EventViewModel;
-
 namespace Tixora.Controllers
 {
     public class EventController : Controller
@@ -127,8 +126,97 @@ namespace Tixora.Controllers
             return View(events);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Matches(string category = null, int? venueId = null, DateTime? date = null, string search = null)
+        {
+            // Get all events
+            var events = await _eventsService.GetAll();
 
+            // Filter by category (like "matches", "sports", etc)
+            
+             events = events.Where(e => e.Category.Equals("matches", StringComparison.OrdinalIgnoreCase)).ToList();
+            
 
+            // Filter by venue
+            if (venueId.HasValue)
+            {
+                events = events.Where(e => e.VenueId == venueId.Value).ToList();
+            }
+
+            // Filter by date
+            if (date.HasValue)
+            {
+                events = events.Where(e => e.StartDate.Date == date.Value.Date).ToList();
+            }
+
+            // Filter by search term
+            if (!string.IsNullOrEmpty(search))
+            {
+                events = events.Where(e =>
+                    e.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    e.Description.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            // Get venues for filter dropdown
+            var venues = await _venueService.GetAll();
+
+            // Prepare view model
+            var viewModel = new MatchesViewModel
+            {
+                Events = events,
+                Venues = venues,
+                SelectedCategory = category,
+                SelectedVenueId = venueId,
+                SelectedDate = date,
+                SearchTerm = search
+            };
+
+            return View(viewModel);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Entertainment(int? venueId = null, DateTime? date = null, string search = null)
+        {
+            // Get all events
+            var events = await _eventsService.GetAll();
+
+            // Filter to only show entertainment events
+            events = events.Where(e => e.Category.Equals("entertainment", StringComparison.OrdinalIgnoreCase)).ToList();
+
+            // Filter by venue
+            if (venueId.HasValue)
+            {
+                events = events.Where(e => e.VenueId == venueId.Value).ToList();
+            }
+
+            // Filter by date
+            if (date.HasValue)
+            {
+                events = events.Where(e => e.StartDate.Date == date.Value.Date).ToList();
+            }
+
+            // Filter by search term
+            if (!string.IsNullOrEmpty(search))
+            {
+                events = events.Where(e =>
+                    e.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
+                    e.Description.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
+
+            // Get venues for filter dropdown
+            var venues = await _venueService.GetAll();
+
+            // Prepare view model
+            var viewModel = new EntertainmentViewModel
+            {
+                Events = events,
+                Venues = venues,
+                SelectedVenueId = venueId,
+                SelectedDate = date,
+                SearchTerm = search
+            };
+
+            return View(viewModel);
+        }
 
     }
 }

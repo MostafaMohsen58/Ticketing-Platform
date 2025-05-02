@@ -1,0 +1,99 @@
+﻿@model Tixora.ViewModels.EventViewModel.EntertainmentViewModel
+
+@{
+    ViewData["Title"] = "Entertainment Events";
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Entertainment Events</h1>
+
+    <!-- Filter Form -->
+    <div class="card mb-4">
+        <div class="card-header">
+            <h5>Filter Entertainment Events</h5>
+        </div>
+        <div class="card-body">
+            <form method="get" class="row g-3">
+                <!-- Venue Filter -->
+                <div class="col-md-4">
+                    <label for="venueId" class="form-label">Venue</label>
+                    <select id="venueId" name="venueId" class="form-select">
+                        <option value="">All Venues</option>
+                        @foreach (var venue in Model.Venues)
+                        {
+                            <option value="@venue.Id" selected="@(Model.SelectedVenueId == venue.Id)">@venue.Name</option>
+                        }
+                    </select>
+                </div>
+
+                <!-- Date Filter -->
+                <div class="col-md-4">
+                    <label for="date" class="form-label">Event Date</label>
+                    <input type="date" id="date" name="date" class="form-control" value="@(Model.SelectedDate?.ToString("yyyy-MM-dd"))">
+                </div>
+
+                <!-- Search Filter -->
+                <div class="col-md-4">
+                    <label for="search" class="form-label">Search</label>
+                    <input type="text" id="search" name="search" class="form-control" value="@Model.SearchTerm" placeholder="Search by title or description">
+                </div>
+
+                <!-- Submit Button -->
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Apply Filters</button>
+                    <a href="@Url.Action("Entertainment")" class="btn btn-outline-secondary">Clear Filters</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @if (Model.Events != null && Model.Events.Any())
+        {
+            @foreach (var eventItem in Model.Events)
+            {
+                <div class="col">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                        {
+                            <img src="~/Images/@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;">
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <span class="text-muted">No Image</span>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@eventItem.Title</h5>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-calendar-event"></i> @eventItem.StartDate.ToString("dddd, MMMM d, yyyy")
+                            </p>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-geo-alt"></i> @eventItem.Venue?.Name
+                            </p>
+                            <p class="card-text">@(eventItem.Description?.Length > 100 ? eventItem.Description.Substring(0, 100) + "..." : eventItem.Description)</p>
+                        </div>
+                        <div class="card-footer">
+                            <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-primary">View Details</a>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-secondary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@eventItem.Id" class="btn btn-danger">Delete</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No entertainment events found matching your criteria.
+                </div>
+            </div>
+        }
+    </div>
+</div>

@@ -78,7 +78,7 @@ namespace Tixora
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
