@@ -11,6 +11,8 @@ namespace Tixora.Services.Interfaces
         Task<Booking> GetByIdAsync(int id);
         Task AddAsync(Booking booking);
         Task<bool> UpdateAsync(EditBookingViewModel viewModel, int bookingId);
+        Task<bool> UpdateAfterPay(Booking booking);
+        Task<bool> UpdateBeforePay(Booking booking);
         Task DeleteAsync(int id);
         Task<int> SaveAsync();
 
@@ -18,5 +20,6 @@ namespace Tixora.Services.Interfaces
         Task<Booking> CreateBookingAsync(CreateBookingViewModel viewModel, string userId);
         Task ConfirmBookingAsync(Booking booking);
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
+        Task<Booking> CreatePendingBooking(BookingRequest request);
     }
 }

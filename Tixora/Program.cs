@@ -59,7 +59,8 @@ namespace Tixora
 
             builder.Services.AddScoped<IEventsService, EventsService>();
 
-
+            builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
+            builder.Services.AddScoped<IPaymentService, PaymentService>();
             builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 
             builder.Services.AddScoped<IVenueService, VenueService>();

@@ -31,8 +31,12 @@ namespace Tixora.ViewModels
 
         [Display(Name = "Total Price")]
         [DisplayFormat(DataFormatString = "{0:C}")]
-        public float TotalPrice { get; private set; }
+        public decimal TotalPrice { get; set; }
 
+        public void CalculateTotal(decimal ticketPrice)
+        {
+            TotalPrice = ticketPrice * Amount;
+        }
         //// Seats
         //[Display(Name = "Select Seats")]
         //public List<string> SelectedSeats { get; set; } = new List<string>();

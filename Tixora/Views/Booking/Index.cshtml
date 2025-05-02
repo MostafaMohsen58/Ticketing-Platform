@@ -15,7 +15,7 @@
     </div>
 }
 
-<div class="container mt-5">
+<div class="container">
     
     <div class="table-responsive">
         <table class="table table-bordered table-hover text-center">
@@ -34,7 +34,7 @@
                     <tr>
                         <td>@book.User?.UserName</td>
                         <td>@book.Ticket?.TicketCategory.Name</td>
-                        <td>@book.Amount</td>
+                        <td>@book.TicketQuantity</td>
                         <td>@book.BookedAt.ToString("dd/MM/yyyy")</td>
                         <td class="text-center">
                             <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-details">

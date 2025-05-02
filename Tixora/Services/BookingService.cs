@@ -1,4 +1,7 @@
-﻿using Tixora.Models;
+﻿
+using Stripe.Checkout;
+using Tixora.Models;
+using Tixora.Repositories;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
 using Tixora.ViewModels;
@@ -9,14 +12,14 @@ namespace Tixora.Services
     public class BookingService : IBookingService
     {
         private readonly IBookingRepository bookingRepository;
-        private readonly ITicketRepository ticketRepository;
+        private readonly ITicketService ticketService;
         private readonly IEventsService eventsService;
         public BookingService(IBookingRepository _bookingRepository,
-                                ITicketRepository _ticketRepository,
+                                ITicketService _ticketService,
                                 IEventsService _eventsService)
         {
             bookingRepository = _bookingRepository;
-            ticketRepository = _ticketRepository;
+            ticketService = _ticketService;
             eventsService = _eventsService;
         }
         
@@ -28,29 +31,23 @@ namespace Tixora.Services
             if (viewModel.Amount <= 0)
                 throw new ArgumentException("Quantity must be greater than zero", nameof(viewModel.Amount));
 
-            var ticket =await ticketRepository.GetById(viewModel.TicketId);
+            var ticket =await ticketService.GetById(viewModel.TicketId);
             var booking = new Booking
             {
-                UserId = userId,
-                TicketId = viewModel.TicketId,
-                Amount = viewModel.Amount,
-                BookedAt = DateTime.UtcNow,
-                TransactionId = 0, // Placeholder
+                //UserId = userId,
+                //TicketId = viewModel.TicketId,
+                //Amount = viewModel.Amount,
+                //BookedAt = DateTime.UtcNow,
+                //TransactionId = 0, // Placeholder
 
             };
             await ConfirmBookingAsync(booking);
             ticket.AvailableQuantity -= viewModel.Amount; // Decrease the available quantity
-            await ticketRepository.UpdateAsync(ticket); // Update the ticket's available quantity
+            await ticketService.Update(ticket); // Update the ticket's available quantity
 
             //await SendBookingConfirmation(booking, booking.User.Id);
             return booking;
         }
-        //private async Task SendBookingConfirmation(Booking booking, string userId)
-        //{
-        //    // Logic to send booking confirmation (email)
-        //    // This is a placeholder for the actual implementation
-        //    await Task.CompletedTask;
-        //}
         public async Task ConfirmBookingAsync(Booking booking)
         {
            await bookingRepository.AddAsync(booking);
@@ -60,26 +57,85 @@ namespace Tixora.Services
         public async Task<IEnumerable<Booking>> GetActiveBookingsAsync()
         {
             var booking = await bookingRepository.GetByDateRangeAsync(startDate: DateTime.UtcNow.AddDays(-30), endDate: DateTime.UtcNow);
-            return booking.Where(b => b.Amount > 0);
+            return booking.Where(b => b.TicketQuantity > 0);
         }
         public async Task<bool> UpdateAsync(EditBookingViewModel viewModel, int bookingId)
         {
             var booking = await bookingRepository.GetByIdAsync(bookingId);
-            var newticket =await ticketRepository.GetById(viewModel.TicketId);
+            var newticket =await ticketService.GetById(viewModel.TicketId);
             if (viewModel.NewQuantity <= 0)
             {
                 throw new ArgumentException("Quantity must be greater than zero");
             }
             booking.BookedAt = DateTime.UtcNow;
             booking.TicketId = viewModel.TicketId;
-            booking.Amount = viewModel.NewQuantity;
+            booking.TicketQuantity = viewModel.NewQuantity;
 
             await bookingRepository.UpdateAsync(booking);
             await bookingRepository.SaveAsync(); // Save the changes to the database
 
             return true;
         }
+        ///======================================================================================
+        public async Task<Booking> CreatePendingBooking(BookingRequest request)
+        {
+            var ticketPrice = await ticketService.GetTicketPriceAsync(request.TicketId);
+            var totalAmount = ticketPrice * request.Quantity;
+            var booking = new Booking
+            {
+                TicketQuantity = request.Quantity,
+                TotalAmount = totalAmount,
+                UserId = request.UserId,
+                TicketId = request.TicketId,
+                PaymentStatus = "Pending",
+                StripeSessionId = null,
+                BookedAt = DateTime.UtcNow,
+            };
+            await bookingRepository.AddAsync(booking);
+            await bookingRepository.SaveAsync();
+            return booking;
+        }
+        public async Task<bool> UpdateBeforePay(Booking booking)
+        {
+            var bookingfromDb = await bookingRepository.GetByIdAsync(booking.Id);
 
+            bookingfromDb.StripeSessionId = booking.StripeSessionId;
+
+            await bookingRepository.UpdateAsync(bookingfromDb);
+            await bookingRepository.SaveAsync(); // Save the changes to the database
+            return true;
+        }
+        
+        public async Task<bool> UpdateAfterPay(Booking booking)
+        {
+            var bookingFromDb = await bookingRepository.GetByIdAsync(booking.Id);
+            
+            var service = new SessionService();
+            var session = await service.GetAsync(booking.StripeSessionId);
+
+            if (session.PaymentStatus != "paid")
+            {
+                return false;
+            }
+
+            bookingFromDb.PaymentStatus = "Paid";
+            bookingFromDb.PaymentDate = DateTime.UtcNow;
+            bookingFromDb.StripeSessionId = booking.StripeSessionId;
+
+            var ticket = await ticketService.GetById(booking.TicketId);
+            ticket.AvailableQuantity -= booking.TicketQuantity; // Decrease the available quantity
+            try
+            {
+                await ticketService.Update(ticket);
+                await bookingRepository.UpdateAsync(bookingFromDb);
+                await bookingRepository.SaveAsync();
+                return true;
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+        }
         // Repository methods
         public async Task<IEnumerable<Booking>> GetAllAsync() => await bookingRepository.GetAllAsync();
         public async Task<Booking> GetByIdAsync(int id) => await bookingRepository.GetByIdAsync(id);

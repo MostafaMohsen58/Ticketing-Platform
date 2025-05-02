@@ -266,17 +266,27 @@ namespace Tixora.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Amount")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("BookedAt")
                         .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("PaymentDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("PaymentStatus")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("StripeSessionId")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("TicketId")
                         .HasColumnType("int");
 
-                    b.Property<int>("TransactionId")
+                    b.Property<int>("TicketQuantity")
                         .HasColumnType("int");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<string>("UserId")
                         .IsRequired()
@@ -288,7 +298,7 @@ namespace Tixora.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Bookings", (string)null);
+                    b.ToTable("Bookings");
                 });
 
             modelBuilder.Entity("Tixora.Models.Event", b =>
@@ -333,7 +343,7 @@ namespace Tixora.Migrations
 
                     b.HasIndex("VenueId");
 
-                    b.ToTable("Events", (string)null);
+                    b.ToTable("Events");
                 });
 
             modelBuilder.Entity("Tixora.Models.Organizer", b =>
@@ -362,7 +372,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Organizers", (string)null);
+                    b.ToTable("Organizers");
                 });
 
             modelBuilder.Entity("Tixora.Models.Ticket", b =>
@@ -379,8 +389,8 @@ namespace Tixora.Migrations
                     b.Property<int>("EventId")
                         .HasColumnType("int");
 
-                    b.Property<float>("Price")
-                        .HasColumnType("real");
+                    b.Property<decimal>("Price")
+                        .HasColumnType("decimal(18,2)");
 
                     b.Property<int>("Status")
                         .HasColumnType("int");
@@ -394,7 +404,7 @@ namespace Tixora.Migrations
 
                     b.HasIndex("TicketCategoryId");
 
-                    b.ToTable("Tickets", (string)null);
+                    b.ToTable("Tickets");
                 });
 
             modelBuilder.Entity("Tixora.Models.TicketCategory", b =>
@@ -420,7 +430,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("TicketCategories", (string)null);
+                    b.ToTable("TicketCategories");
                 });
 
             modelBuilder.Entity("Tixora.Models.Venue", b =>
@@ -446,7 +456,7 @@ namespace Tixora.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Venues", (string)null);
+                    b.ToTable("Venues");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

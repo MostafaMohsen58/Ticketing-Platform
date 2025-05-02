@@ -13,7 +13,7 @@ namespace Tixora.Services.Interfaces
 
         IEnumerable<Ticket> GetTicketsByUser(string username);
 
-
+        Task<decimal> GetTicketPriceAsync(int ticketId);
 
 
     }
