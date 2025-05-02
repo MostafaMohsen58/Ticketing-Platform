@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewData["Title"] = "MyTickets";
+}
+
+<h1>MyTickets</h1>
+@if (ViewBag.UserId != null)
+{
+    <p>الـ ID بتاعك هو: @ViewBag.UserId</p>
+}
+else
+{
+    <p>إنتا مش مسجل دخول!</p>
+}
