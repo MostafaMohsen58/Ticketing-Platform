@@ -47,7 +47,7 @@ namespace Tixora.Controllers
             {
                 EventId = eventId,
                 EventTitle = eventDetails.Title,
-                EventImageUrl = Url.Content($"~/images/{eventDetails.ImageUrl}"),
+                EventImageUrl = eventDetails.ImageUrl,
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
                 AvailableTickets = availableTickets.Select(t => new SelectListItem

@@ -1,4 +1,5 @@
-﻿@model Tixora.ViewModels.CreateBookingViewModel
+﻿@using Tixora.Settings
+@model Tixora.ViewModels.CreateBookingViewModel
 
 @{
     ViewData["Title"] = "Create Booking";
@@ -16,10 +17,12 @@
             <div class="event-image-container " style="min-height: 250px;">
                 @if (!string.IsNullOrEmpty(Model.EventImageUrl))
                 {
-                    <img src="@Model.EventImageUrl"
+                    @* <img src="~/assets/img/@Model.EventImageUrl" /> *@
+                    <img src="@(Model.EventImageUrl != null ? $"{FileSettings.ImagePath}/{Model.EventImageUrl}" : "/images/placeholder.jpg")"
                     class="img-fluid w-100 h-100 object-fit-cover"
                     alt="@Model.EventTitle"
-                    onerror="this.onerror=null;this.src='/images/default-event.jpg';">
+                         onerror="this.onerror=null;this.src="~/@Model.EventImageUrl">
+                    
                 }
                 else
                 {
