@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Tixora.Models;
 using Tixora.Services.Interface;
@@ -223,9 +224,94 @@ namespace Tixora.Services
             return IdentityResult.Failed(new IdentityError[] { new IdentityError { Description = "Please enter password." } });
 
         }
-        
 
+        //for external login 
+        public async Task<IEnumerable<AuthenticationScheme>> AuthenticationSchemes()
+        {
+            return await _signInManager.GetExternalAuthenticationSchemesAsync();
+        }
 
-        
+        public AuthenticationProperties? MyConfigureExternalAuthenticationProperties(string provider, string redirectUrl = "")
+        {
+            return _signInManager.ConfigureExternalAuthenticationProperties(provider, redirectUrl);
+        }
+
+        public async Task<ExternalLoginInfo?> MyGetExternalLoginInfoAsync()
+        {
+            try
+            {
+                var info = await _signInManager.GetExternalLoginInfoAsync();
+                if (info == null)
+                {
+                    return null;
+                }
+                return info;
+            }
+            catch (Exception ex)
+            {
+                return null;
+            }
+        }
+
+        public async Task<SignInResult> MyExternalLoginSignInAsync(ExternalLoginInfo info)
+        {
+            try
+            {
+                var result = await _signInManager.ExternalLoginSignInAsync(
+                    info.LoginProvider,
+                    info.ProviderKey,
+                    isPersistent: false,
+                    bypassTwoFactor: true
+                );
+                return result;
+            }
+            catch (Exception ex)
+            {
+                return SignInResult.Failed;
+            }
+        }
+
+        public async Task<IdentityUser> MyFindByEmailAsync(string useremail)
+        {
+            var user = await _userManager.FindByEmailAsync(useremail);
+
+            if (user == null)
+            {
+                user = new ApplicationUser
+                {
+                    UserName = useremail,
+                    Email = useremail,
+                    EmailConfirmed = true,
+                    Address = "Default Address",
+                    City = "Default City",
+                    DateOfBrith = new DateOnly(2000, 1, 1),
+                    FirstName = "First",
+                    LastName = "Last",
+                    Gender = Gender.Male, 
+                    PhoneNumber = "01000000000",
+                    NationalId = "00000000000000"
+
+                };
+
+                var result = await _userManager.CreateAsync(user);
+
+                if (result.Succeeded)
+                {
+                   
+                    await _userManager.AddToRoleAsync(user, "User");
+
+                    await _signInManager.SignInAsync(user, isPersistent: false);
+                    return user;
+                }
+
+                return null!;
+            }
+
+            return user;
+        }
+
     }
+
+
 }
+

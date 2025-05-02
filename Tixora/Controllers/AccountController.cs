@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Services.Interface;
@@ -92,9 +93,13 @@ namespace Tixora.Controllers
         }
         #region Login
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            return View();
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                Schemes = await _userService.AuthenticationSchemes()
+            };
+            return View(loginViewModel);
         }
 
         [HttpPost]
@@ -223,6 +228,57 @@ namespace Tixora.Controllers
         public IActionResult Create()
         {
             return View();
+        }
+
+        public  IActionResult ExternalLogin(string provider, string returnUrl = "")
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+
+            var properties =  _userService.MyConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = "", string remoteError = "")
+        {
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                Schemes = await _userService.AuthenticationSchemes()
+            };
+
+            if (!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError("", $"error yabny {remoteError}");
+                return View("login", loginViewModel);
+            }
+
+            var info = await _userService.MyGetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError("", $"error yabny {remoteError}");
+                return View("login", loginViewModel);
+            }
+
+            var signInResult = await _userService.MyExternalLoginSignInAsync(info);
+            if (signInResult.Succeeded)
+            {
+                return RedirectToAction("index", "Event");
+            }
+
+            else
+            {
+                var userEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (userEmail != null)
+                {
+                    var user = await _userService.MyFindByEmailAsync(userEmail);
+                    if (user != null)
+                    {
+                        return RedirectToAction("index", "Event");
+                    }
+
+                }
+                ModelState.AddModelError("", $"something error");
+                return View("login", "Event");
+            }
         }
     }
 }
