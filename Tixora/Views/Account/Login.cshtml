@@ -54,6 +54,25 @@
         <div class="mt-3 text-center">
             <a asp-action="Register">Don't have an account? Register here</a>
         </div>
+        <div class="mt-3 text-center">
+            @if (Model.Schemes.Count() == 0)
+            {
+                <p>dddddddddddd</p>
+            }
+            else
+            {
+                <form asp-action="ExternalLogin">
+                    <div>
+                        @foreach (var provider in Model.Schemes)
+                        {
+                            <button type="submit" class="" name="provider" value="@provider.Name">
+                                Login With @provider.DisplayName
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
+        </div>
     </div>
 </div>
 
