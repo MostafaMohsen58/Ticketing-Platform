@@ -259,5 +259,15 @@ namespace Tixora.Controllers
                 return View(booking);
             }
         }
+
+        public IActionResult MyTickets()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+                ViewBag.UserId = userId;
+            }
+            return View();
+        }
     }
 }
