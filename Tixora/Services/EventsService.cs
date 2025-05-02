@@ -54,7 +54,7 @@ namespace Tixora.Services
             }
             var newimg = model.Cover != null;
             var oldimg = ev.ImageUrl;
-            //if (oldimg == null) return null!;
+            if (oldimg == null) return null!;
 
 
             ev.Category = model.Category;

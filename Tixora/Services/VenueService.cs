@@ -51,14 +51,16 @@ namespace Tixora.Services
         public async Task Delete(int id)
         {
             var venueFromDb =await GetById(id);
+
             if (venueFromDb != null)
             {
                 venueRepository.Delete(venueFromDb);
-                await venueRepository.SaveAsync();
+                var x = venueRepository.Save();
+                
             }
             
         }
-        public async Task<Venue> GetById(int id)
+        public async Task<Venue?> GetById(int id)
         {
             Venue venue = await venueRepository.GetById(id);
             if (venue == null)

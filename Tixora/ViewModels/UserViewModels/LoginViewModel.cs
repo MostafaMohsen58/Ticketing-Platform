@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authentication;
 
 namespace Tixora.ViewModels.UserViewModels
 {
@@ -13,5 +14,6 @@ namespace Tixora.ViewModels.UserViewModels
         public string Password { get; set; }
         [Display(Name = "Remember Me")]
         public bool RememberMe { get; set; }
+        public IEnumerable<AuthenticationScheme> Schemes { get; set; } = new List<AuthenticationScheme>();
     }
 }
