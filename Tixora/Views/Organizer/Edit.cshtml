@@ -2,87 +2,101 @@
 
 @{
     ViewData["Title"] = "Edit Organizer";
+    Layout = "_AdminLayout";
 }
 
-<div class="container">
-    <h1>Edit Organizer</h1>
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Edit Organizer
+                </h2>
 
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
-    }
-
-    @if (!ViewData.ModelState.IsValid)
-    {
-        <div class="alert alert-danger">
-            <ul>
-                @foreach (var modelState in ViewData.ModelState.Values)
+                @if (TempData["ErrorMessage"] != null)
                 {
-                    foreach (var error in modelState.Errors)
-                    {
-                        <li>@error.ErrorMessage</li>
-                    }
+                    <div class="alert alert-danger">@TempData["ErrorMessage"]</div>
                 }
-            </ul>
-        </div>
-    }
 
-    <div class="row">
-        <div class="col-md-8">
-            <div class="card">
-                <div class="card-body">
-                    <form asp-action="Edit" asp-route-id="@Model.Id" method="post">
-                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                        <input type="hidden" asp-for="Id" />
+                @if (!ViewData.ModelState.IsValid)
+                {
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach (var modelState in ViewData.ModelState.Values)
+                            {
+                                foreach (var error in modelState.Errors)
+                                {
+                                    <li>@error.ErrorMessage</li>
+                                }
+                            }
+                        </ul>
+                    </div>
+                }
 
-                        <div class="form-group mb-3">
-                            <label asp-for="Name" class="control-label"></label>
-                            <input asp-for="Name" class="form-control" />
-                            <span asp-validation-for="Name" class="text-danger"></span>
-                        </div>
+                <form asp-action="Edit" asp-route-id="@Model.Id" method="post" enctype="multipart/form-data">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="hidden" asp-for="LogoUrl" />
 
-                        <div class="form-group mb-3">
-                            <label asp-for="ContactEmail" class="control-label"></label>
-                            <input asp-for="ContactEmail" class="form-control" type="email" />
-                            <span asp-validation-for="ContactEmail" class="text-danger"></span>
-                        </div>
+                    <div class="mb-3">
+                        <label asp-for="Name" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="Name" class="form-control" />
+                        <span asp-validation-for="Name" class="text-danger"></span>
+                    </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="ContactPhone" class="control-label"></label>
-                            <input asp-for="ContactPhone" class="form-control" placeholder="01xxxxxxxxx" />
-                            <span asp-validation-for="ContactPhone" class="text-danger"></span>
-                            <small class="form-text text-muted">Phone number must start with "01" and be 11 digits long</small>
-                        </div>
+                    <div class="mb-3">
+                        <label asp-for="ContactEmail" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="ContactEmail" class="form-control" type="email" />
+                        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                    </div>
 
-                        <div class="form-group mb-3">
-                            <label asp-for="LogoUrl" class="control-label"></label>
-                            <input asp-for="LogoUrl" class="form-control" />
-                            <span asp-validation-for="LogoUrl" class="text-danger"></span>
-                        </div>
+                    <div class="mb-3">
+                        <label asp-for="ContactPhone" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="ContactPhone" class="form-control" placeholder="01xxxxxxxxx" />
+                        <span asp-validation-for="ContactPhone" class="text-danger"></span>
+                    </div>
 
-                        @if (!string.IsNullOrEmpty(Model.LogoUrl))
-                        {
-                            <div class="form-group mb-3">
-                                <label class="control-label">Current Logo</label>
-                                <div>
-                                    <img src="@Model.LogoUrl" alt="Current Logo" style="max-height: 100px; max-width: 100px;" />
-                                </div>
+                    <div class="mb-3">
+                        <label for="file" class="form-label" style="font-weight: bold;">Logo</label>
+                        <input type="file" id="file" name="file" class="form-control" accept="image/*" />
+                    </div>
+
+                    @if (!string.IsNullOrEmpty(Model.LogoUrl))
+                    {
+                        <div class="mb-3">
+                            <label class="form-label" style="font-weight: bold;">Current Logo</label>
+                            <div>
+                                <img src="/images/user/@Model.LogoUrl" alt="Current Logo" style="max-height: 100px; max-width: 100px;" />
                             </div>
-                        }
-
-                        <div class="form-group mt-4">
-                            <button type="submit" class="btn btn-primary">Save</button>
-                            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
                         </div>
-                    </form>
-                </div>
+                    }
+
+                    <div class="mt-4 text-right">
+                        <button type="submit" class="btn"
+                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Save
+                        </button>
+                        <a asp-action="Index" class="btn"
+                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            Cancel
+                        </a>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
-</div>
+</section>
 
 @section Scripts {
-    @{
-        await Html.RenderPartialAsync("_ValidationScriptsPartial");
-    }
+    <partial name="_ValidationScriptsPartial" />
 }
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>

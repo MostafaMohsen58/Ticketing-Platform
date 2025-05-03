@@ -1,36 +1,70 @@
 ﻿@model Tixora.Models.Venue
 
 @{
-    ViewData["Title"] = "Details";
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Venue Details";
 }
 
-<h1>Details</h1>
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color:#2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #7C4585; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Venue Details
+                </h2>
 
-<div>
-    <h4>Venue</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Address)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Address)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Capacity)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Capacity)
-        </dd>
-    </dl>
-</div>
-<div>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    <a asp-action="Index">Back to List</a>
-</div>
+                <dl class="row">
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">ID</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Id</dd>
+
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Name</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Name</dd>
+
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Address</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Address</dd>
+
+                    <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">Capacity</dt>
+                    <dd class="col-sm-8" style="font-size: 1rem;">@Model.Capacity</dd>
+                </dl>
+
+                <div class="mt-4 text-right">
+                    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn"
+                       style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        Update
+                    </a>
+                    <a asp-action="Index" class="btn"
+                       style="border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; border: 1px solid #0e1b4d; color: #0e1b4d; transition: all 0.3s ease;">
+                        Back to List
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<style>
+    .btn:hover {
+        transform: scale(1.05);
+        opacity: 0.8;
+    }
+
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .form-select, .form-control {
+        border-radius: 0.5rem;
+        box-shadow: none;
+        border: 1px solid #ccc;
+    }
+
+        .form-select:focus, .form-control:focus {
+            border-color: #7C4585;
+            outline: none;
+        }
+
+    .form-label {
+        font-size: 1rem;
+        color: #333;
+    }
+</style>

@@ -1,52 +1,283 @@
 ﻿@model IEnumerable<Tixora.Models.Venue>
 
 @{
-    ViewData["Title"] = "Index";
+    Layout = "_AdminLayout";
+    ViewData["Title"] = "Venues Management";
 }
 
-<h1>Index</h1>
+<style>
+    .users-section {
+        padding: 2rem 0;
+    }
 
-<p>
-    <a asp-action="Create" class="btn btn-primary">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Address)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Capacity)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Address)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Capacity)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { id=item.Id }) |
-                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
+    .users-table {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .users-table thead {
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        .users-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 1rem;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        .users-table td {
+            word-wrap: break-word;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            max-width: 265px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 1rem;
+            vertical-align: middle;
+        }
+
+        .users-table tbody tr {
+            transition: background-color 0.2s ease;
+            text-align: center;
+        }
+
+            .users-table tbody tr:hover {
+                background-color: rgba(0, 123, 255, 0.05);
+            }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .btn-action {
+        min-width: 80px;
+    }
+
+    .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    .modal-header {
+        background-color: #0e1b4d;
+        color: white;
+        padding: 8px 20px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+    }
+
+    .modal-body {
+        background-color: #ffffff;
+        color: #0e1b4d;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 20px;
+    }
+
+    .modal-footer {
+        background-color: #ffffff;
+        padding: 8px 10px;
+    }
+
+    .btn-confirm-delete {
+        background-color: #BB3E00;
+        color: white;
+        border: 2px solid #BB3E00;
+        border-radius: 5px;
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+
+    .btn-cancel-delete {
+        background-color: #ffffff;
+        color: #f82249;
+        border: 2px solid #BB3E00;
+        border-radius: 5px;
+        padding: 8px 16px;
+        font-size: 16px;
+    }
+</style>
+
+<div class="container users-section">
+    <div class="header-actions">
+        <h1>Venues Management</h1>
+        <a asp-action="Create" asp-controller="Venue" class="btn d-flex align-items-center" style="background-color:#7C4585; color:white">
+            <i class="bi bi-plus-circle me-2"></i>Add New Venue
+        </a>
+    </div>
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            No venues found.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive users-table" style="margin: 5rem; margin-top: 0px; margin-bottom:0px">
+            <table class="table table-borderless mb-3">
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Address</th>
+                        <th>Capacity</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Address)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Capacity)
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a asp-controller="Venue" asp-action="Edit" asp-route-id="@item.Id" class="btn btn-action" style="background-color:#7C4585; color:white" aria-label="Edit venue">
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </a>
+                                    <a asp-controller="Venue" asp-action="Details" asp-route-id="@item.Id" class="btn btn-warning btn-action" style="background-color:#F7AD45;" aria-label="View venue details">
+                                        <i class="bi bi-eye me-1"></i>Details
+                                    </a>
+                                    <button type="button"
+                                            class="btn btn-danger btn-action"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-id="@item.Id"
+                                            data-name="@item.Name"
+                                            data-address="@item.Address"
+                                            data-capacity="@item.Capacity"
+                                            style="background-color:#BB3E00;color:white"
+                                            aria-label="Delete venue">
+                                        <i class="bi bi-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 500px;">
+        <div class="modal-content" style="background-color: #ffffff;">
+            <div class="modal-header" style="background-color: #0e1b4d; color: white; padding: 8px 20px;">
+                <h5 class="modal-title" id="deleteModalLabel" style="font-size: 16px;">Confirm Delete</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold; font-size: 16px; padding: 20px;">
+                <p><strong>Name:</strong> <span id="venueNameToDelete"></span></p>
+                <p><strong>Address:</strong> <span id="venueAddressToDelete"></span></p>
+                <p><strong>Capacity:</strong> <span id="venueCapacityToDelete"></span></p>
+                <p>Are you sure you want to delete this venue?</p>
+            </div>
+            <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
+                <form id="deleteVenueForm" asp-action="Delete" method="post">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-confirm-delete">Yes</button>
+                    <button type="button" class="btn btn-cancel-delete" data-bs-dismiss="modal">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successPopup" class="modal fade" tabindex="-1" aria-labelledby="successPopupLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #0e1b4d;">
+                <div class="modal-header" style="background-color: #0e1b4d; color: white;">
+                    <h5 class="modal-title" id="successPopupLabel">Success</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold;">
+                    @TempData["SuccessMessage"]
+                </div>
+                <div class="modal-footer" style="background-color: #ffffff;">
+                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 }
-    </tbody>
-</table>
+
+@if (TempData["ErrorMessage"] != null)
+{
+    <div id="errorPopup" class="modal fade" tabindex="-1" aria-labelledby="errorPopupLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #0e1b4d;">
+                <div class="modal-header" style="background-color: #0e1b4d; color: white;">
+                    <h5 class="modal-title" id="errorPopupLabel">Error</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold;">
+                    @TempData["ErrorMessage"]
+                </div>
+                <div class="modal-footer" style="background-color: #ffffff;">
+                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<!-- Bootstrap & jQuery Scripts -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Handle delete modal show event
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var venueId = button.data('id');
+            var venueName = button.data('name');
+            var venueAddress = button.data('address');
+            var venueCapacity = button.data('capacity');
+
+            console.log('Venue ID:', venueId);
+
+            var modal = $(this);
+            modal.find('#venueNameToDelete').text(venueName);
+            modal.find('#venueAddressToDelete').text(venueAddress);
+            modal.find('#venueCapacityToDelete').text(venueCapacity);
+
+            // Set the form action dynamically with venue ID
+            modal.find('#deleteVenueForm').attr('action', '/Venue/Delete/' + venueId);
+        });
+
+        // Show success popup if present
+        if ($('#successPopup').length) {
+            var successModal = new bootstrap.Modal(document.getElementById('successPopup'));
+            successModal.show();
+        }
+
+        // Show error popup if present
+        if ($('#errorPopup').length) {
+            var errorModal = new bootstrap.Modal(document.getElementById('errorPopup'));
+            errorModal.show();
+        }
+    });
+</script>

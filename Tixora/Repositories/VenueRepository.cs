@@ -49,5 +49,9 @@ namespace Tixora.Repositories
         {
             return await _context.SaveChangesAsync();
         }
+        public int Save()
+        {
+            return _context.SaveChanges();
+        }
     }
 }

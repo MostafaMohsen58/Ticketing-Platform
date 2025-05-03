@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Services.Interface;
@@ -42,7 +43,7 @@ namespace Tixora.Controllers
 
                 if (result.Succeeded)
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Index", "Account");
                 }
 
                 foreach (var error in result.Errors)
@@ -50,7 +51,19 @@ namespace Tixora.Controllers
                     ModelState.AddModelError("", error.Description);
                 }
             }
-            return View("Register", viewModel);
+            //must to do
+            //if(User.IsInRole("Admin"))
+            //{
+            //    return View("Create", viewModel);
+            //}
+            //else
+            //{
+            //    return View("Register", viewModel);
+            //}
+            //to test create new user for admin
+            return View("Create", viewModel);
+
+
         }
         [NonAction]
         private string? UploadFile(IFormFile ImageUrl)
@@ -80,9 +93,13 @@ namespace Tixora.Controllers
         }
         #region Login
 
-        public IActionResult Login()
+        public async Task<IActionResult> Login()
         {
-            return View();
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                Schemes = await _userService.AuthenticationSchemes()
+            };
+            return View(loginViewModel);
         }
 
         [HttpPost]
@@ -112,41 +129,69 @@ namespace Tixora.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public IActionResult Index()
+        public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 4)
         {
             var users = _userService.GetAllUsers();
-            return View(users);
+
+            if (!string.IsNullOrEmpty(searchEmail))
+            {
+                users = users
+                    .Where(u => u.Email != null && u.Email.Contains(searchEmail, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+            }
+
+            var totalUsers = users.Count;
+
+            var pagedUsers = users
+                .Skip((pageNumber - 1) * pageSize)
+                .Take(pageSize)
+                .ToList();
+
+            ViewBag.CurrentPage = pageNumber;
+            ViewBag.PageSize = pageSize;
+            ViewBag.TotalPages = (int)Math.Ceiling((double)totalUsers / pageSize);
+            ViewBag.SearchEmail = searchEmail;
+
+            return View(pagedUsers);
         }
+
         public IActionResult Edit(string id)
         {
             var user = _userService.GetUserById(id);
             return View(user);
         }
+        
         [HttpPost]
-        public IActionResult Edit(EditProfileViewModel model, IFormFile ImageUrl)
+        public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile? ImageUrl)
         {
-            string uniqueFileName = UploadFile(ImageUrl);
-            if (uniqueFileName != null)
+            if (ImageUrl != null && ImageUrl.Length > 0)
             {
-                model.ProfileUrl = uniqueFileName;
+                string uniqueFileName = UploadFile(ImageUrl);
+                if (!string.IsNullOrEmpty(uniqueFileName))
+                {
+                    model.ProfileUrl = uniqueFileName;
+                }
+                else
+                {
+                    ModelState.AddModelError("", "Image upload failed.");
+                    return View("Edit", model);
+                }
             }
-            else
-            {
-                ModelState.AddModelError("", "Image upload failed");
-                return View("Edit", model);
-            }
+
+            // If no new image uploaded, keep the old ProfileUrl (already bound from hidden input)
             if (ModelState.IsValid)
             {
-                var result = _userService.UpdateUserAsync(model);
-                if (result.Result.Succeeded)
+                var result = await _userService.UpdateUserAsync(model);
+                if (result.Succeeded)
                 {
                     return RedirectToAction("Index", "Account");
                 }
-                foreach (var error in result.Result.Errors)
+                foreach (var error in result.Errors)
                 {
                     ModelState.AddModelError("", error.Description);
                 }
             }
+
             return View(model);
         }
 
@@ -180,6 +225,60 @@ namespace Tixora.Controllers
             return NotFound("There is no Account for this id");
 
         }
+        public IActionResult Create()
+        {
+            return View();
+        }
 
+        public  IActionResult ExternalLogin(string provider, string returnUrl = "")
+        {
+            var redirectUrl = Url.Action("ExternalLoginCallback", "Account", new { ReturnUrl = returnUrl });
+
+            var properties =  _userService.MyConfigureExternalAuthenticationProperties(provider, redirectUrl);
+
+            return new ChallengeResult(provider, properties);
+        }
+        public async Task<IActionResult> ExternalLoginCallback(string returnUrl = "", string remoteError = "")
+        {
+            LoginViewModel loginViewModel = new LoginViewModel()
+            {
+                Schemes = await _userService.AuthenticationSchemes()
+            };
+
+            if (!string.IsNullOrEmpty(remoteError))
+            {
+                ModelState.AddModelError("", $"error yabny {remoteError}");
+                return View("login", loginViewModel);
+            }
+
+            var info = await _userService.MyGetExternalLoginInfoAsync();
+            if (info == null)
+            {
+                ModelState.AddModelError("", $"error yabny {remoteError}");
+                return View("login", loginViewModel);
+            }
+
+            var signInResult = await _userService.MyExternalLoginSignInAsync(info);
+            if (signInResult.Succeeded)
+            {
+                return RedirectToAction("index", "Event");
+            }
+
+            else
+            {
+                var userEmail = info.Principal.FindFirstValue(ClaimTypes.Email);
+                if (userEmail != null)
+                {
+                    var user = await _userService.MyFindByEmailAsync(userEmail);
+                    if (user != null)
+                    {
+                        return RedirectToAction("index", "Event");
+                    }
+
+                }
+                ModelState.AddModelError("", $"something error");
+                return View("login", "Event");
+            }
+        }
     }
 }

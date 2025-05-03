@@ -4,101 +4,81 @@
     ViewData["Title"] = "Edit";
 }
 
-<div class="container mt-4">
-    <h2>Edit Booking</h2>
-    <hr />
-    
-    <form asp-action="Edit" class="needs-validation" novalidate>
-        <input type="hidden" asp-for="Id" />
-        <input type="hidden" asp-for="EventId" />
-        
-        <div class="row">
-            <div class="col-md-6">
-                <div class="form-group mb-3">
-                    <label asp-for="EventTitle" class="form-label">Event</label>
-                    <input asp-for="EventTitle" class="form-control" readonly />
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label asp-for="CurrentTicketType" class="form-label">Current Ticket Type</label>
-                    <input asp-for="CurrentTicketType" class="form-control" readonly />
-                </div>
+<section class="py-4">
+    <div class="container">
+        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <div class="card-body">
+                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                    Edit Booking
+                </h2>
+
+                <form asp-action="Edit" method="post" class="needs-validation" novalidate>
+                    <input type="hidden" asp-for="Id" /> 
+                    <input type="hidden" asp-for="EventId" /> 
+
+                    <div class="mb-3">
+
+                        <label asp-for="EventTitle" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="EventTitle" class="form-control" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CurrentTicketType" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="CurrentTicketType" class="form-control" readonly />
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="CurrentQuantity" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="CurrentQuantity" class="form-control" readonly />
+                    </div>
+                    
+                    <div class="mb-3">
+                        <label asp-for="TicketId" class="form-label" style="font-weight: bold;"></label>
+                        <select asp-for="TicketId" class="form-select" asp-items="Model.AvailableTickets">
+                            <option value="">-- Select Ticket --</option>
+                        </select>
+                        <span asp-validation-for="TicketId" class="text-danger"></span>
+                    </div>
+
+                    <div class="mb-3">
+                        <label asp-for="NewQuantity" class="form-label" style="font-weight: bold;"></label>
+                        <input asp-for="NewQuantity" class="form-control" />
+                        <span asp-validation-for="NewQuantity" class="text-danger"></span>
+                    </div>
+
+                    <div class="mt-4 text-right">
+                        <button type="submit" class="btn"
+                                style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            <i class="fas fa-save"></i> Save Changes
+                        </button>
+                        <a asp-action="Index" class="btn"
+                           style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                            <i class="fas fa-arrow-left"></i> Back to List
+                        </a>
+                    </div>
+                </form>
+
             </div>
-            
-            <div class="col-md-6">
-                <div class="form-group mb-3">
-                    <label asp-for="CurrentQuantity" class="form-label">Current Quantity</label>
-                    <input asp-for="CurrentQuantity" class="form-control" readonly />
-                </div>
-                
-                <div class="form-group mb-3">
-                    <label asp-for="NewQuantity" class="form-label">New Quantity *</label>
-                    <input asp-for="NewQuantity" class="form-control" min="1" />
-                    <span asp-validation-for="NewQuantity" class="text-danger"></span>
-                </div>
-            </div>
         </div>
-        
-        <div class="form-group mb-4">
-            <label asp-for="TicketId" class="form-label">Select New Ticket Type *</label>
-            <select asp-for="TicketId" asp-items="Model.AvailableTickets" class="form-select">
-                <option value="">-- Select Ticket --</option>
-            </select>
-            <span asp-validation-for="TicketId" class="text-danger"></span>
-        </div>
-        
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary me-2">
-                <i class="fas fa-save"></i> Save Changes
-            </button>
-            <a asp-action="Index" class="btn btn-secondary">
-                <i class="fas fa-arrow-left"></i> Back to List
-            </a>
-        </div>
-    </form>
-</div>
+    </div>
+</section>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    
-    </script>
 }
+@section Styles {
+    <style>
+        .btn {
+            margin-bottom: 5px;
+        }
 
-@* <form asp-action="Edit"> *@
-@*     <input type="hidden" asp-for="Id" /> *@
-@*     <input type="hidden" asp-for="EventId" /> *@
-@* 	<input type="hidden" asp-for="AvailableTickets" /> *@
-    
-@*     <div class="form-group"> *@
-@*         <label asp-for="EventTitle" class="control-label"></label> *@
-@*         <input asp-for="EventTitle" class="form-control" readonly /> *@
-@*     </div> *@
-    
-@*     <div class="form-group"> *@
-@*         <label asp-for="CurrentTicketType" class="control-label"></label> *@
-@*         <input asp-for="CurrentTicketType" class="form-control" readonly /> *@
-@*     </div> *@
-    
-@*     <div class="form-group"> *@
-@*         <label asp-for="CurrentQuantity" class="control-label"></label> *@
-@*         <input asp-for="CurrentQuantity" class="form-control" readonly /> *@
-@*     </div> *@
-    
-@*     <div class="form-group"> *@
-@*         <label asp-for="NewQuantity" class="control-label"></label> *@
-@*         <input asp-for="NewQuantity" class="form-control" /> *@
-@*         <span asp-validation-for="NewQuantity" class="text-danger"></span> *@
-@*     </div> *@
-    
-@*     <div class="form-group"> *@
-@*         <label asp-for="TicketId" class="control-label"></label> *@
-@*         <select asp-for="TicketId" asp-items="Model.AvailableTickets" class="form-control"> *@
-@*             <option value="">-- Select Ticket --</option> *@
-@*         </select> *@
-@*         <span asp-validation-for="TicketId" class="text-danger"></span> *@
-@*     </div> *@
-    
-@*     <div class="form-group"> *@
-@*         <input type="submit" value="Save" class="btn btn-primary" /> *@
-@*     </div> *@
-@* </form> *@
+        .btn:hover {
+            transform: scale(1.05);
+            opacity: 0.8;
+        }
+
+        .card:hover {
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+        }
+    </style>
+}

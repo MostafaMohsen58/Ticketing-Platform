@@ -2,13 +2,14 @@
 
 @{
     ViewData["Title"] = "Create Ticket";
+    Layout = "_AdminLayout";
 }
 
 <section class="py-4">
     <div class="container">
         <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
             <div class="card-body">
-                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
+                <h2 class="card-title mb-4" style="background-color: #7C4585; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
                     Create Ticket
                 </h2>
 
@@ -44,7 +45,7 @@
 
                     <div class="mt-4 text-right">
                         <button type="submit" class="btn"
-                                style="background-color: #f82249; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Create
                         </button>
                         <a asp-action="Index" class="btn"
@@ -70,9 +71,8 @@
             opacity: 0.8;
         }
 
-        .card:hover {
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-        }
-    </style>
+    .card:hover {
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+</style>
 
-}

@@ -1,77 +1,591 @@
-﻿@model IEnumerable<Tixora.Models.Event>
+﻿@* @using Tixora.Settings
+@model IEnumerable<Tixora.Models.Event>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Event List";
+    Layout = "_AdminLayout"; // Assuming you want to use the same admin layout
 }
 
-<h1>Index</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Events - Tixora</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.8.1/font/bootstrap-icons.css">
+    <style>
+        .users-section {
+            padding: 2rem 0;
+        }
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Title)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.StartDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ImageUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.VenueId)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.OrganizerId)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Title)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.StartDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ImageUrl)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Venue.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Organizer.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a> 
-            </td>
-        </tr>
+        .users-table {
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+            .users-table thead {
+                background-color: #f8f9fa;
+                text-align: center;
+            }
+
+            .users-table th {
+                font-weight: 600;
+                text-transform: uppercase;
+                font-size: 0.85rem;
+                padding: 1rem;
+                border-bottom: 2px solid #dee2e6;
+            }
+
+            .users-table td {
+                padding: 1rem;
+                vertical-align: middle;
+                text-align: center; /* Center the text in cells */
+            }
+
+            .users-table tbody tr {
+                transition: background-color 0.2s ease;
+            }
+
+                .users-table tbody tr:hover {
+                    background-color: rgba(0, 123, 255, 0.05);
+                }
+
+        .event-thumbnail {
+            width: 80px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 5px;
+            border: 1px solid #ddd;
+            box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .action-buttons {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+        }
+
+        .btn-action {
+            min-width: 80px;
+            border-radius: 5px;
+            padding: 0.5rem 0.75rem;
+            font-size: 0.9rem;
+            border: none;
+            color: white;
+            transition: background-color 0.2s ease;
+            text-decoration: none !important;
+        }
+
+            .btn-action:hover {
+                opacity: 0.9;
+            }
+
+        .header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        /* Custom modal styling */
+        .modal-header {
+            background-color: #0e1b4d;
+            color: white;
+            padding: 8px 20px;
+        }
+
+        .modal-title {
+            font-size: 16px;
+        }
+
+        .modal-body {
+            background-color: #ffffff;
+            color: #0e1b4d;
+            font-weight: bold;
+            font-size: 16px;
+            padding: 20px;
+        }
+
+        .modal-footer {
+            background-color: #ffffff;
+            padding: 8px 10px;
+        }
+
+        .btn-confirm-delete {
+            background-color: #7C4585;
+            color: white;
+            border: 2px solid #7C4585;
+            border-radius: 5px;
+            padding: 5px 13px;
+            font-size: 16px;
+        }
+
+        .btn-cancel-delete {
+            background-color: #ffffff;
+            color: #7C4585;
+            /* border: 2px solid #7C4585; */
+            border-radius: 5px;
+            padding: 5px 13px;
+            font-size: 16px;
+        }
+        .test:hover{
+            color: #520e5e !important;
+        }
+    </style>
+</head>
+<body>
+    <div class="container users-section">
+        <div class="header-actions">
+            <h1>Event List</h1>
+            <a asp-action="Create" class="btn d-flex align-items-center btn-action" style="background-color:#7C4585;">
+                <i class="bi bi-plus-circle me-2"></i>Add New Event
+            </a>
+        </div>
+
+        @if (Model != null && !Model.Any())
+        {
+            <div class="alert alert-warning" role="alert">
+                No events found.
+            </div>
+        }
+        else
+        {
+            <div class="table-responsive users-table" style="margin: 5rem; margin-top: 0px; margin-bottom:0px">
+                <table class="table table-borderless mb-3">
+                    <thead>
+                        <tr>
+                            <th>@Html.DisplayNameFor(model => model.Title)</th>
+                            <th>@Html.DisplayNameFor(model => model.Description)</th>
+                            <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+                            <th>@Html.DisplayNameFor(model => model.Category)</th>
+                            <th>Venue</th>
+                            <th>Organizer</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+                            <tr>
+                                <td>
+                                    <strong>@Html.DisplayFor(modelItem => item.Title)</strong>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Description)
+                                </td>
+                                <td>
+                                    @item.StartDate.ToString("dd/MM/yyyy")
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Category)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Venue.Name)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Organizer.Name)
+                                </td>
+                                <td>
+                                    <div class="action-buttons">
+                                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-action test" style="background-color:#7C4585;">
+                                            <i class="bi bi-pencil me-1"></i> <br>Edit
+                                        </a>
+                                        <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-action" style="background-color:#F7AD45; color:black">
+                                            <i class="bi bi-eye me-1"></i>Details
+                                        </a>
+                                        <button type="button"
+                                                class="btn btn-danger btn-action"
+                                                data-bs-toggle="modal"
+                                                data-bs-target="#deleteModal"
+                                                data-id="@item.Id"
+                                                data-title="@item.Title"
+                                                data-description="@item.Description"
+                                                data-startdate="@item.StartDate.ToString("dd/MM/yyyy")"
+                                                style="background-color:#BB3E00;">
+                                            <i class="bi bi-trash me-1"></i>Delete
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        }
+    </div>
+
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog" style="max-width: 500px;">
+            <div class="modal-content" style="background-color: #ffffff;">
+                <div class="modal-header" style="background-color: #0e1b4d; color: white; padding: 8px 20px;">
+                    <h5 class="modal-title" id="deleteModalLabel" style="font-size: 16px;">Confirm Delete</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold; font-size: 16px; padding: 20px;">
+                    Are you sure you want to delete this event?
+                    <p><strong>Title:</strong> <span id="eventTitleToDelete"></span></p>
+                    <p><strong>Description:</strong> <span id="eventDescriptionToDelete"></span></p>
+                    <p><strong>Start Date:</strong> <span id="eventStartDateToDelete"></span></p>
+                </div>
+                <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
+                    <form id="deleteForm" asp-action="Delete" method="post">
+                        <input type="hidden" name="id" id="eventIdToDelete" />
+                        @Html.AntiForgeryToken()
+                        <button type="submit" class="btn btn-confirm-delete">Yes</button>
+                        <button type="button" class="btn btn-cancel-delete" data-bs-dismiss="modal">No</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var eventId = button.data('id');
+                var eventTitle = button.data('title');
+                var eventDescription = button.data('description');
+                var eventStartDate = button.data('startdate');
+
+                var modal = $(this);
+                modal.find('#eventIdToDelete').val(eventId);
+                modal.find('#eventTitleToDelete').text(eventTitle);
+                modal.find('#eventDescriptionToDelete').text(eventDescription);
+                modal.find('#eventStartDateToDelete').text(eventStartDate);
+            });
+
+            
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                        $(document).ready(function () {
+                            var successPopup = $('<div class="modal fade" id="successPopup" tabindex="-1" aria-labelledby="successPopupLabel" aria-hidden="true">')
+                                .append($('<div class="modal-dialog">')
+                                    .append($('<div class="modal-content" style="background-color: #0e1b4d;">')
+                                        .append($('<div class="modal-header" style="background-color: #0e1b4d; color: white;">')
+                                            .append($('<h5 class="modal-title" id="successPopupLabel">Success</h5>'))
+                                            .append($('<button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>'))
+                                        )
+                                        .append($('<div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold;">')
+                                            .text('@TempData["SuccessMessage"]')
+                                        )
+                                        .append($('<div class="modal-footer" style="background-color: #ffffff;">')
+                                            .append($('<button type="button" class="btn btn-confirm-delete" data-bs-dismiss="modal">Close</button>'))
+                                        )
+                                    )
+                                )
+                                .modal('show')
+                                .on('hidden.bs.modal', function () {
+                                    $(this).remove(); 
+                                });
+                        });
+            </text>
+        }
+        });
+    </script>
+</body>
+</html>
+ *@
+@using Tixora.Settings
+@model IEnumerable<Tixora.Models.Event>
+
+@{
+    ViewData["Title"] = "Event List";
+    Layout = "_AdminLayout"; // Assuming you want to use the same admin layout
 }
-    </tbody>
-</table>
+
+<style>
+    .users-section {
+        padding: 2rem 0;
+    }
+
+    .users-table {
+        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+        .users-table thead {
+            background-color: #f8f9fa;
+            text-align: center;
+        }
+
+        .users-table th {
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 0.85rem;
+            padding: 1rem;
+            border-bottom: 2px solid #dee2e6;
+        }
+
+        /* Ensure text inside cells wraps properly - adapted from organizer view */
+        .users-table td {
+            word-wrap: break-word;
+            word-break: break-all;
+            overflow-wrap: break-word;
+            max-width: 200px;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            overflow: hidden;
+            padding: 1rem;
+            vertical-align: middle;
+            text-align: center;
+        }
+
+    /* Special style for description column to show more text */
+    .description-cell {
+        max-width: 250px;
+    }
+
+    .users-table tbody tr {
+        transition: background-color 0.2s ease;
+    }
+
+        .users-table tbody tr:hover {
+            background-color: rgba(0, 123, 255, 0.05);
+        }
+
+    .event-thumbnail {
+        width: 80px;
+        height: 60px;
+        object-fit: cover;
+        border-radius: 5px;
+        border: 1px solid #ddd;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.05);
+    }
+
+    .action-buttons {
+        display: flex;
+        gap: 0.5rem;
+        justify-content: center;
+    }
+
+    .btn-action {
+        min-width: 80px;
+        border-radius: 5px;
+        padding: 0.5rem 0.75rem;
+        font-size: 0.9rem;
+        border: none;
+        color: white;
+        transition: background-color 0.2s ease;
+        text-decoration: none !important;
+    }
+
+        .btn-action:hover {
+            opacity: 0.9;
+        }
+
+    .header-actions {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 2rem;
+    }
+
+    /* Custom modal styling */
+    .modal-header {
+        background-color: #0e1b4d;
+        color: white;
+        padding: 8px 20px;
+    }
+
+    .modal-title {
+        font-size: 16px;
+    }
+
+    .modal-body {
+        background-color: #ffffff;
+        color: #0e1b4d;
+        font-weight: bold;
+        font-size: 16px;
+        padding: 20px;
+    }
+
+    .modal-footer {
+        background-color: #ffffff;
+        padding: 8px 10px;
+    }
+
+    .btn-confirm-delete {
+        background-color: #7C4585;
+        color: white;
+        border: 2px solid #7C4585;
+        border-radius: 5px;
+        padding: 5px 13px;
+        font-size: 16px;
+    }
+
+    .btn-cancel-delete {
+        background-color: #ffffff;
+        color: #7C4585;
+        /* border: 2px solid #7C4585; */
+        border-radius: 5px;
+        padding: 5px 13px;
+        font-size: 16px;
+    }
+
+    .test:hover {
+        color: #520e5e !important;
+    }
+</style>
+
+<div class="container users-section">
+    <div class="header-actions">
+        <h1>Event List</h1>
+        <a asp-action="Create" class="btn d-flex align-items-center btn-action" style="background-color:#7C4585;">
+            <i class="bi bi-plus-circle me-2"></i>Add New Event
+        </a>
+    </div>
+
+    @if (Model != null && !Model.Any())
+    {
+        <div class="alert alert-warning" role="alert">
+            No events found.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive users-table" style="margin: 5rem; margin-top: 0px; margin-bottom:0px">
+            <table class="table table-borderless mb-3">
+                <thead>
+                    <tr>
+                        <th>@Html.DisplayNameFor(model => model.Title)</th>
+                        <th>@Html.DisplayNameFor(model => model.Description)</th>
+                        <th>@Html.DisplayNameFor(model => model.StartDate)</th>
+                        <th>@Html.DisplayNameFor(model => model.Category)</th>
+                        <th>Venue</th>
+                        <th>Organizer</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                <strong>@Html.DisplayFor(modelItem => item.Title)</strong>
+                            </td>
+                            <td class="description-cell">
+                                @Html.DisplayFor(modelItem => item.Description)
+                            </td>
+                            <td>
+                                @item.StartDate.ToString("dd/MM/yyyy")
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Category)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Venue.Name)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.Organizer.Name)
+                            </td>
+                            <td>
+                                <div class="action-buttons">
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-action test" style="background-color:#7C4585;">
+                                        <i class="bi bi-pencil me-1"></i>Edit
+                                    </a>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-action" style="background-color:#F7AD45; color:black">
+                                        <i class="bi bi-eye me-1"></i>Details
+                                    </a>
+                                    <button type="button"
+                                            class="btn btn-danger btn-action"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal"
+                                            data-id="@item.Id"
+                                            data-title="@item.Title"
+                                            data-description="@item.Description"
+                                            data-startdate="@item.StartDate.ToString("dd/MM/yyyy")"
+                                            style="background-color:#BB3E00;">
+                                        <i class="bi bi-trash me-1"></i>Delete
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog" style="max-width: 500px;">
+        <div class="modal-content" style="background-color: #ffffff;">
+            <div class="modal-header" style="background-color: #0e1b4d; color: white; padding: 8px 20px;">
+                <h5 class="modal-title" id="deleteModalLabel" style="font-size: 16px;">Confirm Delete</h5>
+                <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold; font-size: 16px; padding: 20px;">
+                Are you sure you want to delete this event?
+                <p><strong>Title:</strong> <span id="eventTitleToDelete"></span></p>
+                <p><strong>Description:</strong> <span id="eventDescriptionToDelete"></span></p>
+                <p><strong>Start Date:</strong> <span id="eventStartDateToDelete"></span></p>
+            </div>
+            <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
+                <form id="deleteForm" asp-action="Delete" method="post">
+                    <input type="hidden" name="id" id="eventIdToDelete" />
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-confirm-delete">Yes</button>
+                    <button type="button" class="btn btn-cancel-delete" data-bs-dismiss="modal">No</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Success Message Modal -->
+@if (TempData["SuccessMessage"] != null)
+{
+    <div id="successPopup" class="modal fade" tabindex="-1" aria-labelledby="successPopupLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content" style="background-color: #0e1b4d;">
+                <div class="modal-header" style="background-color: #0e1b4d; color: white;">
+                    <h5 class="modal-title" id="successPopupLabel">Success</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="background-color: #ffffff; color: #0e1b4d; font-weight: bold;">
+                    @TempData["SuccessMessage"]
+                </div>
+                <div class="modal-footer" style="background-color: #ffffff;">
+                    <button type="button" class="btn btn-confirm-delete" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        // Delete modal setup
+        $('#deleteModal').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var eventId = button.data('id');
+            var eventTitle = button.data('title');
+            var eventDescription = button.data('description');
+            var eventStartDate = button.data('startdate');
+
+            var modal = $(this);
+            modal.find('#eventIdToDelete').val(eventId);
+            modal.find('#eventTitleToDelete').text(eventTitle);
+            modal.find('#eventDescriptionToDelete').text(eventDescription);
+            modal.find('#eventStartDateToDelete').text(eventStartDate);
+        });
+
+        // Show success popup if TempData["SuccessMessage"] exists
+        if ($('#successPopup').length) {
+            var successModal = new bootstrap.Modal(document.getElementById('successPopup'));
+            successModal.show();
+        }
+    });
+</script>

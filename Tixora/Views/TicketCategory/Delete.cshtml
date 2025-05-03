@@ -2,45 +2,38 @@
 
 @{
     ViewData["Title"] = "Delete Category";
+    Layout = "_AdminLayout";
 }
 
-<div class="container">
-    <h1>Delete Ticket Category</h1>
+<h1 class="text-danger">Delete Ticket Category</h1>
 
-    <div class="alert alert-danger">
-        <h4>Are you sure you want to delete this ticket category?</h4>
-        <p>This action cannot be undone.</p>
+<h4>Are you sure you want to delete this category?</h4>
+
+<div class="card mt-4">
+    <div class="card-body">
+        <dl class="row">
+            <dt class="col-sm-3">Category Name</dt>
+            <dd class="col-sm-9">@Model.Name</dd>
+
+            <dt class="col-sm-3">Description</dt>
+            <dd class="col-sm-9">@Model.Description</dd>
+
+            <dt class="col-sm-3">Price Multiplier</dt>
+            <dd class="col-sm-9">@Model.PriceMultiplier</dd>
+        </dl>
+
+        @if (Model.Tickets != null && Model.Tickets.Any())
+        {
+            <div class="alert alert-warning">
+                <h5>Warning!</h5>
+                <p>This category is associated with @Model.Tickets.Count ticket(s). Deleting it might affect existing tickets.</p>
+            </div>
+        }
+
+        <form asp-action="Delete" method="post">
+            <input type="hidden" asp-for="Id" />
+            <button type="submit" class="btn btn-danger">Delete</button>
+            <a asp-action="Index" class="btn btn-secondary">Cancel</a>
+        </form>
     </div>
-
-    <div class="card mb-4">
-        <div class="card-header">
-            Category Details
-        </div>
-        <div class="card-body">
-            <dl class="row">
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Name)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Name)</dd>
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.Description)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.Description)</dd>
-
-                <dt class="col-sm-3">@Html.DisplayNameFor(model => model.PriceMultiplier)</dt>
-                <dd class="col-sm-9">@Html.DisplayFor(model => model.PriceMultiplier)</dd>
-            </dl>
-        </div>
-    </div>
-
-    @if (Model.Tickets != null && Model.Tickets.Any())
-    {
-        <div class="alert alert-warning">
-            <h5>Warning!</h5>
-            <p>This category is associated with @Model.Tickets.Count ticket(s). Deleting it might affect existing tickets.</p>
-        </div>
-    }
-
-    <form asp-action="Delete">
-        <input type="hidden" asp-for="Id" />
-        <button type="submit" class="btn btn-danger">Delete</button>
-        <a asp-action="Index" class="btn btn-secondary">Cancel</a>
-    </form>
 </div>

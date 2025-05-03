@@ -38,17 +38,5 @@ namespace Tixora.ViewModels
         //public List<string> SelectedSeats { get; set; } = new List<string>();
 
         //public List<SelectListItem> AvailableSeats { get; set; } = new List<SelectListItem>();
-
-        public void CalculateTotalPrice(float ticketPrice)
-        {
-            if (AvailableTickets.Any() && TicketId > 0)
-            {
-                var selectedTicket = AvailableTickets.FirstOrDefault(t => t.Value == TicketId.ToString());
-                if (selectedTicket != null && float.TryParse(selectedTicket.Text, out var price))
-                {
-                    TotalPrice = price * Amount;
-                }
-            }
-        }
     }
 }

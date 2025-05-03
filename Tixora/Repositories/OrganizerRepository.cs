@@ -80,12 +80,13 @@ namespace Tixora.Repositories
             if (organizer != null)
             {
                 _context.Organizers.Remove(organizer);
-                var org =await GetById(id);
-                if (org != null)
-                {
-                    _context.Organizers.Remove(org);
-                    await SaveAsync();
-                }
+                //var org =await GetById(id);
+                //if (org != null)
+                //{
+                //    _context.Organizers.Remove(org);
+                //    await SaveAsync();
+                //}
+                await SaveAsync();
             }
         }
         public async Task<Organizer> GetById(int id)

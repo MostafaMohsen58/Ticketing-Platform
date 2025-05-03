@@ -3,122 +3,220 @@
 @model RegisterViewModel
 
 @{
+    Layout = "_AuthLayout";
     ViewData["Title"] = "Register";
 }
 
-    <style>
-        body {
-            background-image: url('/images/crowded_people.jpg'); 
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-        }
+<style>
+    body {
+        background-image: url('/images/crowded_people.jpg');
+        background-size: cover;
+        background-position: center;
+        background-repeat: no-repeat;
+    }
 
-        .register-container { 
-            max-width: 520px; 
-            background-color: rgba(255, 255, 255, 0.9);
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-            margin: auto;
-        }
+    .register-container {
+        max-width: 520px;
+        background-color: #e7d4d4e0;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        margin: auto;
+    }
 
-        .form-label {
-             font-weight: bold; 
-         }
-    </style>
+    .form-label {
+        font-weight: bold;
+    }
+    .cont{
+        background-color: rgba(255, 255, 255, 0.9);
+        width: 775px;
+		margin: auto;
+    }
+</style>
+<section class="cont">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-lg-10">
+                <p style="margin:auto;"><h2>Create an Account</h2></p>
+				
 
-    <div class="container register-container">
-        <h2 class="mb-4 text-center">Registeration Form</h2>
-    <form asp-controller="Account" asp-action="Register" method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="All"></div>
-            <div class="mb-3">
-                <label asp-for="Email" class="form-label">Email address</label>
-                <input asp-for="Email" type="email" class="form-control" placeholder="Enter your email">
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Password" class="form-label">Password</label>
-                <input asp-for="Password" type="password" class="form-control" placeholder="Enter your password">
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="ConfirmPassword" class="form-label">Confirm Password</label>
-                <input asp-for="ConfirmPassword" type="password" class="form-control" placeholder="Confirm your password">
-                <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
-            </div>
-            <div class="row mb-3">
-                <div class="col-md-6">
-                    <label asp-for="FirstName" class="form-label">First Name</label>
-                    <input asp-for="FirstName" type="text" class="form-control" placeholder="Enter your first name">
-                    <span asp-validation-for="FirstName" class="text-danger"></span>
-                </div>
-                <div class="col-md-6">
-                    <label asp-for="LastName" class="form-label">Last Name</label>
-                    <input asp-for="LastName" type="text" class="form-control" placeholder="Enter your last name">
-                    <span asp-validation-for="LastName" class="text-danger"></span>
-                </div>
-            </div>
-            <div class="mb-3">
-                <label asp-for="Gender" class="form-label">Gender</label>
-                <select asp-for="Gender" class="form-select">
-                    <option value="">Select Gender</option>
-                    <option value="Male">Male</option>
-                    <option value="Female">Female</option>
-                </select>
-                <span asp-validation-for="Gender" class="text-danger"></span>
-            </div>
-            @* <div class="mb-3">
-                <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
-                <input asp-for="ProfileUrl" type="url" class="form-control" placeholder="Enter profile picture URL">
-                <span asp-validation-for="ProfileUrl" class="text-danger"></span>
-            </div> *@
-             <div class="mb-3">
-                <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
-                @* <input type="file" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model?.ImageUrl" /> *@
-                @if (!string.IsNullOrEmpty(Model?.ProfileUrl))
-                {
-                    <div>
-                        <img src="/images/user/@Model.ProfileUrl" alt="User Image" width="150" height="150" />
+                <!-- Progress Bar -->
+                <div class="progress mb-4" style="height: 30px;">
+                    <div id="progressBar" class="progress-bar bg-primary progress-bar-striped" role="progressbar" style="width: 33%;" aria-valuenow="33" aria-valuemin="0" aria-valuemax="100">
+                        Step 1 of 3
                     </div>
-                }
-                <input type="file" class="form form-control" id="ImageUrl" name="ImageUrl" value="@Model?.ProfileUrl" />
+                </div>
+
+                <!-- Step Indicators -->
+                <div class="d-flex justify-content-between mb-4">
+                    <div id="stepIndicator1" class="step-indicator text-primary fw-bold">1. Account Info</div>
+                    <div id="stepIndicator2" class="step-indicator text-secondary">2. Personal Info</div>
+                    <div id="stepIndicator3" class="step-indicator text-secondary">3. Contact Info</div>
+                </div>
+
+                <!-- Form Start -->
+                <form asp-action="Register" method="post" enctype="multipart/form-data" id="createForm">
+                    <div asp-validation-summary="All" class="text-danger mb-3"></div>
+
+                    <!-- Step 1 -->
+                    <div id="step1">
+                        <div class="mb-3">
+                            <label asp-for="Email" class="form-label"></label>
+                            <input asp-for="Email" class="form-control" />
+                            <span asp-validation-for="Email" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Password" class="form-label"></label>
+                            <input asp-for="Password" class="form-control" />
+                            <span asp-validation-for="Password" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="ConfirmPassword" class="form-label"></label>
+                            <input asp-for="ConfirmPassword" class="form-control" />
+                            <span asp-validation-for="ConfirmPassword" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-end">
+                            <button type="button" class="btn btn-primary next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div id="step2" style="display: none;">
+                        <div class="mb-3">
+                            <label asp-for="FirstName" class="form-label"></label>
+                            <input asp-for="FirstName" class="form-control" />
+                            <span asp-validation-for="FirstName" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="LastName" class="form-label"></label>
+                            <input asp-for="LastName" class="form-control" />
+                            <span asp-validation-for="LastName" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Gender" class="form-label"></label>
+                            <select asp-for="Gender" class="form-select" asp-items="Html.GetEnumSelectList<Gender>()">
+                                <option value="">-- Select Gender --</option>
+                            </select>
+                            <span asp-validation-for="Gender" class="text-danger small"></span>
+                        </div>
+                        <div class="form-group mb-3">
+                            <label asp-for="ProfileUrl" class="form-label">Profile Picture (Optional)</label>
+                            <input type="file" class="form-control" id="ImageUrl" name="ImageUrl" />
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-primary prev-btn">Previous</button>
+                            <button type="button" class="btn btn-primary next-btn">Next</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div id="step3" style="display: none;">
+                        <div class="mb-3">
+                            <label asp-for="PhoneNumber" class="form-label"></label>
+                            <input asp-for="PhoneNumber" class="form-control" />
+                            <span asp-validation-for="PhoneNumber" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Address" class="form-label"></label>
+                            <input asp-for="Address" class="form-control" />
+                            <span asp-validation-for="Address" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="City" class="form-label"></label>
+                            <input asp-for="City" class="form-control" />
+                            <span asp-validation-for="City" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="NationalId" class="form-label"></label>
+                            <input asp-for="NationalId" class="form-control" />
+                            <span asp-validation-for="NationalId" class="text-danger small"></span>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="DateOfBrith" class="form-label"></label>
+                            <input asp-for="DateOfBrith" class="form-control" type="date" />
+                            <span asp-validation-for="DateOfBrith" class="text-danger small"></span>
+                        </div>
+
+                        <div class="d-flex justify-content-between">
+                            <button type="button" class="btn btn-outline-primary prev-btn">Previous</button>
+                            <button type="submit" class="btn btn-success">Submit</button>
+                        </div>
+                    </div>
+                </form>
+
             </div>
-            <div class="mb-3">
-                <label asp-for="Address" class="form-label">Address</label>
-                <input asp-for="Address" type="text" class="form-control" placeholder="Enter your address">
-                <span asp-validation-for="Address" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="City" class="form-label">City</label>
-                <input asp-for="City" type="text" class="form-control" placeholder="Enter your city">
-                <span asp-validation-for="City" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="PhoneNumber" class="form-label">Phone Number</label>
-                <input asp-for="PhoneNumber" type="tel" class="form-control" placeholder="Enter your phone number">
-                <span asp-validation-for="PhoneNumber" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="NationalId" class="form-label">National ID</label>
-                <input asp-for="NationalId" type="text" class="form-control" placeholder="Enter your National ID">
-                <span asp-validation-for="NationalId" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="DateOfBrith" class="form-label">Date of Birth</label>
-                <input asp-for="DateOfBrith" type="date" class="form-control">
-                <span asp-validation-for="DateOfBrith" class="text-danger"></span>
-            </div>
-            <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Register</button>
-            </div>
-        </form>
-        <div class="mt-3 text-center">
-            <a asp-action="Login">I have already an account</a>
         </div>
     </div>
+</section>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
-    <script src="~/lib/jquery-validation-unobtrusive/dist/jquery.validate.unobtrusive.min.js"></script>
+@section Scripts {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        var currentStep = 1;
+        var form = $("#createForm");
+
+        $(".next-btn").click(function () {
+            var valid = form.validate({
+                ignore: ":hidden"
+            }).form();
+
+            if (valid) {
+                markStepCompleted(currentStep);
+                $("#step" + currentStep).hide();
+                currentStep++;
+                $("#step" + currentStep).show();
+                updateProgress(currentStep);
+            } else {
+                $('html, body').animate({
+                    scrollTop: $("#createForm").offset().top - 50
+                }, 300);
+            }
+        });
+
+        $(".prev-btn").click(function () {
+            $("#step" + currentStep).hide();
+            currentStep--;
+            $("#step" + currentStep).show();
+            updateProgress(currentStep);
+        });
+
+        function updateProgress(step) {
+            var progress = (step / 3) * 100;
+            $("#progressBar")
+                .css("width", progress + "%")
+                .attr("aria-valuenow", progress)
+                .text("Step " + step + " of 3");
+
+            $(".step-indicator").removeClass("text-primary fw-bold").addClass("text-secondary");
+            $("#stepIndicator" + step)
+                .removeClass("text-secondary")
+                .addClass("text-primary fw-bold");
+
+            if (progress === 100) {
+                $("#progressBar").removeClass("bg-primary").addClass("bg-success");
+            } else {
+                $("#progressBar").removeClass("bg-success").addClass("bg-primary");
+            }
+        }
+
+        function markStepCompleted(step) {
+            var indicator = $("#stepIndicator" + step);
+            if (!indicator.hasClass("completed")) {
+                indicator.html(indicator.text() + " ✅");
+                indicator.addClass("completed");
+            }
+        }
+
+        $("input, select").on("input change", function () {
+            var field = $(this);
+            if (field.valid()) {
+                field.removeClass("input-validation-error");
+                field.next("span.field-validation-error").text('');
+            }
+        });
+    </script>
+}

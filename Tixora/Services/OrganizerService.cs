@@ -38,19 +38,9 @@ namespace Tixora.Services
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
 
-            using (var scope = new TransactionScope())
-            {
-                try
-                {
-                    await _repository.AddAsync(organizer);
-                    scope.Complete();
-                }
-                catch (Exception)
-                {
-                    // Transaction will automatically be rolled back
-                    throw;
-                }
-            }
+            
+            await _repository.AddAsync(organizer);
+            await _repository.SaveAsync();
         }
 
         public async Task Update(Organizer organizer)
@@ -58,19 +48,10 @@ namespace Tixora.Services
             if (organizer == null)
                 throw new ArgumentNullException(nameof(organizer));
 
-            using (var scope = new TransactionScope())
-            {
-                try
-                {
-                    await _repository.UpdateAsync(organizer);
-                    scope.Complete();
-                }
-                catch (Exception)
-                {
-                    // Transaction will automatically be rolled back
-                    throw;
-                }
-            }
+            
+            await _repository.UpdateAsync(organizer);
+            await _repository.SaveAsync();
+
         }
 
         public async Task Delete(int id)
@@ -84,7 +65,6 @@ namespace Tixora.Services
                 }
                 catch (Exception)
                 {
-                    // Transaction will automatically be rolled back
                     throw;
                 }
             }

@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using Tixora.Models;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
@@ -15,14 +16,14 @@ namespace Tixora.Controllers
     {
         private readonly IBookingService bookingService;
         private readonly IEventsService eventsService;
-        private readonly ITicketRepository ticketRepository;
+        private readonly ITicketService ticketService;
         public BookingController(IBookingService _bookingService,
             IEventsService _eventsService,
-            ITicketRepository _ticketRepository)
+            ITicketService _ticketService)
         {
             bookingService = _bookingService;
             eventsService = _eventsService;
-            ticketRepository = _ticketRepository;
+            ticketService = _ticketService;
         }
         // Booking
         public async Task<IActionResult> Index()
@@ -46,7 +47,7 @@ namespace Tixora.Controllers
             {
                 EventId = eventId,
                 EventTitle = eventDetails.Title,
-                EventImageUrl = Url.Content($"~/images/{eventDetails.ImageUrl}"),
+                EventImageUrl = eventDetails.ImageUrl,
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
                 AvailableTickets = availableTickets.Select(t => new SelectListItem
@@ -69,7 +70,7 @@ namespace Tixora.Controllers
             }
             try
             {
-                var ticket =await ticketRepository.GetById(viewModel.TicketId);
+                var ticket =await ticketService.GetById(viewModel.TicketId);
                 if (ticket.AvailableQuantity < viewModel.Amount)
                 {
                     ModelState.AddModelError("Amount", $"Not enough tickets available. Only {ticket.AvailableQuantity} left.");
@@ -100,6 +101,7 @@ namespace Tixora.Controllers
         public async Task<IActionResult> Confirmation(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);
+            var ticketsPrice = (decimal)(booking.Amount * booking.Ticket.Price);
             var userId = User.FindFirstValue(ClaimTypes.NameIdentifier);
             var viewModel = new ConfirmationViewModel
             {
@@ -109,7 +111,8 @@ namespace Tixora.Controllers
                 VenueName = booking.Ticket.Event.Venue.Name,
                 TicketType = booking.Ticket.TicketCategory.Name,
                 Quantity = booking.Amount,
-                BookingDate = booking.BookedAt
+                BookingDate = booking.BookedAt,
+                TotalPrice = ticketsPrice
             };
             return View(viewModel);
         }
@@ -170,7 +173,7 @@ namespace Tixora.Controllers
 
             try
             {
-                var newTicket = await ticketRepository.GetById(viewModel.TicketId);
+                var newTicket = await ticketService.GetById(viewModel.TicketId);
                 if (viewModel.TicketId != booking.TicketId)
                 {
                     if (viewModel.NewQuantity > newTicket.AvailableQuantity)
@@ -179,9 +182,9 @@ namespace Tixora.Controllers
                         viewModel.AvailableTickets = await GetAvailableTicketsForEdit(viewModel.EventId, viewModel.TicketId);
                         return View(viewModel);
                     }
-                    var oldTicket = await ticketRepository.GetById(booking.TicketId);
+                    var oldTicket = await ticketService.GetById(booking.TicketId);
                     oldTicket.AvailableQuantity += booking.Amount; // Increase the available quantity of the old ticket
-                    await ticketRepository.UpdateAsync(oldTicket); // Update the old ticket's available quantity
+                    await ticketService.Update(oldTicket); // Update the old ticket's available quantity
                 }
                 else
                 {
@@ -214,7 +217,7 @@ namespace Tixora.Controllers
         private async Task<List<SelectListItem>> GetAvailableTicketsForEdit(int eventId, int currentTicketId)
         {
             var availableTickets = await eventsService.GetAvailableTicketsAsync(eventId);
-            var currentTicket =await ticketRepository.GetById(currentTicketId);
+            var currentTicket =await ticketService.GetById(currentTicketId);
             if (currentTicket != null)
             {
                 availableTickets = availableTickets
@@ -239,11 +242,32 @@ namespace Tixora.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            bookingService.DeleteAsync(id);
-            bookingService.SaveAsync();
-            return RedirectToAction("Index");
+            try
+            {
+                await bookingService.DeleteAsync(id);
+                await bookingService.SaveAsync();
+
+                TempData["SuccessMessage"] = "Booking deleted successfully";
+                return RedirectToAction("Index");
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", $"Error deleting booking: {ex.Message}");
+                var booking = await bookingService.GetByIdAsync(id);
+                return View(booking);
+            }
+        }
+
+        public IActionResult MyTickets()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+                ViewBag.UserId = userId;
+            }
+            return View();
         }
     }
 }
