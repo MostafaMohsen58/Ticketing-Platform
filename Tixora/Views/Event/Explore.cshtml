@@ -1,0 +1,277 @@
+﻿@using Tixora.Settings
+@using Tixora.Settings
+@model List<Tixora.Models.Event>
+@{
+    ViewData["Title"] = "Explore Events";
+}
+
+<div class="container-fluid py-4">
+    <h1 class="mb-4">Explore Events</h1>
+
+    <!-- Filters Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="Explore" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@(Context.Request.Query["startDate"])" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Search</label>
+                    <input type="text" name="search" class="form-control" value="@(Context.Request.Query["search"])" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Search</button>
+                    <a asp-action="Explore" class="btn btn-outline-secondary">Clear Search</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+    <div class="mb-4 text-center">
+        <div class="d-flex justify-content-center flex-wrap gap-4">
+            <div class="category-item">
+                <div class="category-icon bg-primary">
+                    <i class="fas fa-calendar-alt fa-2x text-white"></i>
+                </div>
+                <span>All Events</span>
+            </div>
+            <div class="category-item">
+                <div class="category-icon bg-success">
+                    <i class="fas fa-music fa-2x text-white"></i>
+                </div>
+                <span>Concerts</span>
+            </div>
+            <div class="category-item">
+                <div class="category-icon bg-danger">
+                    <i class="fas fa-futbol fa-2x text-white"></i>
+                </div>
+                <span>Sports</span>
+            </div>
+            <div class="category-item">
+                <div class="category-icon bg-warning">
+                    <i class="fas fa-theater-masks fa-2x text-white"></i>
+                </div>
+                <span>Theater</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Events List -->
+    <div class="row">
+        @if (Model != null && Model.Any())
+        {
+            foreach (var eventItem in Model)
+            {
+                <div class="col-12 mb-4">
+                    <div class="card event-card shadow">
+                        <div class="row g-0">
+                            <!-- Event Image -->
+                            <div class="col-md-2 d-flex align-items-center justify-content-center p-3">
+                                @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                                {
+                                    @* <img src="@Url.Content("~/wwwroot/images/user/" + eventItem.ImageUrl)" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;"> *@
+                                    <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;"/>
+                                }
+                                else
+                                {
+                                    <div class="placeholder-image bg-light d-flex align-items-center justify-content-center" style="height: 120px; width: 100%;">
+                                        <i class="fas fa-image fa-3x text-secondary"></i>
+                                    </div>
+                                }
+                            </div>
+
+                            <!-- Event Details -->
+                            <div class="col-md-4 d-flex align-items-center">
+                                <div class="card-body">
+                                    <h5 class="card-title">@eventItem.Title</h5>
+                                    <p class="card-text text-muted mb-1">
+                                        <i class="fas fa-tag me-1"></i> @eventItem.Category
+                                    </p>
+                                    <p class="card-text description-truncate">@eventItem.Description</p>
+                                </div>
+                            </div>
+
+                            <!-- Venue -->
+                            <div class="col-md-2 d-flex align-items-center border-start border-end">
+                                <div class="card-body text-center">
+                                    <i class="fas fa-map-marker-alt fa-2x text-danger mb-2"></i>
+                                    <h6>@(eventItem.Venue?.Name ?? "Not specified")</h6>
+                                    <p class="text-muted small mb-0">@(eventItem.Venue?.Address ?? "")</p>
+                                </div>
+                            </div>
+
+                            <!-- Date and Time -->
+                            <div class="col-md-2 d-flex align-items-center border-end">
+                                <div class="card-body text-center">
+                                    <i class="fa-solid fa-calendar-days" style="color: #040919;"></i>
+                                    <h6>@eventItem.StartDate.ToString("dddd, dd MMM yyyy")</h6>
+                                    <p class="text-muted small mb-0">@eventItem.StartDate.ToString("hh:mm tt")</p>
+                                </div>
+                            </div>
+
+                            <!-- Actions -->
+                            <div class="col-md-2 d-flex align-items-center justify-content-center">
+                                <div class="text-center">
+                                    <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-primary mb-2 w-100">Details</a>
+                                    @if (eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+                                    {
+                                        <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-success w-100">Book</a>
+                                    }
+                                    else
+                                    {
+                                        <button class="btn btn-secondary w-100" disabled>Sold Out</button>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Organizer Info -->
+                        <div class="card-footer bg-light">
+                            <div class="d-flex justify-content-between align-items-center">
+                                @if (!string.IsNullOrEmpty(eventItem.Organizer?.LogoUrl))
+                                {
+                                    <img src="~/images/organizer/@eventItem.Organizer.LogoUrl" alt="Organizer Logo" style="height: 30px; width: 30px; object-fit: cover; border-radius: 50%; margin-right: 8px;" />
+                                }
+                                <span>Organizer: @(eventItem.Organizer?.Name ?? "Not specified")</span>
+
+                                @* <div> *@
+                                @*     @{ *@
+                                @*         var availableTickets = eventItem.Tickets.Sum(t => t.AvailableQuantity); *@
+                                @*     } *@
+                                @*     <span class="badge @(availableTickets > 0 ? "bg-success" : "bg-danger")"> *@
+                                @*         @(availableTickets > 0 ? $"Available" : "Sold Out") *@
+                                @*     </span> *@
+                                @* </div> *@
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No events available at this time.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* LTR Setup - Changed from RTL */
+        body {
+            direction: ltr;
+            text-align: left;
+        }
+
+        /* Category Icons */
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+            .category-item:hover {
+                transform: translateY(-5px);
+            }
+
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+
+        /* Event Card */
+        .event-card {
+            transition: transform 0.2s, box-shadow 0.2s;
+            overflow: hidden;
+            border: none;
+            border-radius: 10px;
+        }
+
+            .event-card:hover {
+                transform: translateY(-3px);
+                box-shadow: 0 10px 20px rgba(0,0,0,0.15) !important;
+            }
+
+        .description-truncate {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Responsive adjustments */
+        /*  (max-width: 768px) { */
+        /*     .row .col-md-2, .row .col-md-4 */
+
+        /* { */
+        /*     border: none !important; */
+        /*     padding-top: 1rem; */
+        /*     padding-bottom: 1rem; */
+        /* } */
+
+        /* } */
+
+        a.btn-primary {
+            background-color: #040919;
+            border-color: #040919;
+        }
+
+        a.btn-success {
+            background-color: #F82249;
+            border-color: #F82249;
+        }
+
+        button.btn.btn-primary {
+            background-color: #040919;
+            border-color: #040919;
+        }
+
+        .badge.bg-success {
+            background-color: #F82249 !important;
+        }
+
+        .btn-secondary{
+            background-color: rgba(0,0,0,0.15);
+        }
+
+    </style>
+}
+
+@section Scripts {
+    <script>
+        // You could add filters by category functionality here
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryItems = document.querySelectorAll('.category-item');
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const category = this.querySelector('span').textContent;
+                    if (category === 'All Events') {
+                        window.location.href = '@Url.Action("Explore", "Event")';
+                    } else {
+                        const searchInput = document.querySelector('input[name="search"]');
+                        searchInput.value = category;
+                        document.querySelector('form').submit();
+                    }
+                });
+            });
+        });
+    </script>
+}

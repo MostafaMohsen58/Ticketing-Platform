@@ -55,24 +55,18 @@ namespace Tixora
             builder.Services.AddScoped<IEventsService, EventsService>();
 
 
-            //builder.Services.AddScoped<IVenueRepository, VenueRepository>();
+            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 
             builder.Services.AddScoped<IEventsService, EventsService>();
 
 
-            //builder.Services.AddScoped<IVenueRepository, VenueRepository>();
+            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 
-            //builder.Services.AddScoped<IVenueService, VenueService>();
+            builder.Services.AddScoped<IVenueService, VenueService>();
             builder.Services.AddScoped<IOrganizerService, OrganizerService>();
             builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddSingleton<FileService>();
-
-            builder.Services.AddAuthentication().AddGoogle(op =>
-            {
-                op.ClientId = builder.Configuration["Auth:Google:ClientId"];
-                op.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
-            });
             var app = builder.Build();
 
 
@@ -84,7 +78,7 @@ namespace Tixora
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",

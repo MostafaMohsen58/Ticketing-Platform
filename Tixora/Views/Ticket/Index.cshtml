@@ -5,113 +5,7 @@
     Layout = "_AdminLayout";
 }
 
-@* <style>
-    .users-section {
-        padding: 2rem 0;
-    }
 
-    .users-table {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-        .users-table thead {
-            background-color: #f8f9fa;
-            text-align: center;
-        }
-
-        .users-table th {
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            padding: 1rem;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        .users-table td {
-            padding: 1rem;
-            vertical-align: middle;
-        }
-
-        .users-table tbody tr {
-            transition: background-color 0.2s ease;
-            text-align: center;
-        }
-
-            .users-table tbody tr:hover {
-                background-color: rgba(0, 123, 255, 0.05);
-            }
-
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: center;
-    }
-
-    .btn-action {
-        min-width: 80px;
-    }
-
-    .header-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-
-    .search-container {
-        max-width: 300px;
-    }
-
-    .pagination-container {
-        display: flex;
-        justify-content: center;
-        margin-top: 2rem;
-    }
-    
-    /* Custom modal styling */
-    .modal-header {
-        background-color: #0e1b4d; 
-        color: white; 
-        padding: 8px 20px;
-    }
-    
-    .modal-title {
-        font-size: 16px;
-    }
-    
-    .modal-body {
-        background-color: #ffffff; 
-        color: #0e1b4d; 
-        font-weight: bold; 
-        font-size: 16px; 
-        padding: 20px;
-    }
-    
-    .modal-footer {
-        background-color: #ffffff; 
-        padding: 8px 10px;
-    }
-    
-    .btn-confirm-delete {
-        background-color: #f82249; 
-        color: white; 
-        border: 2px solid #f82249; 
-        border-radius: 5px; 
-        padding: 8px 16px; 
-        font-size: 16px;
-    }
-    
-    .btn-cancel-delete {
-        background-color: #ffffff; 
-        color: #f82249; 
-        border: 2px solid #f82249; 
-        border-radius: 5px; 
-        padding: 8px 16px; 
-        font-size: 16px;
-    }
-</style> *@
 
 <style>
     .users-section {
@@ -233,7 +127,7 @@
 <div class="container users-section">
     <div class="header-actions">
         <h1>Tickets </h1>
-        <a asp-action="Create" class="btn d-flex align-items-center" style="background-color:#7C4585; color:white">
+        <a asp-action="Create" class="btn d-flex align-items-center" style="background-color:#0e1b4d; color:white">
             <i class="bi bi-plus-circle me-2"></i>Add New Ticket
         </a>
     </div>
@@ -279,14 +173,14 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <a href="/Ticket/Edit?id=@ticket.Id" class="btn btn-action" style="background-color:#7C4585; color:white">
+                                    <a href="/Ticket/Edit?id=@ticket.Id" class="btn btn-action" style="background-color:#7b829c; color:#fafafc">
                                         <i class="bi bi-pencil me-1"></i>Edit
                                     </a>
-                                    <a href="/Ticket/Details?id=@ticket.Id" class="btn btn-warning btn-action" style="background-color:#F7AD45;">
+                                    <a href="/Ticket/Details?id=@ticket.Id" class="btn btn-action" style="background-color:#0e1b4d;color:#fafafc">
                                         <i class="bi bi-eye me-1"></i>Details
                                     </a>
                                     <button type="button"
-                                            class="btn btn-danger btn-action"
+                                            class="btn btn-action"
                                             data-bs-toggle="modal"
                                             data-bs-target="#deleteModal"
                                             data-id="@ticket.Id"
@@ -294,7 +188,7 @@
                                             data-quantity="@ticket.AvailableQuantity"
                                             data-event="@ticket.Event?.Title"
                                             data-category="@ticket.TicketCategory?.Name"
-                                            style="background-color:#BB3E00;color:white">
+                                            style="background-color:#F82249;color:#fafafc ">
                                         <i class="bi bi-trash me-1"></i>Delete
                                     </button>
                                 </div>
@@ -349,7 +243,7 @@
                     @TempData["SuccessMessage"]
                 </div>
                 <div class="modal-footer" style="background-color: #ffffff;">
-                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Ok</button>
                 </div>
             </div>
         </div>
