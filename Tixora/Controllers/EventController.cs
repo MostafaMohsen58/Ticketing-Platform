@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Tixora.Models;
 using Tixora.Services;
 using Tixora.Services.Interfaces;
 using Tixora.ViewModels.EventViewModel;
@@ -101,9 +102,70 @@ namespace Tixora.Controllers
         
 
         [HttpGet]
-        public async Task<IActionResult> Explore(DateTime? startDate, string? location, string? search)
+        public async Task<IActionResult> Explore()
         {
             var events = await _eventsService.GetAll();
+
+            return View(events);
+        }
+        [HttpPost]
+        public async Task<IActionResult> Explore(DateTime? startDate, string? location, string? search)
+        {
+            var events = await Search(startDate, location, search, "");
+
+            return View(events);
+        }
+        [HttpGet]
+        public async Task<IActionResult> ExploreEntertainment(DateTime? startDate, string? location, string? search)
+        {
+            string category = "entertainment";
+            var events = await Search(startDate, location, search, category);
+
+            return View("Entertainment",events);    
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> ExploreMatches(DateTime? startDate, string? location, string? search)
+        {
+            string category = "Matches";
+
+            var events = await Search(startDate, location, search,category);
+
+            return View("Matches",events);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Matches(string category = null, int? venueId = null, DateTime? date = null, string search = null)
+        {
+            // Get all events
+            var events = await _eventsService.GetAll();
+
+            // Filter by category (like "matches", "sports", etc)
+
+            events = events.Where(e => e.Category.Equals("Matches", StringComparison.OrdinalIgnoreCase)).ToList();
+
+            
+            return View(events);
+        }
+        [HttpGet]
+        public async Task<IActionResult> Entertainment( DateTime? date = null, string search = null)
+        {
+            
+            // Get all events
+            var events = await _eventsService.GetAll();
+            events = events.Where(e => e.Category.Equals("entertainment", StringComparison.OrdinalIgnoreCase)).ToList();
+
+            return View(events);
+        }
+        [NonAction]
+        private async Task<List<Event>> Search(DateTime? startDate, string? location, string? search, string category)
+        {
+            var events = await _eventsService.GetAll();
+
+            if (category != "")
+            {
+                events = events.Where(e => e.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
+            }
 
             if (startDate.HasValue)
             {
@@ -123,100 +185,7 @@ namespace Tixora.Controllers
                 ).ToList();
             }
 
-            return View(events);
+            return events;
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Matches(string category = null, int? venueId = null, DateTime? date = null, string search = null)
-        {
-            // Get all events
-            var events = await _eventsService.GetAll();
-
-            // Filter by category (like "matches", "sports", etc)
-            
-             events = events.Where(e => e.Category.Equals("matches", StringComparison.OrdinalIgnoreCase)).ToList();
-            
-
-            // Filter by venue
-            if (venueId.HasValue)
-            {
-                events = events.Where(e => e.VenueId == venueId.Value).ToList();
-            }
-
-            // Filter by date
-            if (date.HasValue)
-            {
-                events = events.Where(e => e.StartDate.Date == date.Value.Date).ToList();
-            }
-
-            // Filter by search term
-            if (!string.IsNullOrEmpty(search))
-            {
-                events = events.Where(e =>
-                    e.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                    e.Description.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
-            // Get venues for filter dropdown
-            var venues = await _venueService.GetAll();
-
-            // Prepare view model
-            var viewModel = new MatchesViewModel
-            {
-                Events = events,
-                Venues = venues,
-                SelectedCategory = category,
-                SelectedVenueId = venueId,
-                SelectedDate = date,
-                SearchTerm = search
-            };
-
-            return View(viewModel);
-        }
-        [HttpGet]
-        public async Task<IActionResult> Entertainment(int? venueId = null, DateTime? date = null, string search = null)
-        {
-            // Get all events
-            var events = await _eventsService.GetAll();
-
-            // Filter to only show entertainment events
-            events = events.Where(e => e.Category.Equals("entertainment", StringComparison.OrdinalIgnoreCase)).ToList();
-
-            // Filter by venue
-            if (venueId.HasValue)
-            {
-                events = events.Where(e => e.VenueId == venueId.Value).ToList();
-            }
-
-            // Filter by date
-            if (date.HasValue)
-            {
-                events = events.Where(e => e.StartDate.Date == date.Value.Date).ToList();
-            }
-
-            // Filter by search term
-            if (!string.IsNullOrEmpty(search))
-            {
-                events = events.Where(e =>
-                    e.Title.Contains(search, StringComparison.OrdinalIgnoreCase) ||
-                    e.Description.Contains(search, StringComparison.OrdinalIgnoreCase)).ToList();
-            }
-
-            // Get venues for filter dropdown
-            var venues = await _venueService.GetAll();
-
-            // Prepare view model
-            var viewModel = new EntertainmentViewModel
-            {
-                Events = events,
-                Venues = venues,
-                SelectedVenueId = venueId,
-                SelectedDate = date,
-                SearchTerm = search
-            };
-
-            return View(viewModel);
-        }
-
     }
 }

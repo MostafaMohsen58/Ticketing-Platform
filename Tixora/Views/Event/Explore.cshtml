@@ -1,4 +1,6 @@
-﻿@model List<Tixora.Models.Event>
+﻿@using Tixora.Settings
+@using Tixora.Settings
+@model List<Tixora.Models.Event>
 @{
     ViewData["Title"] = "Explore Events";
 }
@@ -73,8 +75,8 @@
                             <div class="col-md-2 d-flex align-items-center justify-content-center p-3">
                                 @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
                                 {
-                                    <img src="@Url.Content("~/wwwroot/images/user/" + eventItem.ImageUrl)" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;">
-
+                                    @* <img src="@Url.Content("~/wwwroot/images/user/" + eventItem.ImageUrl)" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;"> *@
+                                    <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;"/>
                                 }
                                 else
                                 {
@@ -134,7 +136,7 @@
                             <div class="d-flex justify-content-between align-items-center">
                                 @if (!string.IsNullOrEmpty(eventItem.Organizer?.LogoUrl))
                                 {
-                                    <img src="~/uploads/@eventItem.Organizer.LogoUrl" alt="Organizer Logo" style="height: 30px; width: 30px; object-fit: cover; border-radius: 50%; margin-right: 8px;" />
+                                    <img src="~/images/organizer/@eventItem.Organizer.LogoUrl" alt="Organizer Logo" style="height: 30px; width: 30px; object-fit: cover; border-radius: 50%; margin-right: 8px;" />
                                 }
                                 <span>Organizer: @(eventItem.Organizer?.Name ?? "Not specified")</span>
 

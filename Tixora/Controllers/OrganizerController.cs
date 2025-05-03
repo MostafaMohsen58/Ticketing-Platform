@@ -152,7 +152,7 @@ namespace Tixora.Controllers
 
             if (ImageUrl != null && ImageUrl.Length > 0)
             {
-                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/user");
+                string uploadsFolder = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot/images/organizer");
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);

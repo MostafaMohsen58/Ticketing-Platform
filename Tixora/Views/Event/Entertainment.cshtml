@@ -1,4 +1,5 @@
-﻿@model Tixora.ViewModels.EventViewModel.EntertainmentViewModel
+﻿@using Tixora.Settings
+@model List<Event>
 
 @{
     ViewData["Title"] = "Entertainment Events";
@@ -9,39 +10,23 @@
 
     <!-- Filter Form -->
     <div class="card mb-4">
-        <div class="card-header">
-            <h5>Filter Entertainment Events</h5>
-        </div>
         <div class="card-body">
-            <form method="get" class="row g-3">
-                <!-- Venue Filter -->
-                <div class="col-md-4">
-                    <label for="venueId" class="form-label">Venue</label>
-                    <select id="venueId" name="venueId" class="form-select">
-                        <option value="">All Venues</option>
-                        @foreach (var venue in Model.Venues)
-                        {
-                            <option value="@venue.Id" selected="@(Model.SelectedVenueId == venue.Id)">@venue.Name</option>
-                        }
-                    </select>
+            <form asp-action="ExploreEntertainment" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@(Context.Request.Query["startDate"])" />
                 </div>
-
-                <!-- Date Filter -->
-                <div class="col-md-4">
-                    <label for="date" class="form-label">Event Date</label>
-                    <input type="date" id="date" name="date" class="form-control" value="@(Model.SelectedDate?.ToString("yyyy-MM-dd"))">
+                <div class="col-md-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
                 </div>
-
-                <!-- Search Filter -->
-                <div class="col-md-4">
-                    <label for="search" class="form-label">Search</label>
-                    <input type="text" id="search" name="search" class="form-control" value="@Model.SearchTerm" placeholder="Search by title or description">
+                <div class="col-md-3">
+                    <label class="form-label">Search</label>
+                    <input type="text" name="search" class="form-control" value="@(Context.Request.Query["search"])" />
                 </div>
-
-                <!-- Submit Button -->
-                <div class="col-12">
-                    <button type="submit" class="btn btn-primary">Apply Filters</button>
-                    <a href="@Url.Action("Entertainment")" class="btn btn-outline-secondary">Clear Filters</a>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Search</button>
+                    <a asp-action="Explore" class="btn btn-outline-secondary">Clear Search</a>
                 </div>
             </form>
         </div>
@@ -49,15 +34,17 @@
 
     <!-- Events Grid -->
     <div class="row row-cols-1 row-cols-md-3 g-4">
-        @if (Model.Events != null && Model.Events.Any())
+        @if (Model != null && Model.Any())
         {
-            @foreach (var eventItem in Model.Events)
+            @foreach (var eventItem in Model)
             {
                 <div class="col">
                     <div class="card h-100">
                         @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
                         {
-                            <img src="~/Images/@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;">
+                            @* <img src="~/Images/organizer/@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;"> *@
+                            <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;" />
+
                         }
                         else
                         {
@@ -76,7 +63,7 @@
                             <p class="card-text">@(eventItem.Description?.Length > 100 ? eventItem.Description.Substring(0, 100) + "..." : eventItem.Description)</p>
                         </div>
                         <div class="card-footer">
-                            <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-primary">View Details</a>
+                            <a asp-controller="Booking" asp-action="Create" asp-route-id="@eventItem.Id" class="btn btn-primary">Book</a>
                             @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                             {
                                 <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-secondary">Edit</a>
@@ -97,3 +84,13 @@
         }
     </div>
 </div>
+
+@section Styles {
+    <style>
+        .btn-primary{
+            background-color: #F82249;
+            border-color: #F82249;
+        }
+
+    </style>
+}

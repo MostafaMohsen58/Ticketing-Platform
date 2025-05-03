@@ -1,4 +1,5 @@
-﻿@model Tixora.ViewModels.EventViewModel.MatchesViewModel
+﻿@using Tixora.Settings
+@model List<Event>
 @{
     ViewData["Title"] = "Matches";
 }
@@ -7,55 +8,26 @@
     <h1 class="mb-4">Matches</h1>
 
     <!-- Filters Section -->
-    <div class="row mb-4">
-        <div class="col-md-3">
-            <label class="form-label">Team</label>
-            <select id="teamFilter" class="form-select">
-                <option value="">All</option>
-                @foreach (var evt in Model.Events.GroupBy(e => e.Title).Select(g => g.First()))
-                {
-                    <option value="@evt.Title">@evt.Title</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Stadium</label>
-            <select id="teamFilter" class="form-select">
-                <option value="">All</option>
-                @foreach (var evt in Model.Events.GroupBy(e => e.Title).Select(g => g.First()))
-                {
-                    <option value="@evt.Title">@evt.Title</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Group</label>
-            <select id="groupFilter" class="form-select">
-                <option value="">All</option>
-                @foreach (var category in Model.Events.Select(e => e.Category).Distinct())
-                {
-                    <option value="@category">@category</option>
-                }
-            </select>
-        </div>
-        <div class="col-md-3">
-            <label class="form-label">Stage</label>
-            <select id="stageFilter" class="form-select">
-                <option value="">All</option>
-                <option value="upcoming">Upcoming</option>
-                <option value="past">Completed</option>
-            </select>
-        </div>
-    </div>
-
-    <div class="row mb-3">
-        <div class="col-12 d-flex justify-content-end">
-            <button id="searchBtn" class="btn btn-primary ms-2" onclick="applyFilters()">
-                <i class="fas fa-search me-1"></i> Search
-            </button>
-            <a href="@Url.Action("Matches", "Event")" class="btn btn-secondary">
-                Clear Search
-            </a>
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="ExploreMatches" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@(Context.Request.Query["startDate"])" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Search</label>
+                    <input type="text" name="search" class="form-control" value="@(Context.Request.Query["search"])" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Search</button>
+                    <a asp-action="Explore" class="btn btn-outline-secondary">Clear Search</a>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -64,7 +36,7 @@
 
     <!-- Matches List -->
     <div id="matchesList">
-        @foreach (var eventItem in Model.Events)
+        @foreach (var eventItem in Model)
         {
             var isUpcoming = eventItem.StartDate > DateTime.Now;
             var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
@@ -78,7 +50,9 @@
                             <div class="text-center me-3">
                                 @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
                                 {
-                                    <img src="~/uploads/@eventItem.ImageUrl" class="team-logo" alt="Home Team">
+                                    @* <img src="~@eventItem.ImageUrl" class="team-logo" alt="Home Team"> *@
+                                    <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;" />
+
                                 }
                                 else
                                 {
@@ -145,20 +119,21 @@
                 
                 <!-- Action Buttons -->
                 <div class="match-actions p-2 text-center">
-                    <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-sm btn-primary">
-                        Details
-                    </a>
+                    @* <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-sm btn-primary"> *@
+                    @*     Details *@
+                    @* </a> *@
                     @if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
                     {
-                        <a href="@Url.Action("Create", "Booking", new { eventId = eventItem.Id })" class="btn btn-sm btn-success ms-2">
-                            Book Ticket
-                        </a>
+                        
+
+                        <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-sm btn-success ms-2">Book Ticket</a>
+
                     }
                 </div>
             </div>
         }
         
-        @if (!Model.Events.Any())
+        @if (!Model.Any())
         {
             <div class="alert alert-info text-center">
                 No matches available based on your search criteria.
@@ -267,6 +242,10 @@
             .match-vs {
                 margin: 0 10px;
             }
+        }
+        .btn-success{
+            background-color: #F82249;
+            border-color: #F82249;
         }
     </style>
 }
