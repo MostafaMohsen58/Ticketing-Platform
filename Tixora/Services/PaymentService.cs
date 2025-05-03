@@ -1,9 +1,7 @@
 ﻿using Stripe;
 using Stripe.Checkout;
-using Tixora.Models;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
-using Tixora.ViewModels.PaymentViewModel;
 
 namespace Tixora.Services
 {
@@ -52,8 +50,8 @@ namespace Tixora.Services
                     },
                 },
                 Mode = "payment",
-                SuccessUrl = "https://localhost:7076/Payment/Success?session_id={CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://localhost:7076/Payment/Cancel",
+                SuccessUrl = "https://localhost:54460/Payment/Success?session_Id={CHECKOUT_SESSION_ID}",
+                CancelUrl = "https://localhost:54460/Payment/Cancel",
                 Metadata = new Dictionary<string, string>
                 {
                     { "BookingId", booking.Id.ToString() },
@@ -69,5 +67,6 @@ namespace Tixora.Services
 
             return session.Url;
         }
+
     }
 }

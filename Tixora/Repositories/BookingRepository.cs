@@ -42,7 +42,6 @@ namespace Tixora.Repositories
                 throw new InvalidOperationException("Not enough tickets available");
             }
             await context.Bookings.AddAsync(booking);
-            ticket.AvailableQuantity -= booking.TicketQuantity; // Decrease the available quantity
         }
         public async Task UpdateAsync(Booking updatedBooking)
         {
@@ -78,10 +77,19 @@ namespace Tixora.Repositories
                 .Include(b => b.Ticket)
                 .ToListAsync();
         }
+        public async Task<Booking> GetByStripeSessionIdAsync(string stripeSessionId)
+        {
+            var booking = await context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.Ticket)
+                .FirstOrDefaultAsync(b => b.StripeSessionId == stripeSessionId);
 
+            return booking;
+        }
         public async Task<int> SaveAsync()
         {
             return await context.SaveChangesAsync();
         }
+
     }
 }

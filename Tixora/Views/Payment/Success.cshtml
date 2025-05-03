@@ -1,0 +1,317 @@
+﻿@model Tixora.ViewModels.BookingViewModel.ConfirmationViewModel
+
+@{
+    ViewData["Title"] = "Success";
+}
+
+<div class="page-container">
+    <h1 class="page-Title text-white">Booking Confirmation</h1>
+
+    <div class="confirmation-container">
+        <div class="confirmation-card">
+            <div class="status-header">
+                <div class="status-badge">
+                    <div class="status-dot"></div>
+                    <div class="status-text">Booking Confirmed</div>
+                </div>
+                <div class="confirmation-id">Your Booking: @Model.BookingId</div>
+            </div>
+
+            <div class="confirmation-message">
+                <div class="success-icon">
+                    <i class="fas fa-check-circle" style="color: var(--success); font-size: 20px;"></i>
+                    <h2 class="message-title d-inline-block text-white ms-2">Thank you for your booking!</h2>
+                </div>
+                <p class="message-content mb-0">@ViewBag.ContactInfo</p>
+            </div>
+
+            <div class="details-wrapper">
+                <div class="event-details">
+                    <h3 class="event-title text-white">@Model.EventTitle</h3>
+                    <div class="event-image">
+                        <img src="@Model.EventImage" alt="Event Image" />
+                    </div>
+
+                    <div class="details-grid">
+                        <div class="detail-item">
+                            <div class="detail-label">Date</div>
+                            <div class="detail-value">@Model.EventDate.ToString("dd MMM yyyy")</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-label">Venue</div>
+                            <div class="detail-value">@Model.VenueName</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="price-details">
+                    <div class="price-row">
+                        <div class="price-label">Ticket Price - @Model.TicketType</div>
+                        <div>@Model.TicketPrice.ToString("C")</div>
+                    </div>
+                    <div class="price-row">
+                        <div class="price-label">Ticket Quantity</div>
+                        <div>@Model.Quantity</div>
+                    </div>
+                    <div class="total-row">
+                        <div>Total Price</div>
+                        <div class="total-value">@Model.TotalPrice.ToString("C")</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="actions">
+                <a asp-action="Index" asp-controller="Event" class="btn btn-primary">
+                    <i class="fas fa-calendar-alt"></i> View Other Events
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Styles {
+<style>
+    :root {
+        --background: #121827;
+        --card-bg: #1e293b;
+        --text: #e2e8f0;
+        --text-muted: #94a3b8;
+        --primary: #f82249;
+        --primary-dark: #94142B;
+        --success: #10b981;
+        --border: #334155;
+        --input-bg: #334155;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    }
+
+    body {
+        background-color: var(--background);
+        color: var(--text);
+        line-height: 1.6;
+        background-image: radial-gradient(circle at 100% 80%, rgba(149, 0, 120, 0.2), transparent 40%);
+        min-height: 100vh;
+    }
+
+    .page-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+
+    .page-Title {
+        text-align: center;
+        font-size: 2.5rem;
+        margin-bottom: 2.5rem;
+        color: white;
+    }
+
+    .confirmation-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1.5rem;
+        justify-content: center;
+    }
+
+    .confirmation-card {
+        background-color: var(--card-bg);
+        border-radius: 12px;
+        overflow: hidden;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+        min-width: 300px;
+        flex: 1;
+        max-width: 800px;
+    }
+
+    .status-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .status-badge {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: white;
+    }
+
+    .status-dot {
+        width: 12px;
+        height: 12px;
+        background-color: var(--success);
+        border-radius: 50%;
+    }
+
+    .status-text {
+        font-weight: 600;
+    }
+
+    .confirmation-id {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+    }
+
+    .confirmation-message {
+        padding: 1.5rem;
+        border-bottom: 1px solid var(--border);
+    }
+
+    .message-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 0.5rem;
+    }
+
+    .message-content {
+        color: var(--text-muted);
+    }
+
+    .details-wrapper {
+        display: flex;
+        gap: 2rem;
+        padding: 1.5rem;
+    }
+
+    .event-details {
+        flex: 2;
+        min-width: 0;
+    }
+
+    .event-title {
+        font-size: 1.5rem;
+        font-weight: 700;
+        margin-bottom: 1rem;
+    }
+
+    .event-image {
+        width: 100%;
+        height: 200px;
+        border-radius: 8px;
+        margin-bottom: 1.5rem;
+        overflow: hidden;
+    }
+
+    .event-image img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+    }
+
+    .details-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+        gap: 1rem;
+    }
+
+    .detail-item {
+        margin-bottom: 1rem;
+    }
+
+    .detail-label {
+        font-size: 0.875rem;
+        color: var(--text-muted);
+        margin-bottom: 0.25rem;
+    }
+
+    .detail-value {
+        font-weight: 500;
+    }
+
+    .price-details {
+        flex: 1;
+        background: rgba(30, 41, 59, 0.7);
+        border-radius: 8px;
+        padding: 1.5rem;
+        border: 1px solid var(--border);
+        align-self: flex-start;
+    }
+
+    .price-row, .total-row {
+        display: flex;
+        justify-content: space-between;
+        padding: 0.5rem 0;
+        border-bottom: 1px dashed var(--border);
+    }
+
+	.price-row:last-child {
+		border-bottom: none;
+	}
+
+    .price-label {
+        color: var(--text-muted);
+    }
+
+    .total-row {
+        border-bottom: none;
+        padding-top: 1rem;
+        margin-top: 1rem;
+        border-top: 1px solid var(--border);
+        font-weight: 600;
+        font-size: 1.125rem;
+    }
+
+    .total-value {
+        color: var(--primary);
+    }
+
+    .actions {
+        padding: 1.5rem;
+        display: flex;
+        gap: 1rem;
+        flex-wrap: wrap;
+        border-top: 1px solid var(--border);
+    }
+
+    .btn {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        padding: 0.75rem 1.5rem;
+        border-radius: 8px;
+        font-weight: 500;
+        text-decoration: none;
+        cursor: pointer;
+        transition: all 0.2s ease;
+        flex: 1;
+        min-width: 140px;
+    }
+
+    .btn-primary {
+        background-color: var(--primary);
+        color: white;
+        border: none;
+    }
+
+    .btn-primary:hover {
+        background-color: var(--primary-dark);
+    }
+
+    @@media (max-width: 768px) {
+        .details-wrapper {
+            flex-direction: column;
+        }
+
+        .price-details {
+            width: 100%;
+            margin-top: 1rem;
+        }
+
+        .actions {
+            flex-direction: column;
+        }
+
+        .btn {
+            width: 100%;
+        }
+    }
+</style>
+}

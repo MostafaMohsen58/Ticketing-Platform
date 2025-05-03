@@ -1,4 +1,6 @@
-﻿using Tixora.Models.Context;
+﻿using Microsoft.EntityFrameworkCore;
+using Tixora.Models;
+using Tixora.Models.Context;
 using Tixora.Repositories.Interfaces;
 using Tixora.Services.Interfaces;
 

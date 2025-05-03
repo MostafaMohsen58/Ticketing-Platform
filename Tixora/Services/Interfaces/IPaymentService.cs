@@ -1,4 +1,6 @@
-﻿namespace Tixora.Services.Interfaces
+﻿using Tixora.Models;
+
+namespace Tixora.Services.Interfaces
 {
     public interface IPaymentService
     {
