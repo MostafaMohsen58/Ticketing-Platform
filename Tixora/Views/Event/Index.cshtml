@@ -284,7 +284,7 @@
                 <p><strong>Start Date:</strong> <span id="eventStartDateToDelete"></span></p>
             </div>
             <div class="modal-footer" style="background-color: #ffffff; padding: 8px 10px;">
-                <form id="deleteForm" asp-action="Delete" method="post">
+                <form id="deleteForm" asp-action="DeleteConfirmed" method="post">
                     <input type="hidden" name="id" id="eventIdToDelete" />
                     @Html.AntiForgeryToken()
                     <button type="submit" class="btn btn-confirm-delete">Yes</button>

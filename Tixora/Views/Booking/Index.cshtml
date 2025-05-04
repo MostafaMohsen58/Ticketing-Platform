@@ -103,22 +103,14 @@
                             <td>@book.BookedAt.ToString("dd/MM/yyyy")</td>
                             <td>
                                 <div class="action-buttons">
-                                    <a asp-action="Edit" asp-route-id="@book.Id" class="btn btn-action" style="background-color:#7C4585; color:white">
-                                        <i class="bi bi-pencil me-1"></i>Edit
-                                    </a>
+                                    
                                     <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-warning btn-action" style="background-color:#F7AD45;">
                                         <i class="bi bi-eye me-1"></i>Details
                                     </a>
-                                    <button type="button"
-                                            class="btn btn-danger btn-action"
-                                            data-bs-toggle="modal"
-                                            data-bs-target="#deleteModal"
-                                            data-id="@book.Id"
-                                            data-username="@book.User?.UserName"
-                                            data-ticket="@book.Ticket?.TicketCategory.Name"
-                                            style="background-color:#BB3E00;color:white">
+                                    <a asp-action="Delete" asp-route-id="@book.Id" class="btn" style="background-color:#BB3E00;color:white">
                                         <i class="bi bi-trash me-1"></i>Delete
-                                    </button>
+                                    </a>
+                                    
                                 </div>
                             </td>
                         </tr>
@@ -130,7 +122,7 @@
 </div>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+@* <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog" style="max-width: 500px;">
         <div class="modal-content">
             <div class="modal-header" style="background-color: #0e1b4d; color: white;">
@@ -152,7 +144,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> *@
 
 @if (TempData["SuccessMessage"] != null)
 {

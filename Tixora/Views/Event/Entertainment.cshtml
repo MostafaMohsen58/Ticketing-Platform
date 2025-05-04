@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Entertainment Events";
+
 }
 
 <div class="container mt-4">
@@ -21,12 +22,12 @@
                     <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Search</label>
-                    <input type="text" name="search" class="form-control" value="@(Context.Request.Query["search"])" />
+                    <label for="search" class="form-label">Search</label>
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Search by title or description" />
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary me-2">Search</button>
-                    <a asp-action="Explore" class="btn btn-outline-secondary">Clear Search</a>
+                    <a asp-action="Entertainment" class="btn btn-outline-secondary">Clear Search</a>
                 </div>
             </form>
         </div>
@@ -38,6 +39,9 @@
         {
             @foreach (var eventItem in Model)
             {
+                var isUpcoming = eventItem.StartDate > DateTime.Now;
+                var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
+                var statusText = isUpcoming ? "Upcoming" : "Event Ended";
                 <div class="col">
                     <div class="card h-100">
                         @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
@@ -63,7 +67,19 @@
                             <p class="card-text">@(eventItem.Description?.Length > 100 ? eventItem.Description.Substring(0, 100) + "..." : eventItem.Description)</p>
                         </div>
                         <div class="card-footer">
-                            <a asp-controller="Booking" asp-action="Create" asp-route-id="@eventItem.Id" class="btn btn-primary">Book</a>
+                            @if (@statusText == "Event Ended")
+                            {
+                                <a class="btn statusClass" disabled>Book</a>
+                            }
+                            else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+                            {
+                                <a asp-controller="Booking" asp-action="Create" asp-route-id="@eventItem.Id" class="btn btn-primary">Book</a>
+                            }
+                            else
+                            {
+                                <a class="btn statusClass" disabled>Book</a>
+                            }
+
                             @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
                             {
                                 <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-secondary">Edit</a>

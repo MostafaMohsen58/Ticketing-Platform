@@ -154,12 +154,26 @@ namespace Tixora.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var result =await _ticketService.Delete(id);
-            if (result)
+            try
             {
+                var result = await _ticketService.Delete(id);
+                if (result)
+                {
+                    TempData["SuccessMessage"] = "Ticket successfully deleted.";
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["ErrorMessage"] = "Failed to delete ticket. The ticket may not exist or has already been deleted.";
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                // Log exception if you have logging configured
+                TempData["ErrorMessage"] = $"An error occurred while deleting the ticket: {ex.Message}";
                 return RedirectToAction("Index");
             }
-            return NotFound();
         }
 
         public IActionResult History()
