@@ -9,5 +9,6 @@ namespace Tixora.Repositories.Interfaces
         Task<Venue> GetById(int id);
         Task<List<Venue>> GetAll();
         public List<SelectListItem> GetVenues();
+        int Save();
     }
 }
