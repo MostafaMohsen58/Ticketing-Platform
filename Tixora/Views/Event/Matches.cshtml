@@ -20,19 +20,19 @@
                     <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
                 </div>
                 <div class="col-md-3">
-                    <label class="form-label">Search</label>
-                    <input type="text" name="search" class="form-control" value="@(Context.Request.Query["search"])" />
+                    <label for="search" class="form-label">Search</label>
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Search by title or description" />
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
                     <button type="submit" class="btn btn-primary me-2">Search</button>
-                    <a asp-action="Explore" class="btn btn-outline-secondary">Clear Search</a>
+                    <a asp-action="Matches" class="btn btn-outline-secondary">Clear Search</a>
                 </div>
             </form>
         </div>
     </div>
 
     <!-- Categories Section -->
-    
+
 
     <!-- Matches List -->
     <div id="matchesList">
@@ -41,7 +41,7 @@
             var isUpcoming = eventItem.StartDate > DateTime.Now;
             var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
             var statusText = isUpcoming ? "Upcoming" : "Match Ended";
-            
+
             <div class="card match-card mb-4 shadow-sm">
                 <div class="row g-0">
                     <!-- Teams Section -->
@@ -62,7 +62,7 @@
                                 }
                                 <h6 class="mb-0 mt-2">@eventItem.Title</h6>
                             </div>
-                            
+
                         </div>
                     </div>
 
@@ -116,17 +116,26 @@
                         </div>
                     </div>
                 </div>
-                
+
                 <!-- Action Buttons -->
                 <div class="match-actions p-2 text-center">
                     @* <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-sm btn-primary"> *@
                     @*     Details *@
                     @* </a> *@
-                    @if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+                    @if (@statusText == "Match Ended") 
                     {
-                        
+                        <a class="btn btn-sm btn-danger ms-2" disabled>Book Ticket</a>
+
+                    }
+                    else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+
+                    {
 
                         <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-sm btn-success ms-2">Book Ticket</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-danger ms-2" disabled>Book Ticket</a>
 
                     }
                 </div>

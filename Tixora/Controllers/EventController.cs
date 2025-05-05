@@ -82,11 +82,11 @@ namespace Tixora.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-        public async Task<IActionResult> Delete(int id)
-        {
-            var Event = await _eventsService.GetById(id);
-            return View(Event);
-        }
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var Event = await _eventsService.GetById(id);
+        //    return View(Event);
+        //}
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -98,23 +98,24 @@ namespace Tixora.Controllers
         {
             return View(await _eventsService.GetById(id));
         }
-        
-        
+
+
 
         [HttpGet]
         public async Task<IActionResult> Explore()
         {
             var events = await _eventsService.GetAll();
-
             return View(events);
         }
         [HttpPost]
         public async Task<IActionResult> Explore(DateTime? startDate, string? location, string? search)
         {
+
             var events = await Search(startDate, location, search, "");
 
             return View(events);
         }
+
         [HttpGet]
         public async Task<IActionResult> ExploreEntertainment(DateTime? startDate, string? location, string? search)
         {
@@ -162,7 +163,7 @@ namespace Tixora.Controllers
         {
             var events = await _eventsService.GetAll();
 
-            if (category != "")
+            if (!string.IsNullOrEmpty(category))
             {
                 events = events.Where(e => e.Category.Equals(category, StringComparison.OrdinalIgnoreCase)).ToList();
             }
