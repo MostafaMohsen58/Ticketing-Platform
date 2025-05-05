@@ -71,10 +71,10 @@ namespace Tixora.Services
         {
             try
             {
-                var result =await _ticketRepository.Delete(id);
+                var result = await _ticketRepository.Delete(id);
                 if (result)
                 {
-                    _ticketRepository.SaveAsync();
+                    await _ticketRepository.SaveAsync();
                 }
                 return result;
             }
@@ -83,7 +83,7 @@ namespace Tixora.Services
                 throw new Exception("An error occurred while deleting the ticket.", ex);
             }
         }
-       
+
         public IEnumerable<Ticket> GetTicketsByUser(string username)
         {
             try

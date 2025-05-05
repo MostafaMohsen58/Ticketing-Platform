@@ -73,7 +73,7 @@
                             }
                             else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
                             {
-                                <a asp-controller="Booking" asp-action="Create" asp-route-id="@eventItem.Id" class="btn btn-primary">Book</a>
+                                <a asp-controller="Booking" asp-action="Create" asp-route-eventid="@eventItem.Id" class="btn btn-primary">Book</a>
                             }
                             else
                             {

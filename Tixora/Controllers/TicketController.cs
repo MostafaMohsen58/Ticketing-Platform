@@ -140,15 +140,15 @@ namespace Tixora.Controllers
         }
 
     
-        public async Task<IActionResult> Delete(int id)
-        {
-            var ticket =await _ticketService.GetById(id);
-            if (ticket == null)
-            {
-                return NotFound();
-            }
-            return View(ticket);
-        }
+        //public async Task<IActionResult> Delete(int id)
+        //{
+        //    var ticket =await _ticketService.GetById(id);
+        //    if (ticket == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View(ticket);
+        //}
 
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
