@@ -1,4 +1,4 @@
-﻿@using Tixora.Settings
+﻿﻿@using Tixora.Settings
 @model List<Event>
 
 @{
@@ -88,29 +88,6 @@
                         </div>
                     </div>
                 </div>
-
-                <!-- Action Buttons -->
-                <div class="match-actions p-2 text-center">
-                    @* <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-sm btn-primary"> *@
-                    @*     Details *@
-                    @* </a> *@
-                    @if (@statusText == "Match Ended") 
-                    {
-                        <a class="btn btn-sm btn-danger ms-2" disabled>Book Ticket</a>
-
-                    }
-                    else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
-
-                    {
-
-                        <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-sm ms-2" style=" color:white; background:#0e1b4d; border-color: #0e1b4d;">Book Ticket</a>
-                    }
-                    else
-                    {
-                        <a class="btn btn-sm btn-danger ms-2" disabled>Book Ticket</a>
-
-                    }
-                </div>
             </div>
         }
 
@@ -196,22 +173,26 @@
         .text-danger {
             color: #f82249 !important;
         }
-        
-        /* Responsive Adjustments */
-         /* (max-width: 768px) { */
-         /*    .row .col-md-2, .row .col-md-4 { */
-         /*        border: none !important; */
-         /*        padding-top: 1rem; */
-         /*        padding-bottom: 1rem; */
-         /*    } */
-            
-            .match-vs {
-                margin: 0 10px;
-            }
+
+
+        .btn-book:hover,
+        .btn-book:focus,
+        .btn-book:active {
+            background-color: #212529;
+            color: white;
+            box-shadow: none;
         }
-        .btn-success{
-            background-color: #0e1b4d;
-            border-color: #0e1b4d;
+
+        .btn-book.btn-disabled {
+            background-color: #9fa5aa;
+            color: white;
+            cursor: not-allowed;
+            pointer-events: none;
         }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
     </style>
 }

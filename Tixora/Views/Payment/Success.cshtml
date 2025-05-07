@@ -29,7 +29,7 @@
                 <div class="event-details">
                     <h3 class="event-title text-white">@Model.EventTitle</h3>
                     <div class="event-image">
-                        <img src="@Model.EventImage" alt="Event Image" />
+                        <img src="~/@Model.EventImage" alt="Event Image" />
                     </div>
 
                     <div class="details-grid">
@@ -61,7 +61,7 @@
             </div>
 
             <div class="actions">
-                <a asp-action="Index" asp-controller="Event" class="btn btn-primary">
+                <a asp-action="Matches" asp-controller="Event" class="btn btn-primary">
                     <i class="fas fa-calendar-alt"></i> View Other Events
                 </a>
             </div>
