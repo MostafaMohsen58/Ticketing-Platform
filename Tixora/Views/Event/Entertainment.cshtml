@@ -3,81 +3,84 @@
 
 @{
     ViewData["Title"] = "Entertainment Events";
-
 }
 
-<div class="container mt-4">
-    <h1 class="mb-4">Entertainment Events</h1>
+<div class="container py-4" style="background: linear-gradient(to right, #f9f9f9, #f1f1f1)">
+    <h1 class="mb-4 text-center">Entertainment Events</h1>
 
-    <!-- Filter Form -->
+    <!-- Filters -->
     <div class="card mb-4">
         <div class="card-body">
-            <form asp-action="ExploreEntertainment" method="get" class="row g-3">
+            <form method="get" asp-action="ExploreEntertainment" class="row g-3 mb-4 bg-white p-3 rounded shadow-sm">
                 <div class="col-md-3">
                     <label class="form-label">Date</label>
                     <input type="date" name="startDate" class="form-control" value="@(Context.Request.Query["startDate"])" />
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Location</label>
-                    <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
+                    <input type="text" name="location" class="form-control" placeholder="Enter venue name" value="@(Context.Request.Query["location"])" />
                 </div>
                 <div class="col-md-3">
-                    <label for="search" class="form-label">Search</label>
-                    <input type="text" id="search" name="search" class="form-control" placeholder="Search by title or description" />
+                    <label class="form-label">Search</label>
+                    <input type="text" name="search" class="form-control" placeholder="Search events..." value="@(Context.Request.Query["search"])" />
                 </div>
                 <div class="col-md-3 d-flex align-items-end">
-                    <button type="submit" class="btn btn-primary me-2">Search</button>
-                    <a asp-action="Entertainment" class="btn btn-outline-secondary">Clear Search</a>
+                    <button type="submit" class="btn btn-dark me-2 w-50">Search</button>
+                    <a asp-action="Entertainment" class="btn btn-outline-secondary w-50 clear-btn">Clear Search</a>
                 </div>
             </form>
         </div>
     </div>
 
-    <!-- Events Grid -->
-    <div class="row row-cols-1 row-cols-md-3 g-4">
-        @if (Model != null && Model.Any())
+    <!-- Event Cards -->
+    <div class="row">
+        @foreach (var eventItem in Model)
         {
-            @foreach (var eventItem in Model)
-            {
-                var isUpcoming = eventItem.StartDate > DateTime.Now;
-                var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
-                var statusText = isUpcoming ? "Upcoming" : "Event Ended";
-                <div class="col">
-                    <div class="card h-100">
-                        @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
-                        {
-                            @* <img src="~/Images/organizer/@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;"> *@
-                            <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;" />
+            var isUpcoming = eventItem.StartDate > DateTime.Now;
+            var isSoldOut = eventItem.Tickets == null || !eventItem.Tickets.Any(t => t.AvailableQuantity > 0);
 
-                        }
-                        else
-                        {
-                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
-                                <span class="text-muted">No Image</span>
-                            </div>
-                        }
-                        <div class="card-body">
-                            <h5 class="card-title">@eventItem.Title</h5>
-                            <p class="card-text text-muted">
-                                <i class="bi bi-calendar-event"></i> @eventItem.StartDate.ToString("dddd, MMMM d, yyyy")
-                            </p>
-                            <p class="card-text text-muted">
-                                <i class="bi bi-geo-alt"></i> @eventItem.Venue?.Name
-                            </p>
-                            <p class="card-text">@(eventItem.Description?.Length > 100 ? eventItem.Description.Substring(0, 100) + "..." : eventItem.Description)</p>
+            <div class="col-12 mb-4">
+                <div class="card shadow-sm border-0 rounded-3 d-flex flex-row event-card-fixed-height">
+                    <!-- Left: Image -->
+                    <div class="event-image-container">
+                        <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")"
+                             alt="@eventItem.Title" class="event-img-fixed" />
+                    </div>
+
+                    <!-- Right: Details -->
+                    <div class="col-7 d-flex flex-column p-4">
+                        <h5 class="card-title mb-3">@eventItem.Title</h5>
+
+                        <div class="mb-2">
+                            <i class="fas fa-calendar-alt text-muted me-2"></i>
+                            <span class="fw-semibold text-dark">Date:</span>
+                            <span class="text-muted">@eventItem.StartDate.ToString("dddd d MMM yyyy")</span>
                         </div>
-                        <div class="card-footer">
-                            @if (@statusText == "Event Ended")
+
+                        <div class="mb-2">
+                            <i class="fas fa-location-dot text-danger me-2"></i>
+                            <span class="fw-semibold text-dark">Venue:</span>
+                            <span class="text-muted">@eventItem.Venue?.Name</span>
+                        </div>
+
+                        <div class="mb-2">
+                            <i class="fas fa-location-arrow text-muted me-2"></i>
+                            <span class="fw-semibold text-dark">Location:</span>
+                            <span class="text-muted">@eventItem.Venue?.Address</span>
+                        </div>
+
+                        <p class="text-truncate mb-3">@eventItem.Description</p>
+
+                        <div class="d-flex justify-content-end mt-auto gap-2">
+                            @if (!isUpcoming || isSoldOut)
                             {
-                                <a class="btn statusClass" disabled>Book</a>
-                            }
-                            else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
-                            {
-                                <a asp-controller="Booking" asp-action="Create" asp-route-eventid="@eventItem.Id" class="btn btn-primary">Book</a>
+                                <button class="btn btn-book btn-disabled" disabled>
+                                    @(isSoldOut ? "Sold Out" : "Event Ended")
+                                </button>
                             }
                             else
                             {
-                                <a class="btn statusClass" disabled>Book</a>
+                                <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-book btn-dark">Book Ticket</a>
                             }
 
                             @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
@@ -88,14 +91,13 @@
                         </div>
                     </div>
                 </div>
-            }
+            </div>
         }
-        else
+
+        @if (!Model.Any())
         {
-            <div class="col-12">
-                <div class="alert alert-info">
-                    No entertainment events found matching your criteria.
-                </div>
+            <div class="alert alert-info text-center col-12">
+                No entertainment events found matching your criteria.
             </div>
         }
     </div>
@@ -103,10 +105,81 @@
 
 @section Styles {
     <style>
-        .btn-primary{
-            background-color: #F82249;
-            border-color: #F82249;
+        .container {
+            max-width: 1200px;
         }
 
+        .event-card-fixed-height {
+            height: 300px;
+        }
+
+        .event-image-container {
+            flex: 0 0 40%;
+            max-width: 40%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .event-img-fixed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.25rem 0 0 0.25rem;
+        }
+
+        .card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+
+        .btn-book {
+            background-color: #212529;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+        }
+
+            .btn-book:hover,
+            .btn-book:focus,
+            .btn-book:active {
+                background-color: #212529;
+                color: white;
+                box-shadow: none;
+            }
+
+            .btn-book.btn-disabled {
+                background-color: #9fa5aa;
+                color: white;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
+
+        .clear-btn:hover {
+            background-color: #9fa5aa;
+            color: white;
+        }
+
+        .text-danger {
+            color: #f82249 !important;
+        }
+
+        .text-muted {
+            color: #6c757d !important;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+       
+
+        
     </style>
 }
