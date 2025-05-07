@@ -48,7 +48,7 @@ namespace Tixora.Controllers
             {
                 EventId = eventId,
                 EventTitle = eventDetails.Title,
-                EventImageUrl = Url.Content($"~/images/{eventDetails.ImageUrl}"),
+                EventImageUrl = eventDetails.ImageUrl,
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
                 AvailableTickets = availableTickets.Select(t => new SelectListItem
@@ -134,6 +134,16 @@ namespace Tixora.Controllers
                 var booking = await bookingService.GetByIdAsync(id);
                 return View(booking);
             }
+        }
+
+        public IActionResult MyTickets()
+        {
+            if (User.Identity.IsAuthenticated)
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
+                ViewBag.UserId = userId;
+            }
+            return View();
         }
     }
 }

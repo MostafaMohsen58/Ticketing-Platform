@@ -95,24 +95,6 @@ namespace Tixora.Controllers
             {
                 try
                 {
-                    //var existingOrganizer = await _service.GetById(id);
-                    //if (existingOrganizer != null && existingOrganizer.Events != null)
-                    //{
-                    //    organizer.Events = existingOrganizer.Events;
-                    //}
-                    //else
-                    //{
-                    //    organizer.Events = new List<Event>();
-                    //}
-
-                    //if (file != null && file.Length > 0)
-                    //{
-                    //    organizer.LogoUrl = UploadFile(file);
-                    //}
-
-                    //await _service.Update(organizer);
-                    //TempData["SuccessMessage"] = "Organizer updated successfully";
-                    //return RedirectToAction(nameof(Index));
                     var existingOrganizer = await _service.GetById(id);
                     if (existingOrganizer != null )
                     {

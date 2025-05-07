@@ -51,10 +51,10 @@ namespace Tixora.Controllers
         [HttpPost]
         public async Task<IActionResult> Edit(int id, Venue venue)
         {
-            if (await _venueService.CheckVenueExistWithSameName(venue.Name) != null)
-            {
-                ModelState.AddModelError("", "Venue with the same name already exists.");
-            }
+            //if (await _venueService.CheckVenueExistWithSameName(venue.Name) != null)
+            //{
+            //    ModelState.AddModelError("", "Venue with the same name already exists.");
+            //}
             if (ModelState.IsValid)
             {
                 await _venueService.Update(venue);
@@ -69,10 +69,19 @@ namespace Tixora.Controllers
             return venue == null ? NotFound() : View(venue);
         }
         [HttpPost,ActionName("Delete")]
-        public IActionResult DeleteConfirmed(int id)
+        public async Task<IActionResult> ConfirmDelete(int id)
         {
-             _venueService.Delete(id);
+            try
+            {
+                await _venueService.Delete(id);
+                return RedirectToAction(nameof(Index));
+            }
+            catch(Exception ex)
+            {
+                ModelState.AddModelError("", "An error occurred while deleting the venue: " + ex.Message);
+            }
             return RedirectToAction(nameof(Index));
+
         }
 
         [NonAction]

@@ -15,14 +15,7 @@ namespace Tixora
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-
-
-
             // Add services to the container.
-
-
-
-
             builder.Services.AddControllersWithViews();
 
             builder.Services.AddDbContext<TixoraContext>(options =>
@@ -47,7 +40,6 @@ namespace Tixora
             builder.Services.AddScoped<IVenueRepository, VenueRepository>();
             builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
             builder.Services.AddScoped<IOrganizerRepository, OrganizerRepository>();
-           
 
             builder.Services.AddScoped<IBookingRepository, BookingRepository>();
             builder.Services.AddScoped<IEventRepository, EventRepository>();
@@ -68,6 +60,12 @@ namespace Tixora
             builder.Services.AddScoped<ITicketCategoryService, TicketCategoryService>();
             builder.Services.AddScoped<IBookingService, BookingService>();
             builder.Services.AddSingleton<FileService>();
+            
+            builder.Services.AddAuthentication().AddGoogle(op =>
+            {
+                op.ClientId = builder.Configuration["Auth:Google:ClientId"];
+                op.ClientSecret = builder.Configuration["Auth:Google:ClientSecret"];
+            });
             var app = builder.Build();
 
 
