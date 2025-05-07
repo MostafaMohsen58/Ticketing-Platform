@@ -7,7 +7,7 @@ namespace Tixora.Models.ViewModels
 
         [Required(ErrorMessage = "Price is required.")]
         [Range(0.01, double.MaxValue, ErrorMessage = "Price must be greater than zero")]
-        public float Price { get; set; }
+        public decimal Price { get; set; }
 
         [Required(ErrorMessage = "Available quantity is required.")]
         [Range(1, int.MaxValue, ErrorMessage = "Available quantity must be greater than zero.")]

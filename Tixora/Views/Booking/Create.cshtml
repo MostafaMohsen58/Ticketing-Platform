@@ -44,9 +44,9 @@
         </div>
         <div class="cardy">
             <h4 class="mb-3" style="color: #F82249;">Booking Details</h4>
-            <form asp-action="Create" method="post" class="needs-validation" novalidate> 
+            <form asp-action="Create" method="post" class="needs-validation" novalidate>
                 <input type="hidden" asp-for="EventId" /> 
-                <input type="hidden" asp-for="EventTitle" /> 
+                <input type="hidden" asp-for="EventTitle" />
                 <input type="hidden" asp-for="EventDate" /> 
                 <input type="hidden" asp-for="EventImageUrl" /> 
                 <input type="hidden" asp-for="VenueName" /> 
@@ -82,11 +82,11 @@
 
                 <!-- Action Buttons --> 
                 <div class="d-grid gap-3 d-md-flex justify-content-md-end mt-4"> 
-                    <a asp-controller="Event" asp-action="Explore" class="btn btn-outline-secondary px-4 py-2"> 
-                        <i class="fas fa-arrow-left me-2"></i>Back to List 
+                    <a asp-action="Index" class="btn btn-outline-secondary px-4 py-2"> 
+                        <i class="fas fa-arrow-left me-2"></i>Back to List
                     </a> 
                     <button type="submit" class="btn text-white px-4 py-2" style="background-color: #F82249;"> 
-                        <i class="fas fa-check-circle me-2"></i>Confirm Booking 
+                        <i class="fa-solid fa-money-bill"></i> Pay Now
                     </button> 
                 </div> 
             </form> 

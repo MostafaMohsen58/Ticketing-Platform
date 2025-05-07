@@ -29,14 +29,12 @@
                         <dd class="col-sm-8">@Model.Ticket.TicketCategory.Name</dd>
                         
                         <dt class="col-sm-4">Quantity:</dt>
-                        <dd class="col-sm-8">@Model.Amount</dd>
+                        <dd class="col-sm-8">@Model.TicketQuantity</dd>
                     </dl>
                 </div>
                 <div class="col-md-6">
                     <h5>Transaction Details</h5>
                     <dl class="row">
-                        <dt class="col-sm-4">Transaction ID:</dt>
-                        <dd class="col-sm-8">@Model.TransactionId</dd>
                         
                         <dt class="col-sm-4">Booking Date:</dt>
                         <dd class="col-sm-8">@Model.BookedAt.ToString("dd/MM/yyyy HH:mm")</dd>

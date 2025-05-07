@@ -9,5 +9,6 @@ namespace Tixora.Repositories.Interfaces
         Task DeleteAsync(int id);
         Task<IEnumerable<Booking>> GetByUserIdAsync(string userId);
         Task<IEnumerable<Booking>> GetByDateRangeAsync(DateTime startDate, DateTime endDate);
+        Task<Booking> GetByStripeSessionIdAsync(string stripeSessionId);
     }
 }

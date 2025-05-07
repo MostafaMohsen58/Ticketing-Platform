@@ -96,7 +96,11 @@ namespace Tixora.Services
             }
         }
 
-
+        public async Task<decimal> GetTicketPriceAsync(int ticketId)
+        {
+            Ticket ticket = await _ticketRepository.GetById(ticketId);
+            return ticket.Price;
+        }
     }
 }
 

@@ -37,20 +37,18 @@ namespace Tixora.Repositories
         public async Task AddAsync(Booking booking)
         {
             var ticket = await context.Tickets.FindAsync(booking.TicketId);
-            if (ticket.AvailableQuantity < booking.Amount)
+            if (ticket.AvailableQuantity < booking.TicketQuantity)
             {
                 throw new InvalidOperationException("Not enough tickets available");
             }
             await context.Bookings.AddAsync(booking);
-            ticket.AvailableQuantity -= booking.Amount; // Decrease the available quantity
         }
         public async Task UpdateAsync(Booking updatedBooking)
         {
             await context.Bookings
             .Where(b => b.Id == updatedBooking.Id)
             .ExecuteUpdateAsync(setters => setters
-            .SetProperty(b => b.Amount, updatedBooking.Amount)
-            .SetProperty(b => b.TransactionId, updatedBooking.TransactionId)
+            .SetProperty(b => b.TicketQuantity, updatedBooking.TicketQuantity)
             .SetProperty(b => b.TicketId, updatedBooking.TicketId)
             );
         }
@@ -60,7 +58,7 @@ namespace Tixora.Repositories
             var booking = await context.Bookings.FindAsync(id);
 
             var ticket = await ticketRepository.GetById(booking.TicketId);
-            ticket.AvailableQuantity += booking.Amount; // Return tickets to available quantity
+            ticket.AvailableQuantity += booking.TicketQuantity; // Return tickets to available quantity
             context.Bookings.Remove(booking);
         }
         public async Task<IEnumerable<Booking>> GetByUserIdAsync(string userId)
@@ -79,10 +77,19 @@ namespace Tixora.Repositories
                 .Include(b => b.Ticket)
                 .ToListAsync();
         }
+        public async Task<Booking> GetByStripeSessionIdAsync(string stripeSessionId)
+        {
+            var booking = await context.Bookings
+                .Include(b => b.User)
+                .Include(b => b.Ticket)
+                .FirstOrDefaultAsync(b => b.StripeSessionId == stripeSessionId);
 
+            return booking;
+        }
         public async Task<int> SaveAsync()
         {
             return await context.SaveChangesAsync();
         }
+
     }
 }
