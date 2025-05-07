@@ -33,11 +33,8 @@ namespace Tixora
 
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<ITicketService, TicketService>();
-            builder.Services.AddScoped<IVenueService, VenueService>();
-
 
             builder.Services.AddScoped<ITicketRepository, TicketRepository>();
-            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
             builder.Services.AddScoped<ITicketCategoryRepository, TicketCategoryRepository>();
             builder.Services.AddScoped<IOrganizerRepository, OrganizerRepository>();
 
@@ -46,11 +43,6 @@ namespace Tixora
 
             builder.Services.AddScoped<IEventsService, EventsService>();
 
-
-            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
-            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
-
-            builder.Services.AddScoped<IEventsService, EventsService>();
 
             builder.Services.AddScoped<IPaymentRepository, PaymentRepository>();
             builder.Services.AddScoped<IPaymentService, PaymentService>();
