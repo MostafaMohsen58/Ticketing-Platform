@@ -8,10 +8,11 @@
 <section class="py-4">
     <div class="container">
         <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-top-right-radius: 1.5rem;border-top-left-radius: 1.5rem; font-size: 1.8rem;">
+                Edit Organizer
+            </h2>
             <div class="card-body">
-                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
-                    Edit Organizer
-                </h2>
+               
 
                 @if (TempData["ErrorMessage"] != null)
                 {
@@ -65,14 +66,14 @@
                         <div class="mb-3">
                             <label class="form-label" style="font-weight: bold;">Current Logo</label>
                             <div>
-                                <img src="/images/user/@Model.LogoUrl" alt="Current Logo" style="max-height: 100px; max-width: 100px;" />
+                                <img src="/images/organizer/@Model.LogoUrl" alt="Current Logo" style="max-height: 100px; max-width: 100px;" />
                             </div>
                         </div>
                     }
 
                     <div class="mt-4 text-right">
                         <button type="submit" class="btn"
-                                style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                                style="background-color: #0e1b4d; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Save
                         </button>
                         <a asp-action="Index" class="btn"

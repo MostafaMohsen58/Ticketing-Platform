@@ -48,6 +48,7 @@ namespace Tixora
 
 
             builder.Services.AddScoped<IVenueRepository, VenueRepository>();
+            builder.Services.AddScoped<IVenueRepository, VenueRepository>();
 
             builder.Services.AddScoped<IEventsService, EventsService>();
 
@@ -95,7 +96,7 @@ namespace Tixora
             app.UseRouting();
 
             app.UseAuthorization();
-
+            app.UseStaticFiles();
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",

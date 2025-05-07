@@ -1,8 +1,161 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+<div class="tazkarti-container">
+    <div class="hero-section">
+        <div class="hero-content text-center">
+            <h1 class="main-heading" style="color:white;">What is your next plan?</h1>
+            <p class="sub-heading">Explore and book all exclusive events and matches.</p>
+
+            <div class="categories-container">
+                <div class="row justify-content-center">
+                    <div class="col-md-4">
+                        <div class="category-card sports">
+                            <div class="category-icon">
+                                <i class="fas fa-futbol"></i>
+                            </div>
+                            <h3>Sports</h3>
+                            <p>Match Tickets</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="category-card entertainment">
+                            <div class="category-icon">
+                                <i class="fa-solid fa-masks-theater">‌</i>
+                            </div>
+                            <h3>Show</h3>
+                            <p>Event Tickets</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="auth-options mt-5">
+                <span class="sign-in-text">Sign In</span>
+                <span class="or-text">or</span>
+                <a href="#" class="btn btn-register">Register Now!</a>
+            </div>
+        </div>
+    </div>
 </div>
+
+@section Styles {
+    <style>
+        body{
+            background-color: #040919;
+        }
+        .tazkarti-container {
+            
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/cover.jpg');
+            background-size: cover;
+            background-position: center;
+            min-height: 80vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            width:100%;
+            height: 90vh;
+            margin-top: 0;
+            /* padding: 20px; */
+        }
+
+        .hero-content {
+            width: 100%;
+            max-width: 1200px;
+        }
+
+        .main-heading {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .sub-heading {
+            font-size: 1.2rem;
+            margin-bottom: 50px;
+        }
+
+        .categories-container {
+            margin-top: 50px;
+
+        }
+
+        .category-card {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 30px;
+            margin-bottom: 20px;
+            transition: transform 0.3s;
+            cursor: pointer;
+        }
+
+            .category-card:hover {
+                transform: translateY(-5px);
+            }
+
+        .sports {
+            background-color: rgba(248, 34, 73, 0.7);
+
+        }
+
+        .entertainment {
+            background-color: rgba(250, 250, 250, 0.7);
+            text-align: center;
+        }
+
+        .category-icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        .category-card h3 {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .auth-options {
+            margin-top: 50px;
+            font-size: 1.2rem;
+        }
+
+        .sign-in-text {
+            cursor: pointer;
+            margin-right: 10px;
+            font-weight: bold;
+        }
+
+        .or-text {
+            margin: 0 10px;
+        }
+
+        .btn-register {
+            background-color: #F82249;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            display: inline-block;
+            margin-left: 10px;
+            text-align:center;
+            font-weight: bold;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        $(document).ready(function() {
+            $('.category-card').click(function() {
+                //Navigate to respective category pages when clicked
+                if ($(this).hasClass('sports')) {
+                    window.location.href = '/Event/Matches';
+                } else if ($(this).hasClass('entertainment')) {
+                    window.location.href = '/Event/Entertainment';
+                }
+            });
+        });
+    </script>
+}

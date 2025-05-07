@@ -15,6 +15,8 @@ namespace Tixora.Services.Interfaces
         Task<List<SelectListItem>> Venues();
         Task<List<SelectListItem>> Organizers();
         Task<List<Ticket>> GetAvailableTicketsAsync(int eventId);
+        Task<List<Event>> GetUpcomingEventsAsync();
+
     }
 
 }

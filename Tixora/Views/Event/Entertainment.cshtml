@@ -1,0 +1,112 @@
+﻿@using Tixora.Settings
+@model List<Event>
+
+@{
+    ViewData["Title"] = "Entertainment Events";
+
+}
+
+<div class="container mt-4">
+    <h1 class="mb-4">Entertainment Events</h1>
+
+    <!-- Filter Form -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="ExploreEntertainment" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@(Context.Request.Query["startDate"])" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
+                </div>
+                <div class="col-md-3">
+                    <label for="search" class="form-label">Search</label>
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Search by title or description" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Search</button>
+                    <a asp-action="Entertainment" class="btn btn-outline-secondary">Clear Search</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Events Grid -->
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @if (Model != null && Model.Any())
+        {
+            @foreach (var eventItem in Model)
+            {
+                var isUpcoming = eventItem.StartDate > DateTime.Now;
+                var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
+                var statusText = isUpcoming ? "Upcoming" : "Event Ended";
+                <div class="col">
+                    <div class="card h-100">
+                        @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                        {
+                            @* <img src="~/Images/organizer/@eventItem.ImageUrl" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;"> *@
+                            <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="card-img-top" alt="@eventItem.Title" style="height: 200px; object-fit: cover;" />
+
+                        }
+                        else
+                        {
+                            <div class="card-img-top bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                <span class="text-muted">No Image</span>
+                            </div>
+                        }
+                        <div class="card-body">
+                            <h5 class="card-title">@eventItem.Title</h5>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-calendar-event"></i> @eventItem.StartDate.ToString("dddd, MMMM d, yyyy")
+                            </p>
+                            <p class="card-text text-muted">
+                                <i class="bi bi-geo-alt"></i> @eventItem.Venue?.Name
+                            </p>
+                            <p class="card-text">@(eventItem.Description?.Length > 100 ? eventItem.Description.Substring(0, 100) + "..." : eventItem.Description)</p>
+                        </div>
+                        <div class="card-footer">
+                            @if (@statusText == "Event Ended")
+                            {
+                                <a class="btn statusClass" disabled>Book</a>
+                            }
+                            else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+                            {
+                                <a asp-controller="Booking" asp-action="Create" asp-route-eventid="@eventItem.Id" class="btn btn-primary">Book</a>
+                            }
+                            else
+                            {
+                                <a class="btn statusClass" disabled>Book</a>
+                            }
+
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-secondary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@eventItem.Id" class="btn btn-danger">Delete</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+        else
+        {
+            <div class="col-12">
+                <div class="alert alert-info">
+                    No entertainment events found matching your criteria.
+                </div>
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        .btn-primary{
+            background-color: #F82249;
+            border-color: #F82249;
+        }
+
+    </style>
+}

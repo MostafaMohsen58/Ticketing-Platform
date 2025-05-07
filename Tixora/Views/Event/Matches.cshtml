@@ -1,0 +1,302 @@
+﻿@using Tixora.Settings
+@model List<Event>
+@{
+    ViewData["Title"] = "Matches";
+}
+
+<div class="container-fluid py-4" dir="ltr">
+    <h1 class="mb-4">Matches</h1>
+
+    <!-- Filters Section -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form asp-action="ExploreMatches" method="get" class="row g-3">
+                <div class="col-md-3">
+                    <label class="form-label">Date</label>
+                    <input type="date" name="startDate" class="form-control" value="@(Context.Request.Query["startDate"])" />
+                </div>
+                <div class="col-md-3">
+                    <label class="form-label">Location</label>
+                    <input type="text" name="location" class="form-control" value="@(Context.Request.Query["location"])" />
+                </div>
+                <div class="col-md-3">
+                    <label for="search" class="form-label">Search</label>
+                    <input type="text" id="search" name="search" class="form-control" placeholder="Search by title or description" />
+                </div>
+                <div class="col-md-3 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary me-2">Search</button>
+                    <a asp-action="Matches" class="btn btn-outline-secondary">Clear Search</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Categories Section -->
+
+
+    <!-- Matches List -->
+    <div id="matchesList">
+        @foreach (var eventItem in Model)
+        {
+            var isUpcoming = eventItem.StartDate > DateTime.Now;
+            var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
+            var statusText = isUpcoming ? "Upcoming" : "Match Ended";
+
+            <div class="card match-card mb-4 shadow-sm">
+                <div class="row g-0">
+                    <!-- Teams Section -->
+                    <div class="col-md-4 d-flex align-items-center justify-content-center p-3">
+                        <div class="d-flex align-items-center justify-content-center">
+                            <div class="text-center me-3">
+                                @if (!string.IsNullOrEmpty(eventItem.ImageUrl))
+                                {
+                                    @* <img src="~@eventItem.ImageUrl" class="team-logo" alt="Home Team"> *@
+                                    <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")" class="img-fluid rounded" alt="@eventItem.Title" style="max-height: 120px; object-fit: cover;" />
+
+                                }
+                                else
+                                {
+                                    <div class="placeholder-logo bg-light d-flex align-items-center justify-content-center">
+                                        <i class="fas fa-shield-alt fa-2x text-primary"></i>
+                                    </div>
+                                }
+                                <h6 class="mb-0 mt-2">@eventItem.Title</h6>
+                            </div>
+
+                        </div>
+                    </div>
+
+                    <!-- Venue Section -->
+                    <div class="col-md-2 d-flex align-items-center border-start border-end">
+                        <div class="text-center w-100">
+                            <div class="venue-icon mb-2">
+                                <i class="fas fa-map-marker-alt fa-2x text-danger"></i>
+                            </div>
+                            <h6 class="mb-1">@eventItem.Venue?.Name</h6>
+                            <p class="text-muted small mb-0">@eventItem.Venue?.Address</p>
+                        </div>
+                    </div>
+
+                    <!-- Date & Time Section -->
+                    <div class="col-md-2 d-flex align-items-center border-end">
+                        <div class="text-center w-100">
+                            <div class="calendar-icon mb-2">
+                                <i class="fas fa-calendar-day fa-2x text-primary"></i>
+                            </div>
+                            <h6 class="mb-1">@eventItem.StartDate.ToString("dddd d MMM yyyy")</h6>
+                            <p class="text-muted small mb-0">Time: @eventItem.StartDate.ToString("hh:mm tt")</p>
+                        </div>
+                    </div>
+
+                    <!-- Status Section -->
+                    <div class="col-md-4 d-flex align-items-center">
+                        <div class="match-status w-100 text-center py-3 @statusClass text-white">
+                            <h5 class="mb-0">@statusText</h5>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Match Details Footer -->
+                <div class="card-footer bg-light">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <span class="text-muted">Tournament:</span> @eventItem.Category
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-muted">Match Number:</span> @eventItem.Id
+                        </div>
+                        <div class="col-md-3">
+                            <span class="text-muted">Group:</span> @eventItem.Category
+                        </div>
+                        <div class="col-md-3 text-end">
+                            <div class="match-status-indicator @(isUpcoming ? "upcoming" : "ended")">
+                                <span class="status-dot"></span>
+                                @statusText
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Action Buttons -->
+                <div class="match-actions p-2 text-center">
+                    @* <a href="@Url.Action("Details", "Event", new { id = eventItem.Id })" class="btn btn-sm btn-primary"> *@
+                    @*     Details *@
+                    @* </a> *@
+                    @if (@statusText == "Match Ended") 
+                    {
+                        <a class="btn btn-sm btn-danger ms-2" disabled>Book Ticket</a>
+
+                    }
+                    else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+
+                    {
+
+                        <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-sm ms-2" style=" color:white; background:#0e1b4d; border-color: #0e1b4d;">Book Ticket</a>
+                    }
+                    else
+                    {
+                        <a class="btn btn-sm btn-danger ms-2" disabled>Book Ticket</a>
+
+                    }
+                </div>
+            </div>
+        }
+        
+        @if (!Model.Any())
+        {
+            <div class="alert alert-info text-center">
+                No matches available based on your search criteria.
+            </div>
+        }
+    </div>
+</div>
+
+@section Styles {
+    <style>
+        /* LTR and General Setup */
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        
+        .match-card {
+            border-radius: 10px;
+            overflow: hidden;
+            transition: transform 0.2s, box-shadow 0.2s;
+            border: none;
+        }
+        
+        .match-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1) !important;
+        }
+        
+        /* Team Logos */
+        .team-logo, .placeholder-logo {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto;
+        }
+        
+        .placeholder-logo {
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* VS Separator */
+        .match-vs {
+            margin: 0 15px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            color: #777;
+        }
+        
+        /* Categories */
+        .category-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .category-item:hover {
+            transform: translateY(-5px);
+        }
+        
+        .category-icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 8px;
+        }
+        
+        /* Status Indicators */
+        .match-status-indicator {
+            display: inline-flex;
+            align-items: center;
+            font-weight: 500;
+        }
+        
+        .status-dot {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            margin-right: 5px;
+        }
+        
+        .match-status-indicator.upcoming .status-dot {
+            background-color: #0d6efd;
+        }
+        
+        .match-status-indicator.ended .status-dot {
+            background-color: #6c757d;
+        }
+        
+        /* Responsive Adjustments */
+         /* (max-width: 768px) { */
+         /*    .row .col-md-2, .row .col-md-4 { */
+         /*        border: none !important; */
+         /*        padding-top: 1rem; */
+         /*        padding-bottom: 1rem; */
+         /*    } */
+            
+            .match-vs {
+                margin: 0 10px;
+            }
+        }
+        .btn-success{
+            background-color: #0e1b4d;
+            border-color: #0e1b4d;
+        }
+    </style>
+}
+
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Category filtering
+            const categoryItems = document.querySelectorAll('.category-item');
+            categoryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const category = this.dataset.category;
+                    document.getElementById('groupFilter').value = category;
+                    applyFilters();
+                });
+            });
+            
+            // Add event listeners to other filters if needed
+            document.getElementById('teamFilter').addEventListener('change', applyFilters);
+            document.getElementById('groupFilter').addEventListener('change', applyFilters);
+            document.getElementById('stageFilter').addEventListener('change', applyFilters);
+        });
+        
+        function applyFilters() {
+            const venue = document.getElementById('venueFilter').value;
+            const team = document.getElementById('teamFilter').value;
+            const group = document.getElementById('groupFilter').value;
+            const stage = document.getElementById('stageFilter').value;
+            
+            let url = '@Url.Action("Matches", "Event")';
+            const params = [];
+            
+            if (venue) params.push(`venueId=${venue}`);
+            if (team) params.push(`search=${encodeURIComponent(team)}`);
+            if (group) params.push(`category=${encodeURIComponent(group)}`);
+            if (stage === 'upcoming') params.push(`date=${encodeURIComponent(new Date().toISOString().split('T')[0])}`);
+            
+            if (params.length > 0) {
+                url += '?' + params.join('&');
+            }
+            
+            window.location.href = url;
+        }
+    </script>
+}

@@ -7,21 +7,48 @@
     <link rel="stylesheet" href="~/assets/vendor/bootstrap/css/bootstrap.min.css" />
     <link href="~/assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
     <link rel="stylesheet" href="~/css/admin.css" />
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     @RenderSection("Styles", required: false)
 </head>
 <body>
     <div class="d-flex" id="wrapper">
         <!-- Sidebar -->
         <div class="border-end" id="sidebar-wrapper">
-            <div class="sidebar-heading text-white px-3 py-4">Admin Dashboard</div>
+            <div class="sidebar-heading text-white px-3 py-4" style="font-weight:bold; background-color:rgb(1, 7, 33,.1);"> @* <i class="fa-solid fa-chart-line"></i> *@ Admin Dashboard</div>
             <div class="list-group list-group-flush">
                 @* <a asp-controller="Dashboard" asp-action="Index" class="list-group-item list-group-item-action ">Dashboard</a> *@
-                <a asp-controller="Account" asp-action="Index" class="list-group-item list-group-item-action ">Users</a>
-                <a asp-controller="Venue" asp-action="Index" class="list-group-item list-group-item-action ">Venues</a>
-                <a asp-controller="TicketCategory" asp-action="Index" class="list-group-item list-group-item-action ">Ticket Categories</a>
-                <a asp-controller="Organizer" asp-action="Index" class="list-group-item list-group-item-action ">Organizers</a>
-                <a asp-controller="Event" asp-action="Index" class="list-group-item list-group-item-action ">Events</a>
-                <a asp-controller="Ticket" asp-action="Index" class="list-group-item list-group-item-action ">Tickets</a>
+                <a asp-controller="Account" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-regular fa-user me-2"></i>
+                    Users
+                </a>
+                <a asp-controller="Venue" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-solid fa-location-dot"></i>
+                    Venues
+                </a>
+                <a asp-controller="TicketCategory" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-solid fa-layer-group"></i>
+                    Ticket Categories
+                </a>
+                <a asp-controller="Organizer" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-brands fa-font-awesome"></i>
+                    Organizers
+                </a>
+                <a asp-controller="Event" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-solid fa-calendar-days"></i>
+                    Events
+                </a>
+                <a asp-controller="Ticket" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-solid fa-ticket"></i>
+                    @* <i class="fa-solid fa-receipt"></i> *@
+                    Tickets
+                </a>
+                <a asp-controller="Booking" asp-action="Index" class="list-group-item list-group-item-action ">
+                    <i class="fa-regular fa-bookmark"></i>
+                    @* <i class="fa-solid fa-bookmark"></i> *@
+                    Booking
+                </a>
 
 
             </div>
@@ -31,7 +58,7 @@
         <div id="page-content-wrapper" class="w-100">
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom">
                 <div class="container-fluid">
-                    <button class="btn" id="menu-toggle" style="background-color:#7C4585; color:white"><i class="bi bi-list"></i></button>
+                    <button class="btn" id="menu-toggle" style="background-color:#010821d1; color:white"><i class="bi bi-list"></i></button>
                     <span class="ms-auto">Welcome, @User.Identity.Name </span>
                 </div>
             </nav>

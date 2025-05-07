@@ -1,107 +1,4 @@
-﻿@* @using Tixora.Settings
-@model Tixora.Models.Event
-
-@{
-    ViewData["Title"] = "Event Details";
-	Layout = "_AdminLayout";
-}
-
-<section class="py-4">
-    <div class="container">
-        <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
-            <div class="card-body">
-                <h2 class="card-title mb-4" style="background-color: #7C4585; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
-                    Event Details
-                </h2>
-
-                <div class="row">
-                    <div class="col-md-6">
-                        <dl class="row">
-                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Title)</dt>
-                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Title)</dd>
-                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Description)</dt>
-                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Description)</dd>
-                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.StartDate)</dt>
-                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.StartDate)</dd>
-                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Category)</dt>
-                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Category)</dd>
-                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Venue.Name)</dt>
-                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Venue.Name)</dd>
-                            <dt class="col-sm-4 font-weight-bold" style="font-size: 1rem;">@Html.DisplayNameFor(model => model.Organizer.Name)</dt>
-                            <dd class="col-sm-8" style="font-size: 1rem;">@Html.DisplayFor(model => model.Organizer.Name)</dd>
-                        </dl>
-                    </div>
-                    <div class="col-md-6 d-flex justify-content-center align-items-center">
-                        <div class="cover-preview-container" style="width: 100%; max-width: 250px; text-align: center; border: 1px solid #2f3138; border-radius: 0.5rem; padding: 10px; background-color: #f9f9f9;">
-                            <img class="cover-preview img-fluid"
-                                 src="@(Model.ImageUrl != null ? $"{FileSettings.ImagePath}/{Model.ImageUrl}" : "/images/placeholder.jpg")"
-                                 alt="@(Model.ImageUrl ?? "No Image")"
-                                 style="max-width: 100%; border-radius: 0.5rem;" />
-                        </div>
-                    </div>
-                </div>
-
-                @if (Model.Tickets != null && Model.Tickets.Any())
-                {
-                    <h4 class="mt-4" style="font-size: 1.2rem;">Associated Tickets</h4>
-                    <table class="table table-sm" style="font-size: 1rem;">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Ticket Category</th>
-                                <th>Price</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var ticket in Model.Tickets)
-                            {
-                                <tr>
-                                    <td>@ticket.Id</td>
-                                    <td>@(ticket.TicketCategory?.Name ?? "N/A")</td>
-                                    <td>@ticket.Price.ToString("C")</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                }
-
-                
-                <div class="mt-4 text-right">
-                    <button type="submit" class="btn" style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
-                        Update
-                    </button>
-                    <a class="btn" style="border: 1px solid #0e1b4d; color: #0e1b4d; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;" href="/Event">
-                        Back to List
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-<style>
-    .btn:hover {
-        transform: scale(1.05);
-        opacity: 0.8;
-    }
-
-    .card:hover {
-        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-    }
-
-    .btn:disabled {
-        background-color: #6c757d !important;
-        color: #ffffff !important;
-        opacity: 0.65;
-        cursor: not-allowed;
-    }
-
-    .btn {
-        background-color: #7C4585 !important;
-        color: #ffffff !important;
-    }
-</style> *@
-@using Tixora.Settings
+﻿@using Tixora.Settings
 @model Tixora.Models.Event
 
 @{
@@ -112,10 +9,11 @@
 <section class="py-4">
     <div class="container">
         <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-top-right-radius: 1.5rem;border-top-left-radius: 1.5rem; font-size: 1.8rem;">
+                Event Details
+            </h2>
             <div class="card-body">
-                <h2 class="card-title mb-4" style="background-color: #7C4585; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
-                    Event Details
-                </h2>
+                
 
                 <div class="row">
                     <div class="col-md-6">
@@ -171,11 +69,11 @@
 
                 <div class="mt-4 text-right">
                     <a asp-action="Edit" asp-route-id="@Model.Id" class="btn"
-                       style="background-color: #7C4585; color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                       style="background-color: #0e1b4d !important;        color: #ffffff !important; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                         Update
                     </a>
                     <a asp-action="Index" class="btn"
-                       style="border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; border: 1px solid #0e1b4d; color: #0e1b4d; transition: all 0.3s ease;">
+                       style="background-color:white; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; border: 1px solid #0e1b4d; color: #0e1b4d; transition: all 0.3s ease;">
                         Back to List
                     </a>
                 </div>
@@ -201,8 +99,5 @@
         cursor: not-allowed;
     }
 
-    .btn {
-        background-color: #7C4585 !important;
-        color: #ffffff !important;
-    }
+    
 </style>
