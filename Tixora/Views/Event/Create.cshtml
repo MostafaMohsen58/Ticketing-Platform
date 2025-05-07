@@ -82,15 +82,18 @@
 
 @{
     ViewData["Title"] = "Create Event";
+    Layout = "_AdminLayout";
+
 }
 
 <section class="py-4">
     <div class="container">
         <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-top-right-radius: 1.5rem;border-top-left-radius: 1.5rem;font-size: 1.8rem;">
+                Create Event
+            </h2>
             <div class="card-body">
-                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
-                    Create Event
-                </h2>
+               
 
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div class="row">
@@ -152,7 +155,7 @@
                     </div>
 
                     <div class="mt-4 text-right">
-                        <button type="submit" class="btn" style="background-color: #f82249; color: #ffffff; border: none; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        <button type="submit" class="btn" style=" border: none; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Create Event
                         </button>
                         <a asp-action="Index" class="btn" style="border: 1px solid #0e1b4d; color: #0e1b4d; background-color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
@@ -215,7 +218,7 @@
     }
 
     .btn[type="submit"] {
-        background-color: #f82249 !important;
+        background-color: #0e1b4d !important;
         color: #ffffff !important;
     }
 </style>

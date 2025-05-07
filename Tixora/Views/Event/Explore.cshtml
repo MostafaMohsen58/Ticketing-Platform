@@ -70,6 +70,9 @@
         {
             foreach (var eventItem in Model)
             {
+                var isUpcoming = eventItem.StartDate > DateTime.Now;
+                var statusClass = isUpcoming ? "bg-primary" : "bg-secondary";
+                var statusText = isUpcoming ? "Upcoming" : "Event Ended";
                 <div class="col-12 mb-4">
                     <div class="card event-card shadow">
                         <div class="row g-0">
@@ -121,13 +124,22 @@
                             <div class="col-md-2 d-flex align-items-center justify-content-center">
                                 <div class="text-center">
                                     <a asp-action="Details" asp-route-id="@eventItem.Id" class="btn btn-primary mb-2 w-100">Details</a>
-                                    @if (eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+                                  
+                                    @if (@statusText == "Event Ended")
                                     {
-                                        <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-success w-100">Book</a>
+                                        <a class="btn btn-secondary w-100" disabled>Event Ended</a>
+
+                                    }
+                                    else if (eventItem.Tickets != null && eventItem.Tickets.Any(t => t.AvailableQuantity > 0))
+
+                                    {
+
+                                        <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-success w-100">Book Ticket</a>
                                     }
                                     else
                                     {
-                                        <button class="btn btn-secondary w-100" disabled>Sold Out</button>
+                                        <a class="btn btn-secondary w-100" disabled>Sold Out</a>
+
                                     }
                                 </div>
                             </div>

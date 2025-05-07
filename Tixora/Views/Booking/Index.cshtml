@@ -17,16 +17,18 @@
     }
 
         .users-table thead {
-            background-color: #f8f9fa;
             text-align: center;
         }
 
         .users-table th {
+            background-color: #0e1b4d;
+            color: white;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.85rem;
             padding: 1rem;
             border-bottom: 2px solid #dee2e6;
+
         }
 
         .users-table td {
@@ -39,16 +41,21 @@
             overflow: hidden;
             padding: 1rem;
             vertical-align: middle;
+            border-left: 1px solid #ededed;
         }
 
         .users-table tbody tr {
             transition: background-color 0.2s ease;
             text-align: center;
             max-width: 265px;
+            border-bottom: 1px solid #ededed;
         }
 
             .users-table tbody tr:hover {
                 background-color: rgba(0, 123, 255, 0.05);
+            }
+             tr:nth-child(even) {
+                background-color: #f2f2f2;
             }
 
     .action-buttons {
@@ -62,6 +69,7 @@
     }
 
     .header-actions {
+
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -103,11 +111,11 @@
                             <td>@book.BookedAt.ToString("dd/MM/yyyy")</td>
                             <td>
                                 <div class="action-buttons">
-                                    
-                                    <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-warning btn-action" style="background-color:#F7AD45;">
+
+                                    <a asp-action="Details" asp-route-id="@book.Id" class="btn btn-action" style="background-color:#0e1b4d;color:white">
                                         <i class="bi bi-eye me-1"></i>Details
                                     </a>
-                                    <a asp-action="Delete" asp-route-id="@book.Id" class="btn" style="background-color:#BB3E00;color:white">
+                                    <a asp-action="Delete" asp-route-id="@book.Id" class="btn" style="background-color:#f82249;color:white">
                                         <i class="bi bi-trash me-1"></i>Delete
                                     </a>
                                     
@@ -159,7 +167,7 @@
                     @TempData["SuccessMessage"]
                 </div>
                 <div class="modal-footer" style="background-color: #ffffff;">
-                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn" style="background-color: #f82249; color: white;" data-bs-dismiss="modal">Ok</button>
                 </div>
             </div>
         </div>

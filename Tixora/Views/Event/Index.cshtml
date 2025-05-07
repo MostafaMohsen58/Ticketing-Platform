@@ -1,10 +1,9 @@
-﻿
-@using Tixora.Settings
+﻿@using Tixora.Settings
 @model IEnumerable<Tixora.Models.Event>
 
 @{
     ViewData["Title"] = "Event List";
-    Layout = "_AdminLayout"; 
+    Layout = "_AdminLayout";
 }
 
 <style>
@@ -19,11 +18,12 @@
     }
 
         .users-table thead {
-            background-color: #f8f9fa;
             text-align: center;
         }
 
         .users-table th {
+            background-color: #0e1b4d;
+            color: white;
             font-weight: 600;
             text-transform: uppercase;
             font-size: 0.85rem;
@@ -31,7 +31,6 @@
             border-bottom: 2px solid #dee2e6;
         }
 
-        /* Ensure text inside cells wraps properly - adapted from organizer view */
         .users-table td {
             word-wrap: break-word;
             word-break: break-all;
@@ -43,11 +42,16 @@
             padding: 1rem;
             vertical-align: middle;
             text-align: center;
+            border-left: 1px solid #ededed;
+            border-bottom: 1px solid #ededed;
         }
 
-    /* Special style for description column to show more text */
     .description-cell {
         max-width: 250px;
+    }
+
+    .actions-cell {
+        min-width: 300px;
     }
 
     .users-table tbody tr {
@@ -57,6 +61,11 @@
         .users-table tbody tr:hover {
             background-color: rgba(0, 123, 255, 0.05);
         }
+
+    .users-table tr:nth-child(even) {
+        background-color: #f2f2f2;
+    }
+
 
     .event-thumbnail {
         width: 80px;
@@ -86,6 +95,7 @@
 
         .btn-action:hover {
             opacity: 0.9;
+            color:white;
         }
 
     .header-actions {
@@ -95,7 +105,6 @@
         margin-bottom: 2rem;
     }
 
-    /* Custom modal styling */
     .modal-header {
         background-color: #0e1b4d;
         color: white;
@@ -120,9 +129,9 @@
     }
 
     .btn-confirm-delete {
-        background-color: #7C4585;
+        background-color: #f82249;
         color: white;
-        border: 2px solid #7C4585;
+        border: 2px solid #f82249;
         border-radius: 5px;
         padding: 5px 13px;
         font-size: 16px;
@@ -130,19 +139,19 @@
 
     .btn-cancel-delete {
         background-color: #ffffff;
-        color: #7C4585;
-        /* border: 2px solid #7C4585; */
+        color: #0e1b4d;
+        border: 2px solid #0e1b4d;
         border-radius: 5px;
         padding: 5px 13px;
         font-size: 16px;
     }
 
-    .test:hover {
-        color: #520e5e !important;
-    }
+    /* .test:hover { */
+    /*     color: #520e5e !important; */
+    /* } */
 
     .btn-edit {
-        background-color: #040919; 
+        background-color: #abaeba;
         color: white;
         border: none;
         padding: 6px 12px;
@@ -155,7 +164,7 @@
     }
 
     .btn-details {
-        background-color: #f0ad4e; /* yellow/orange */
+        background-color: #0e1b4d;
         color: white;
         border: none;
         padding: 6px 12px;
@@ -168,7 +177,7 @@
     }
 
     .btn-delete {
-        background-color: #F82249; /* red */
+        background-color: #F82249;
         color: white;
         border: none;
         padding: 6px 12px;
@@ -185,14 +194,12 @@
         .btn-delete:hover {
             opacity: 0.85;
         }
-
-
 </style>
 
 <div class="container users-section">
     <div class="header-actions">
         <h1>Event List</h1>
-        <a asp-action="Create" class="btn d-flex align-items-center btn-action" style="background-color:#7C4585;">
+        <a asp-action="Create" class="btn d-flex align-items-center btn-action" style="background-color:#0e1b4d; color:white">
             <i class="bi bi-plus-circle me-2"></i>Add New Event
         </a>
     </div>
@@ -240,13 +247,13 @@
                             <td>
                                 @Html.DisplayFor(modelItem => item.Organizer.Name)
                             </td>
-                            <td>
+                            <td class="actions-cell">
                                 <div class="action-buttons">
-                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-action test" style="background-color:#7C4585;">
-                                        <i class="bi bi-pencil me-1"></i>
+                                    <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-action test" style="background-color:#abaeba;">
+                                        <i class="bi bi-pencil me-1"></i>Edit
                                     </a>
-                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-action" style="background-color:#F7AD45; color:black">
-                                        <i class="bi bi-eye me-1"></i>
+                                    <a asp-action="Details" asp-route-id="@item.Id" class="btn btn-action" style="background-color:#0e1b4d; color:white">
+                                        <i class="bi bi-eye me-1"></i>Details
                                     </a>
                                     <button type="button"
                                             class="btn btn-danger btn-action"
@@ -256,8 +263,8 @@
                                             data-title="@item.Title"
                                             data-description="@item.Description"
                                             data-startdate="@item.StartDate.ToString("dd/MM/yyyy")"
-                                            style="background-color:#BB3E00;">
-                                        <i class="bi bi-trash me-1"></i>
+                                            style="background-color:#f82249;">
+                                        <i class="bi bi-trash me-1"></i>Delete
                                     </button>
                                 </div>
                             </td>
@@ -268,6 +275,7 @@
         </div>
     }
 </div>
+
 
 <!-- Delete Confirmation Modal -->
 <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -287,6 +295,7 @@
                 <form id="deleteForm" asp-action="DeleteConfirmed" method="post">
                     <input type="hidden" name="id" id="eventIdToDelete" />
                     @Html.AntiForgeryToken()
+                    
                     <button type="submit" class="btn btn-confirm-delete">Yes</button>
                     <button type="button" class="btn btn-cancel-delete" data-bs-dismiss="modal">No</button>
                 </form>
@@ -309,7 +318,7 @@
                     @TempData["SuccessMessage"]
                 </div>
                 <div class="modal-footer" style="background-color: #ffffff;">
-                    <button type="button" class="btn btn-confirm-delete" data-bs-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-confirm-delete" data-bs-dismiss="modal">Ok</button>
                 </div>
             </div>
         </div>

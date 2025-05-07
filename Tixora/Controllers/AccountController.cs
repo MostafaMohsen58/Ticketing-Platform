@@ -129,7 +129,7 @@ namespace Tixora.Controllers
             return RedirectToAction("Login", "Account");
         }
 
-        public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 4)
+        public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 2)
         {
             var users = _userService.GetAllUsers();
 
