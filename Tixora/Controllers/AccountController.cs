@@ -1,4 +1,5 @@
 ﻿using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
@@ -92,7 +93,7 @@ namespace Tixora.Controllers
             return null;
         }
         #region Login
-
+        
         public async Task<IActionResult> Login()
         {
             LoginViewModel loginViewModel = new LoginViewModel()
@@ -110,9 +111,13 @@ namespace Tixora.Controllers
             {
                 var result = await _userService.LoginUserAsync(viewModel, viewModel.RememberMe);
 
-                if (result.Succeeded)
+                if (result.Succeeded&&User.IsInRole("User"))
                 {
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Explore", "Event");
+                }
+                else if(result.Succeeded && User.IsInRole("Admin"))
+                {
+                    return RedirectToAction("Index", "Account");
                 }
                 else
                 {
@@ -123,12 +128,13 @@ namespace Tixora.Controllers
         }
 
         #endregion
+        [Authorize]
         public async Task<IActionResult> LogOut()
         {
             await _userService.SignOutUserAsync();
-            return RedirectToAction("Login", "Account");
+            return RedirectToAction("Index", "Home");
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 2)
         {
             var users = _userService.GetAllUsers();
@@ -154,13 +160,13 @@ namespace Tixora.Controllers
 
             return View(pagedUsers);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Edit(string id)
         {
             var user = _userService.GetUserById(id);
             return View(user);
         }
-        
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditProfileViewModel model, IFormFile? ImageUrl)
         {
@@ -194,12 +200,13 @@ namespace Tixora.Controllers
 
             return View(model);
         }
-
+        [Authorize(Roles = "Admin")]
         public IActionResult Details(string id)
         {
             var user = _userService.GetUserById(id);
             return View(user);
         }
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public IActionResult Delete(string id)
         {
@@ -210,6 +217,7 @@ namespace Tixora.Controllers
             }
             return View(user);
         }
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public IActionResult ConfirmDelete(string Id)
         {
@@ -225,6 +233,7 @@ namespace Tixora.Controllers
             return NotFound("There is no Account for this id");
 
         }
+        [Authorize(Roles = "Admin")]
         public IActionResult Create()
         {
             return View();

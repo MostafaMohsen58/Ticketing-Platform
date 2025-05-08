@@ -12,7 +12,6 @@ using Tixora.ViewModels.BookingViewModel;
 
 namespace Tixora.Controllers
 {
-     [Authorize]
     public class BookingController : Controller
     {
         private readonly IBookingService bookingService;
@@ -26,12 +25,14 @@ namespace Tixora.Controllers
             eventsService = _eventsService;
             ticketService = _ticketService;
         }
+        [Authorize(Roles = "Admin")]
         // Booking
         public async Task<IActionResult> Index()
         {
             var bookings = await bookingService.GetAllAsync();
             return View(bookings);
         }
+        [Authorize(Roles = "Admin")]
         // Booking/Details/5
         public async Task<IActionResult> Details(int id)
         {
@@ -40,6 +41,7 @@ namespace Tixora.Controllers
         }
         // Booking/Create?eventId=1
         [HttpGet]
+        [Authorize(Roles = "User")]
         public async Task<IActionResult> Create(int eventId)
         {
             var eventDetails =await eventsService.GetById(eventId);
@@ -59,6 +61,8 @@ namespace Tixora.Controllers
             };
             return View(viewModel);
         }
+
+        [Authorize(Roles = "User")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create(CreateBookingViewModel viewModel)
@@ -110,12 +114,15 @@ namespace Tixora.Controllers
             }).ToList();
         }
 
+        [Authorize(Roles = "Admin")]
         // Booking/Delete/5
         public async Task<IActionResult> Delete(int id)
         {
             var booking = await bookingService.GetByIdAsync(id);
             return View(booking);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -136,7 +143,7 @@ namespace Tixora.Controllers
             }
         }
 
-        [Authorize]
+        [Authorize(Roles ="User")]
         public async Task<IActionResult> MyTickets()
         {
             var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;

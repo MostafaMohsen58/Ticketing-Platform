@@ -5,9 +5,11 @@ using Tixora.Models;
 using Tixora.Services.Interfaces;
 using System.IO;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Tixora.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class OrganizerController : Controller
     {
         private readonly IOrganizerService _service;

@@ -80,6 +80,7 @@ namespace Tixora
             };
             timer.Start();
 
+
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())
             {
@@ -87,15 +88,84 @@ namespace Tixora
             }
             app.UseRouting();
 
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseStaticFiles();
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}")
                 .WithStaticAssets();
+            test();
+            SeedAdminUserAsync(app).GetAwaiter().GetResult();
 
             app.Run();
+
+        }
+        public static async Task SeedAdminUserAsync(WebApplication app)
+        {
+            using var scope = app.Services.CreateScope();
+            var services = scope.ServiceProvider;
+
+            var userManager = services.GetRequiredService<UserManager<ApplicationUser>>();
+            var roleManager = services.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string adminEmail = "admin@example.com";
+            string adminPassword = "Admin@123";
+            string adminRole = "Admin";
+
+            // Create role if it doesn't exist
+            if (!await roleManager.RoleExistsAsync(adminRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(adminRole));
+            }
+
+            // Create user if it doesn't exist
+            var user = await userManager.FindByEmailAsync(adminEmail);
+            if (user == null)
+            {
+                var adminUser = new ApplicationUser
+                {
+                    UserName = "Admin",
+                    Email = adminEmail,
+                    FirstName = "Admin",
+                    LastName = "User",
+                    EmailConfirmed = true,
+                    Gender=Gender.Male,
+                    Address = "Admin Address",
+                    City = "Admin City",
+                    PhoneNumber = "01000000000",
+                    NationalId = "00000000000000",
+                    DateOfBrith = new DateOnly(1990, 1, 1)
+                };
+
+                var result = await userManager.CreateAsync(adminUser, adminPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, adminRole);
+                    Console.WriteLine("? Admin user created successfully.");
+                }
+                else
+                {
+                    foreach (var error in result.Errors)
+                    {
+                        Console.WriteLine($"? Error creating admin user: {error.Description}");
+                    }
+                }
+            }
+            else
+            {
+                Console.WriteLine("?? Admin user already exists.");
+            }
+        }
+
+        public static void test()
+        {
+            var hasher = new PasswordHasher<IdentityUser>();
+            var user = new IdentityUser();
+            string passwordHash = hasher.HashPassword(user, "Admin@123");
+            Console.WriteLine(passwordHash);
         }
     }
 }

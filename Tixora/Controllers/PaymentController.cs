@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Stripe;
 using Stripe.Checkout;
 using Tixora.Services;
@@ -7,6 +8,7 @@ using Tixora.ViewModels.BookingViewModel;
 
 namespace Tixora.Controllers
 {
+    [Authorize(Roles = "User")]
     public class PaymentController : Controller
     {
         private readonly IPaymentService _paymentService;

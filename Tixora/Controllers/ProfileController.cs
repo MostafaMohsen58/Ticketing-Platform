@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using Tixora.Services.Interface;
@@ -6,6 +7,7 @@ using Tixora.ViewModels.UserViewModels;
 
 namespace Tixora.Controllers
 {
+    [Authorize(Roles = "User")]
     public class ProfileController : Controller
     {
         private readonly IUserService _userService;

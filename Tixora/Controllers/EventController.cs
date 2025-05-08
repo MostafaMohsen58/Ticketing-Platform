@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Services;
 using Tixora.Services.Interfaces;
@@ -16,11 +17,13 @@ namespace Tixora.Controllers
             _venueService = venueService;
             _organizerService = organizerService;
         }
-
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Index()
         {
             return View(await _eventsService.GetAll());
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Create()
         {
@@ -32,6 +35,7 @@ namespace Tixora.Controllers
             return View(modelCopy);
         }
 
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(AddEventViewModel model)
         {
@@ -47,6 +51,8 @@ namespace Tixora.Controllers
             await _eventsService.Add(model);
             return RedirectToAction("Index");
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpGet]
         public async Task<IActionResult> Edit(int id)
         {
@@ -66,6 +72,8 @@ namespace Tixora.Controllers
 
             return View(modelCopy);
         }
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Edit(EditEventViewModel model)
         {
@@ -87,6 +95,8 @@ namespace Tixora.Controllers
         //    var Event = await _eventsService.GetById(id);
         //    return View(Event);
         //}
+
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
@@ -100,13 +110,14 @@ namespace Tixora.Controllers
         }
 
 
-
+        [Authorize(Roles ="User")]
         [HttpGet]
         public async Task<IActionResult> Explore()
         {
             var events = await _eventsService.GetAll();
             return View(events);
         }
+        [Authorize(Roles = "User")]
         [HttpPost]
         public async Task<IActionResult> Explore(DateTime? startDate, string? location, string? search)
         {
@@ -115,7 +126,7 @@ namespace Tixora.Controllers
 
             return View(events);
         }
-
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> ExploreEntertainment(DateTime? startDate, string? location, string? search)
         {
@@ -125,6 +136,7 @@ namespace Tixora.Controllers
             return View("Entertainment",events);    
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> ExploreMatches(DateTime? startDate, string? location, string? search)
         {
@@ -135,6 +147,7 @@ namespace Tixora.Controllers
             return View("Matches",events);
         }
 
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> Matches(string category = null, int? venueId = null, DateTime? date = null, string search = null)
         {
@@ -148,6 +161,7 @@ namespace Tixora.Controllers
             
             return View(events);
         }
+        [Authorize(Roles = "User")]
         [HttpGet]
         public async Task<IActionResult> Entertainment( DateTime? date = null, string search = null)
         {
@@ -158,6 +172,7 @@ namespace Tixora.Controllers
 
             return View(events);
         }
+        [Authorize(Roles = "User")]
         [NonAction]
         private async Task<List<Event>> Search(DateTime? startDate, string? location, string? search, string category)
         {
