@@ -48,16 +48,33 @@
 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a href="#hero" class="active">Home<br></a></li>
+                    <li><a asp-controller="Event" asp-action="Explore" class="active">Home<br></a></li>
                     <li><a asp-controller="Event" asp-action="Matches">Matches</a></li>
                     <li><a asp-controller="Event" asp-action="Entertainment">Shows</a></li>
+                    
+                    
+                    @if(User.Identity.IsAuthenticated&&User.IsInRole("User"))
+                    {
+                        <li><a asp-controller="Booking" asp-action="MyTickets">My Tickets</a></li>
+                        <li><a asp-controller="Profile" asp-action="Edit">Profile</a></li>
+                    }
+                    else
+                    {
+                        <li><a asp-controller="Account" asp-action="Register">Register</a></li>
+                    }
                     <li><a href="#footer">Contact</a></li>
-                    <li><a asp-controller="Account" asp-action="Register">Register</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
-
-            <a class="cta-btn d-none d-sm-block" asp-controller="Account" asp-action="Login">Sign in</a>
+            @if(User.Identity.IsAuthenticated)
+            {
+                <a class="cta-btn d-none d-sm-block" asp-controller="Account" asp-action="LogOut">Log Out</a>
+            }
+            else
+            {
+                <a class="cta-btn d-none d-sm-block" asp-controller="Account" asp-action="Login">Sign in</a>
+            }
+            
 
         </div>
     </header>
@@ -67,7 +84,7 @@
         </main>
     </div>
 
-    <footer id="footer" class="footer dark-background">
+    @* <footer id="footer" class="footer dark-background">
 
         <div class="footer-top">
             <div class="container">
@@ -158,7 +175,7 @@
             </div>
         </div>
 
-    </footer>
+    </footer> *@
 
     <!-- Scroll Top -->
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>

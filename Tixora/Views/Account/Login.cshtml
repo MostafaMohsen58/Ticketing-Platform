@@ -29,14 +29,15 @@
             font-weight: bold;
         }
 
-    .btn-primary {
-        background-color: #040919;
-        border-color: #040919;
+    .btn-prim {
+        background-color: #0e1b4d;
+        border-color: #0e1b4d;
+        color:white;
     }
-    .btn-primary:hover{
+    .btn-prim:hover{
         background-color:white;
-        border: #040919 1px solid;
-        color: #040919;
+            border: #0e1b4d 1px solid;
+            color: #0e1b4d;
 
         }
     </style>
@@ -61,30 +62,30 @@
                 <label class="form-check-label" asp-for="RememberMe"> @Html.DisplayNameFor(model => model.RememberMe)</label>
             </div>
             <div class="d-grid">
-                <button type="submit" class="btn btn-primary">Login</button>
+                <button type="submit" class="btn btn-prim">Login</button>
             </div>
         </form>
         <div class="mt-3 text-center">
             <a asp-action="Register">Don't have an account? Register here</a>
         </div>
         <div class="mt-3 text-center">
-            @* @if (Model.Schemes.Count() == 0) *@
-            @* { *@
-            @*     <p>dddddddddddd</p> *@
-            @* } *@
-            @* else *@
-            @* { *@
-            @*     <form asp-action="ExternalLogin"> *@
-            @*         <div> *@
-            @*             @foreach (var provider in Model.Schemes) *@
-            @*             { *@
-            @*                 <button type="submit" class="" name="provider" value="@provider.Name"> *@
-            @*                     Login With @provider.DisplayName *@
-            @*                 </button> *@
-            @*             } *@
-            @*         </div> *@
-            @*     </form> *@
-            @* } *@
+            @if (Model.Schemes.Count() == 0) 
+            { 
+                <p>dddddddddddd</p>
+            } 
+            else 
+            { 
+                <form asp-action="ExternalLogin"> 
+                    <div> 
+                        @foreach (var provider in Model.Schemes) 
+                        {
+                            <button type="submit" class="" name="provider" value="@provider.Name">
+                                Login With @provider.DisplayName 
+                            </button> 
+                        }
+                    </div> 
+                </form> 
+            } 
         </div>
     </div>
 </div>

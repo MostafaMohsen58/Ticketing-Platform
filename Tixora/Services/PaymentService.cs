@@ -50,8 +50,8 @@ namespace Tixora.Services
                     },
                 },
                 Mode = "payment",
-                SuccessUrl = "https://localhost:54460/Payment/Success?session_Id={CHECKOUT_SESSION_ID}",
-                CancelUrl = "https://localhost:54460/Payment/Cancel",
+                SuccessUrl = "https://localhost:55308/Payment/Success?session_Id={CHECKOUT_SESSION_ID}",
+                CancelUrl = "https://localhost:55308/Payment/Cancel",
                 Metadata = new Dictionary<string, string>
                 {
                     { "BookingId", booking.Id.ToString() },

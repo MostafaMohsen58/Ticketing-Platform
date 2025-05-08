@@ -1,96 +1,20 @@
-﻿@* @using Tixora.Settings
-@model Tixora.ViewModels.EventViewModel.AddEventViewModel
-
-@{
-    ViewData["Title"] = "Create";
-	Layout = "_AdminLayout";
-}
-
-
-<form asp-action="Create" enctype="multipart/form-data">
-    <div class="row">
-        <div class="col-md-6">
-            <div asp-validation-summary="All" class="text-danger" ></div>
-            <div class="form-group">
-                <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
-                <span asp-validation-for="Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="StartDate" class="control-label"></label>
-                <input asp-for="StartDate" class="form-control" />
-                <span asp-validation-for="StartDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Category" class="control-label"></label>
-                <input asp-for="Category" class="form-control" />
-                <span asp-validation-for="Category" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="VenueId" class="control-label text-secondary"></label>
-                <select asp-for="VenueId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Venues"
-                        data-placeholder="Select a category" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="VenueId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="OrganizerId" class="control-label text-secondary"></label>
-                <select asp-for="OrganizerId" class="form-select form-select-lg mt-4 border-primary" asp-items="Model.Organizers"
-                        data-placeholder="Select a Organizer" data-minimum-results-for-search="Infinity">
-                    <option value=""></option>
-                </select>
-                <span asp-validation-for="VenueId" class="text-danger"></span>
-            </div>
-            <div class="form-group mb-3">
-                <label asp-for="Cover" class="form-label text-secondary "></label>
-                <input asp-for="Cover" class="form-control form-control-lg border-primary" type="file"
-                       data-rule-extension="@FileSettings.AllowExtentions.Replace("." , string.Empty)"
-                       data-msg-extension="not allowed extension"
-                       data-rule-filesize="@FileSettings.maxSizeByByets"
-                       data-msg-filesize="maximum allowed size is @FileSettings.maxSizeInMB MB" />
-                <span asp-validation-for="Cover" class="text-danger"></span>
-            </div>
-
-            <div class="form-group mt-4">
-                <input type="submit" value="Create" class="btn btn-primary btn-lg w-100 shadow" />
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="col-md-6 d-flex justify-content-center align-items-center">
-                <img class="cover-preview d-none w-75" alt="Cover" />
-            </div>
-            </<div>
-            </div>
-        </div>
-    </div>
-</form>
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-        <script src="~/js/site.js"></script>
-}
- *@
-@using Tixora.Settings
+﻿@using Tixora.Settings
 @model Tixora.ViewModels.EventViewModel.AddEventViewModel
 
 @{
     ViewData["Title"] = "Create Event";
+    Layout = "_AdminLayout";
+
 }
 
 <section class="py-4">
     <div class="container">
         <div class="card shadow-lg" style="background-color: #ffffff; color: #2f3549; border: 1px solid #2f3138; border-radius: 1.5rem; max-width: 600px; margin: 0 auto;">
+            <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-top-right-radius: 1.5rem;border-top-left-radius: 1.5rem;font-size: 1.8rem;">
+                Create Event
+            </h2>
             <div class="card-body">
-                <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-radius: 1rem; font-size: 1.8rem;">
-                    Create Event
-                </h2>
+               
 
                 <form asp-action="Create" method="post" enctype="multipart/form-data">
                     <div class="row">
@@ -152,7 +76,7 @@
                     </div>
 
                     <div class="mt-4 text-right">
-                        <button type="submit" class="btn" style="background-color: #f82249; color: #ffffff; border: none; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
+                        <button type="submit" class="btn" style=" border: none; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
                             Create Event
                         </button>
                         <a asp-action="Index" class="btn" style="border: 1px solid #0e1b4d; color: #0e1b4d; background-color: #ffffff; border-radius: 0.5rem; padding: 10px 25px; font-size: 1rem; transition: all 0.3s ease;">
@@ -215,7 +139,7 @@
     }
 
     .btn[type="submit"] {
-        background-color: #f82249 !important;
+        background-color: #0e1b4d !important;
         color: #ffffff !important;
     }
 </style>

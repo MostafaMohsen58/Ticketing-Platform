@@ -121,7 +121,7 @@ namespace Tixora.Services
         }
         public List<EditProfileViewModel> GetAllUsers()
         {
-            var users = _userManager.Users.ToList();
+            var users = _userManager.Users.Where(u=>u.FirstName !="Admin").ToList();
             var userViewModels = new List<EditProfileViewModel>();
             foreach (var user in users)
             {

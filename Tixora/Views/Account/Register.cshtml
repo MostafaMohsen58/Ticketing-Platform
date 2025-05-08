@@ -33,15 +33,21 @@
 		margin: auto;
     }
 
+    .bg-primary {
+        --bs-bg-opacity: 1;
+        background-color: #0e1b4d !important;
+    }
+
     .next-btn{
-        background-color: #040919;
-        border-color: #040919;
+        background-color: #0e1b4d;
+        border-color: #0e1b4d;
+        color: #ffff;
     }
 
     .next-btn:hover {
         background-color: white;
-        border: #040919 1px solid;
-        color: #040919;
+            border: #0e1b4d 1px solid;
+            color: #0e1b4d;
     }
 
     .prev-btn {
@@ -55,6 +61,10 @@
             border: #F82249 1px solid;
             color: #F82249;
         }
+
+    .text {
+        color: #0e1b4d;
+    }
 </style>
 <section class="cont">
     <div class="container">
@@ -71,10 +81,11 @@
                 </div>
 
                 <!-- Step Indicators -->
+              
                 <div class="d-flex justify-content-between mb-4">
-                    <div id="stepIndicator1" class="step-indicator text-primary fw-bold">1. Account Info</div>
-                    <div id="stepIndicator2" class="step-indicator text-secondary">2. Personal Info</div>
-                    <div id="stepIndicator3" class="step-indicator text-secondary">3. Contact Info</div>
+                    <div id="stepIndicator1" class="text fw-bold">1. Account Info</div>
+                    <div id="stepIndicator2" class="text-secondary">2. Personal Info</div>
+                    <div id="stepIndicator3" class="text-secondary">3. Contact Info</div>
                 </div>
 
                 <!-- Form Start -->
@@ -100,7 +111,7 @@
                         </div>
 
                         <div class="d-flex justify-content-end">
-                            <button type="button" class="btn btn-primary next-btn">Next</button>
+                            <button type="button" class="btn next-btn">Next</button>
                         </div>
                     </div>
 
@@ -129,8 +140,8 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-primary prev-btn">Previous</button>
-                            <button type="button" class="btn btn-primary next-btn">Next</button>
+                            <button type="button" class="btn  prev-btn">Previous</button>
+                            <button type="button" class="btn  next-btn">Next</button>
                         </div>
                     </div>
 
@@ -163,7 +174,7 @@
                         </div>
 
                         <div class="d-flex justify-content-between">
-                            <button type="button" class="btn btn-outline-primary prev-btn">Previous</button>
+                            <button type="button" class="btn prev-btn">Previous</button>
                             <button type="submit" class="btn btn-success">Submit</button>
                         </div>
                     </div>
@@ -214,10 +225,10 @@
                 .attr("aria-valuenow", progress)
                 .text("Step " + step + " of 3");
 
-            $(".step-indicator").removeClass("text-primary fw-bold").addClass("text-secondary");
+            $(".step-indicator").removeClass("text fw-bold").addClass("text-secondary");
             $("#stepIndicator" + step)
                 .removeClass("text-secondary")
-                .addClass("text-primary fw-bold");
+                .addClass("text fw-bold");
 
             if (progress === 100) {
                 $("#progressBar").removeClass("bg-primary").addClass("bg-success");

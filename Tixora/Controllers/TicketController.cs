@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Models.ViewModels;
 using Tixora.Services.Interfaces;
@@ -8,6 +9,7 @@ using Tixora.ViewModels;
 
 namespace Tixora.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TicketController : Controller
     {
         ITicketService _ticketService;
@@ -175,7 +177,7 @@ namespace Tixora.Controllers
                 return RedirectToAction("Index");
             }
         }
-
+        [Authorize(Roles = "User")]
         public IActionResult History()
         {
             var userTickets = _ticketService.GetTicketsByUser(User.Identity.Name);

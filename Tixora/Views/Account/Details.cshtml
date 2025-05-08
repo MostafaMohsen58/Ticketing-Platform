@@ -62,14 +62,13 @@
 
         .user-info-item {
             display: flex;
-            border-bottom: 1px solid #eee;
+            border-bottom: 1px solid #fff;
             padding-bottom: 0.75rem;
         }
 
         .user-info-label {
-            font-weight: 600;
+            font-weight: bold;
             min-width: 120px;
-            color: #555;
         }
 
         .action-buttons {
@@ -82,18 +81,30 @@
         .btn-back {
             min-width: 120px;
         }
+
+        .btn-outline{
+            border-color: #6c757d;
+            color: #6c757d;
+        }
+
+            .btn-outline:hover {
+            background-color: #abaeba;
+                border-color: #abaeba;
+        }
     </style>
 </head>
 <body>
     <div class="container details-container">
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h1 class="mb-0">User Details</h1>
-            <a href="/Account/Index" class="btn btn-outline-primary btn-back">
-                <i class="bi bi-arrow-left me-2"></i>Back to List
-            </a>
-        </div>
+        @* <div class="d-flex justify-content-between align-items-center mb-4"> *@
+        @*     <a href="/Account/Index" class="btn btn-outline btn-back"> *@
+        @*         <i class="bi bi-arrow-left me-2" style="color:#6c757d"></i>Back to List *@
+        @*     </a> *@
+        @* </div> *@
 
         <div class="card details-card">
+            <h2 class="card-title mb-4" style="background-color: #0e1b4d; color: white; padding: 10px 15px; border-top-left-radius: 1rem; border-top-right-radius:1rem; font-size: 1.8rem;">
+                User Details
+            </h2>
             <div class="card-body">
                 <div class="text-center mb-4">
                     <div class="user-img-container mb-4">
@@ -115,11 +126,12 @@
                         <span class="user-info-label">Phone:</span>
                         <span>@Model.PhoneNumber</span>
                     </div>
+
                     <!-- Add any additional user details here -->
                 </div>
 
                 <div class="action-buttons">
-                    <a href="/Account/Edit?id=@Model.Id" class="btn " style="background-color:#7C4585; color:white;">
+                    <a href="/Account/Edit?id=@Model.Id" class="btn " style="background-color:#0e1b4d; color:white;">
                         <i class="bi bi-pencil me-2"></i>Edit Profile
                     </a>
                     <button type="button"
@@ -131,11 +143,16 @@
                             data-address="@Model.Address"
                             data-city="@Model.City"
                             data-phone="@Model.PhoneNumber"
-                            style="background-color:#BB3E00;color:white">
+                            style="background-color:#F82249;color:white">
                         <i class="bi bi-trash me-1"></i>Delete
                     </button>
                 </div>
             </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <a href="/Account/Index" class="btn btn-outline btn-back">
+                <i class="bi bi-arrow-left me-2" style="color:#6c757d"></i>Back to List
+            </a>
         </div>
     </div>
 

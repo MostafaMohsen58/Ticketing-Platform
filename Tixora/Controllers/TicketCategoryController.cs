@@ -1,9 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Tixora.Models;
 using Tixora.Services.Interfaces;
 
 namespace Tixora.Controllers
 {
+    [Authorize(Roles = "Admin")]
     public class TicketCategoryController : Controller
     {
         private readonly ITicketCategoryService _service;
