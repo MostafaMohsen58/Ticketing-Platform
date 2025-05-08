@@ -18,5 +18,7 @@ namespace Tixora.Services.Interfaces
         Task<Booking> CreateBookingAsync(CreateBookingViewModel viewModel, string userId);
         Task ConfirmBookingAsync(Booking booking);
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
+
+        Task<IEnumerable<Booking>> GetbyUserId(string userId);
     }
 }

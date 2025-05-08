@@ -87,6 +87,11 @@ namespace Tixora.Services
         public async Task DeleteAsync(int id) => await bookingRepository.DeleteAsync(id);
         public async Task<int> SaveAsync() => await bookingRepository.SaveAsync();
 
-        
+
+        // my ticket
+        public async Task<IEnumerable<Booking>> GetbyUserId(string userId)
+        {
+            return await bookingRepository.GetByUserIdAsync(userId);
+        }
     }
 }

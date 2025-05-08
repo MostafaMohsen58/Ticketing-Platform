@@ -46,8 +46,8 @@ namespace Tixora.Controllers
             var viewModel = new CreateBookingViewModel
             {
                 EventId = eventId,
-                EventTitle = eventDetails.Title,
-                EventImageUrl = eventDetails.ImageUrl,
+                EventTitle = eventDetails!.Title,
+                EventImageUrl = eventDetails.ImageUrl!,
                 VenueName = eventDetails.Venue.Name,
                 EventDate = eventDetails.StartDate,
                 AvailableTickets = availableTickets.Select(t => new SelectListItem
@@ -260,14 +260,20 @@ namespace Tixora.Controllers
             }
         }
 
-        public IActionResult MyTickets()
+        [Authorize]
+        public async Task<IActionResult> MyTickets()
         {
-            if (User.Identity.IsAuthenticated)
+            var userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+
+            if (string.IsNullOrEmpty(userId))
             {
-                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value!;
-                ViewBag.UserId = userId;
+                return View(new List<Booking>());
             }
-            return View();
+
+            var listOfTickets = await bookingService.GetbyUserId(userId);
+
+            return View(listOfTickets ?? new List<Booking>());
         }
+
     }
 }
