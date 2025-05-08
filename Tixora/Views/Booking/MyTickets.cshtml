@@ -1,7 +1,6 @@
 ﻿@model IEnumerable<Booking>
 @{
     ViewData["Title"] = "My Tickets";
-    Layout = "_AdminLayout";
 }
 
 <link href="~/css/mytickets.css" rel="stylesheet" />
@@ -86,7 +85,7 @@
             </h2>
             <div id="collapseSports" class="accordion-collapse collapse" aria-labelledby="headingSports">
                 <div class="accordion-body">
-                    @if (!Model.Any(b => b.Ticket.Event.Category == "Sports"))
+                    @if (!Model.Any(b => b.Ticket.Event.Category == "Matches"))
                     {
                         <div class="alert alert-info text-center">
                             You have no sports tickets yet.
@@ -95,7 +94,7 @@
                     else
                     {
                         <div class="row g-4">
-                            @foreach (var ticket in Model.Where(b => b.Ticket.Event.Category == "Sports"))
+                            @foreach (var ticket in Model.Where(b => b.Ticket.Event.Category == "Matches"))
                             {
                                 <div class="col-12">
                                     <div class="card ticket-card border-0">
@@ -118,7 +117,7 @@
                                                     <p class="value"><span class="badge bg-success">Delivered</span></p>
                                                 </div>
                                             </div>
-                                            <button class="btn btn-outline-secondary btn-sm cancel-btn">Cancel</button>
+                                            @* <button class="btn btn-outline-secondary btn-sm cancel-btn">Cancel</button> *@
                                         </div>
                                         <div class="ticket-body">
                                             <div class="event-logos">
@@ -168,7 +167,6 @@
                                         <th>Booked At</th>
                                         <th>Payment Method</th>
                                         <th>Total Amount</th>
-                                        <th>Actions</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -178,10 +176,7 @@
                                             <td>#@ticket.Id</td>
                                             <td>@ticket.BookedAt.ToString("dd MMM yyyy")</td>
                                             <td>Stripe</td>
-                                            <td>@(ticket.Amount * ticket.Ticket.Price) EGP</td>
-                                            <td>
-                                                <a href="/Payments/Details/@ticket.Ticket.Id" class="btn btn-outline-info btn-sm">View Details</a>
-                                            </td>
+                                            <td>@(ticket.TotalAmount * ticket.Ticket.Price) EGP</td>
                                         </tr>
                                     }
                                 </tbody>
