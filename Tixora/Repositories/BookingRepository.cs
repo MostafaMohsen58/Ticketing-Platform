@@ -63,11 +63,12 @@ namespace Tixora.Repositories
         }
         public async Task<IEnumerable<Booking>> GetByUserIdAsync(string userId)
         {
-            return await context.Bookings
+            var tt = await context.Bookings
                 .Where(b => b.UserId == userId)
                 .Include(b => b.User)
-                .Include(b => b.Ticket)
+                .Include(b => b.Ticket).ThenInclude(e=>e.TicketCategory)
                 .ToListAsync();
+            return tt;
         }
         public async Task<IEnumerable<Booking>> GetByDateRangeAsync(DateTime startDate, DateTime endDate)
         {

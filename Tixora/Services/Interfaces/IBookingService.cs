@@ -22,5 +22,7 @@ namespace Tixora.Services.Interfaces
         Task<IEnumerable<Booking>> GetActiveBookingsAsync();
         Task<Booking> CreatePendingBooking(BookingRequest request);
         Task<Booking> GetByStripeSessionIdAsync(string stripeSessionId);
+
+        Task<IEnumerable<Booking>> GetbyUserId(string userId);
     }
 }
