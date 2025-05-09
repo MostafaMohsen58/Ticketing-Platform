@@ -1,14 +1,16 @@
 ﻿@using Tixora.Settings
+
 @model IEnumerable<Booking>
 
 @{
     ViewData["Title"] = "My Tickets";
 }
 
-<div class="container my-5">
-    <h2 class="text-center mb-5 fw-bold">My Tickets</h2>
+<div class="container my-5" style="background: linear-gradient(to right, #f9f9f9, #f1f1f1);">
+    <h2 class="text-center mb-5 fw-bold" style="color: #2f3138;">My Tickets</h2>
 
     <div class="accordion" id="ticketsAccordion">
+
         <!-- Entertainment Tickets -->
         <div class="accordion-item mb-4 border-0">
             <h2 class="accordion-header" id="headingEntertainment">
@@ -19,27 +21,42 @@
             </h2>
             <div id="collapseEntertainment" class="accordion-collapse collapse" aria-labelledby="headingEntertainment">
                 <div class="accordion-body">
-                    @if (!Model.Any(b => b.Ticket.Event.Category == "entertainment"))
+                    @if (!Model.Any(b => b.Ticket.Event.Category == "Entertainment"))
                     {
-                        <div class="alert alert-info text-center">
-                            You have no entertainment tickets yet.
-                        </div>
+                        <div class="alert alert-info text-center">You have no entertainment tickets yet.</div>
                     }
                     else
                     {
                         <div class="row g-4">
-                            @foreach (var ticket in Model.Where(b => b.Ticket.Event.Category == "entertainment"))
+                            @foreach (var ticket in Model.Where(b => b.Ticket.Event.Category == "Entertainment"))
                             {
-                                <div class="col-md-6">
-                                    <div class="card ticket-card border-0 rounded-3 shadow-sm d-flex flex-row">
-                                    
-                                        <div class="ticket-image" style="flex: 0 0 40%; height: 100%; background-image: url('@(ticket.Ticket.Event.ImageUrl != null ? $"{FileSettings.ImagePath}/{ticket.Ticket.Event.ImageUrl}" : "/images/placeholder.jpg")'); background-size: cover; background-position: center;"></div>
-                                        
-                                        <div class="ticket-details p-3" style="flex: 1;">
-                                            <h5 class="ticket-title">@ticket.Ticket.Event.Title</h5>
-                                            <p><strong>Venue:</strong> @ticket.Ticket.Event.Venue.Name</p>
-                                            <p><strong>Status:</strong> <span class="badge bg-success">Delivered</span></p>
-                                            <p><strong>Date:</strong> @ticket.BookedAt.ToString("ddd dd MMM yyyy")</p>
+                                <div class="col-12">
+                                    <div class="card border-0 rounded-3 shadow-sm mb-4">
+                                        <div class="row g-0">
+                                            <!-- Ticket Image -->
+                                            <div class="col-md-4 ticket-image" style="background-image: url('@(ticket.Ticket.Event.ImageUrl != null ? $"{FileSettings.ImagePath}/{ticket.Ticket.Event.ImageUrl}" : "/images/placeholder.jpg")');"><img src="(@(ticket.Ticket.Event.ImageUrl != null ? $"{FileSettings.ImagePath}/{ticket.Ticket.Event.ImageUrl}" : "/images/placeholder.jpg"))" alt="Event Image" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                                            </div>
+
+                                            <!-- Ticket Details -->
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title" style="font-weight: bold; color: #2f3138;">@ticket.Ticket.Event.Title</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p><i class="fas fa-check-circle me-1" style="color: #6c757d;"></i><strong>Status:</strong> <span class="badge bg-success">Delivered</span></p>
+                                                            <p><i class="fas fa-tags me-1" style="color: #6c757d;"></i><strong>Category:</strong> @ticket.Ticket.TicketCategory.Name</p>
+
+                                                            <p><i class="fas fa-map-marker-alt me-1" style="color: #6c757d;"></i><strong>Venue:</strong> @ticket.Ticket.Event.Venue.Name</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <p><i class="fas fa-clock me-1" style="color: #6c757d;"></i><strong>Time:</strong> @ticket.BookedAt.ToString("hh:mm tt")</p>
+                                                            <p><i class="fas fa-calendar-alt me-1" style="color: #6c757d;"></i><strong>Date:</strong> @ticket.BookedAt.ToString("ddd dd MMM yyyy")</p>
+
+                                                            <p><i class="fas fa-id-card me-1" style="color: #6c757d;"></i><strong>Ticket ID:</strong> @ticket.UserId</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -62,25 +79,41 @@
                 <div class="accordion-body">
                     @if (!Model.Any(b => b.Ticket.Event.Category == "Matches"))
                     {
-                        <div class="alert alert-info text-center">
-                            You have no sports tickets yet.
-                        </div>
+                        <div class="alert alert-info text-center">You have no sports tickets yet.</div>
                     }
                     else
                     {
                         <div class="row g-4">
                             @foreach (var ticket in Model.Where(b => b.Ticket.Event.Category == "Matches"))
                             {
-                                <div class="col-md-6">
-                                    <div class="card ticket-card border-0 rounded-3 shadow-sm d-flex flex-row">
+                                <div class="col-12">
+                                    <div class="card border-0 rounded-3 shadow-sm mb-4">
+                                        <div class="row g-0">
+                                            <!-- Ticket Image -->
+                                            <div class="col-md-4 ticket-image" style="background-image: url('@(ticket.Ticket.Event.ImageUrl != null ? $"{FileSettings.ImagePath}/{ticket.Ticket.Event.ImageUrl}" : "/images/placeholder.jpg")');">
+                                                <img src="@((ticket.Ticket.Event.ImageUrl != null ? $"{FileSettings.ImagePath}/{ticket.Ticket.Event.ImageUrl}" : "/images/placeholder.jpg"))" alt="Event Image" class="img-fluid" style="object-fit: cover; width: 100%; height: 100%;">
+                                            </div>
 
-                                        <div class="ticket-image" style="flex: 0 0 40%; height: 100%; background-image: url('@(ticket.Ticket.Event.ImageUrl != null ? $"{FileSettings.ImagePath}/{ticket.Ticket.Event.ImageUrl}" : "/images/placeholder.jpg")'); background-size: cover; background-position: center;"></div>
-                                       
-                                        <div class="ticket-details p-3" style="flex: 1;">
-                                            <h5 class="ticket-title">@ticket.Ticket.Event.Title</h5>
-                                            <p><strong>Venue:</strong> @ticket.Ticket.Event.Venue.Name</p>
-                                            <p><strong>Status:</strong> <span class="badge bg-success">Delivered</span></p>
-                                            <p><strong>Date:</strong> @ticket.BookedAt.ToString("ddd dd MMM yyyy")</p>
+                                            <!-- Ticket Details -->
+                                            <div class="col-md-8">
+                                                <div class="card-body">
+                                                    <h5 class="card-title" style="font-weight: bold; color: #2f3138;">@ticket.Ticket.Event.Title</h5>
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <p><i class="fas fa-check-circle me-1" style="color: #6c757d;"></i><strong>Status:</strong> <span class="badge bg-success">Delivered</span></p>
+                                                            <p><i class="fas fa-tags me-1" style="color: #6c757d;"></i><strong>Category:</strong> @ticket.Ticket.TicketCategory.Name</p>
+
+                                                            <p><i class="fas fa-map-marker-alt me-1" style="color: #6c757d;"></i><strong>Venue:</strong> @ticket.Ticket.Event.Venue.Name</p>
+                                                        </div>
+                                                        <div class="col-md-6">
+                                                            <p><i class="fas fa-clock me-1" style="color: #6c757d;"></i><strong>Time:</strong> @ticket.BookedAt.ToString("hh:mm tt")</p>
+                                                            <p><i class="fas fa-calendar-alt me-1" style="color: #6c757d;"></i><strong>Date:</strong> @ticket.BookedAt.ToString("ddd dd MMM yyyy")</p>
+
+                                                            <p><i class="fas fa-id-card me-1" style="color: #6c757d;"></i><strong>Ticket ID:</strong> @ticket.UserId</p>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -96,45 +129,35 @@
             <h2 class="accordion-header" id="headingPayments">
                 <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
                         data-bs-target="#collapsePayments" aria-expanded="false" aria-controls="collapsePayments">
-                    <i class="fas fa-credit-card me-2"></i><strong>Payment History</strong>
+                    <i class="fas fa-receipt me-2"></i><strong>Payment History</strong>
                 </button>
             </h2>
             <div id="collapsePayments" class="accordion-collapse collapse" aria-labelledby="headingPayments">
                 <div class="accordion-body">
                     @if (!Model.Any())
                     {
-                        <div class="alert alert-info text-center">
-                            You have no payment history.
-                        </div>
+                        <div class="alert alert-info text-center">You have no payment history.</div>
                     }
                     else
                     {
                         <div class="table-responsive">
-                            <table class="table custom-table align-middle mb-0">
+                            <table class="table custom-table align-middle">
                                 <thead class="table-light">
                                     <tr>
-                                        <th class="fw-bold"><i class="fas fa-receipt me-1"></i> Booking No.</th>
-                                        <th class="fw-bold"><i class="fas fa-calendar-alt me-1"></i> Booked At</th>
-                                        <th class="fw-bold"><i class="fas fa-wallet me-1"></i> Payment Method</th>
-                                        <th class="fw-bold"><i class="fas fa-money-bill-wave me-1"></i> Total</th>
+                                        <th>Booking No.</th>
+                                        <th>Booked At</th>
+                                        <th>Payment Method</th>
+                                        <th>Total</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @foreach (var ticket in Model)
                                     {
-                                        <tr class="payment-row">
-                                            <td><span class="fw-bold text-dark">#@ticket.Id</span></td>
+                                        <tr>
+                                            <td><strong>#@ticket.Id</strong></td>
                                             <td>@ticket.BookedAt.ToString("dd MMM yyyy")</td>
-                                            <td>
-                                                <span class="badge bg-light text-dark">
-                                                    <i class="fab fa-cc-stripe me-1"></i> Stripe
-                                                </span>
-                                            </td>
-                                            <td>
-                                                <span class="text-success fw-bold">
-                                                    @(ticket.TotalAmount * ticket.Ticket.Price) EGP
-                                                </span>
-                                            </td>
+                                            <td><span class="badge bg-light text-dark"><i class="fab fa-cc-stripe me-1"></i> Stripe</span></td>
+                                            <td><span class="text-success fw-bold">@(ticket.TotalAmount * ticket.Ticket.Price) EGP</span></td>
                                         </tr>
                                     }
                                 </tbody>
@@ -144,145 +167,77 @@
                 </div>
             </div>
         </div>
-
     </div>
+</div>
 
-    <script>
-       
-        document.querySelectorAll('.accordion-button').forEach(button => {
-            button.addEventListener('click', () => {
-                setTimeout(() => {
-                    button.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                }, 300);
-            });
-        });
-    </script>
-
+@section Styles {
     <style>
         .accordion-button {
             background-color: white;
             color: #2f3138;
             font-weight: bold;
-            transition: background-color 0.3s ease;
             border: 1px solid #dee2e6;
         }
 
             .accordion-button:not(.collapsed) {
                 background-color: #f8f9fa;
-                color: #2f3138;
-            }
-
-            .accordion-button:focus {
-                box-shadow: none;
-            }
-
-            .accordion-button i {
-                font-size: 1.2rem;
-                color: #2f3138;
-            }
-
-            .accordion-button:not(.collapsed) i {
-                color: #2f3138;
-            }
-
-        h2 {
-            color: #2f3138;
-            font-weight: bold;
-        }
-
-        .ticket-card {
-            background-color: white;
-            border-radius: 10px;
-            overflow: hidden;
-            transition: all 0.3s ease;
-            border: 1px solid #dee2e6;
-            display: flex;
-            height: 180px; 
-        }
-
-            .ticket-card:hover {
-                transform: translateY(-5px);
-                box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
             }
 
         .ticket-image {
-            background-color: #e9ecef;
-            height: 100%; 
-            width: 40%;
+            background-size: cover;
+            background-position: center;
+            min-height: 220px;
+            border-top-left-radius: .5rem;
+            border-bottom-left-radius: .5rem;
         }
 
-        .ticket-details {
-            color: #2f3138;
+            .ticket-image img {
+                object-fit: cover;
+                width: 100%;
+                height: 100%;
+            }
+
+        .card-body {
             font-size: 14px;
-            flex: 1;
-            padding: 10px;
+            color: #2f3138;
         }
 
         .badge.bg-success {
             background-color: #198754;
         }
 
-        .table {
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        .table th {
+            background-color: #f82249;
+            color: white;
         }
 
-            .table th {
-                background-color: #2f3138;
-                color: white;
-            }
-
-            .table td {
-                font-size: 14px;
-                color: #2f3138;
-            }
-
-        .table-striped tbody tr:nth-of-type(odd) {
-            background-color: #f9f9f9;
+        .table td {
+            font-size: 14px;
+            color: #2f3138;
         }
 
-        .table-striped tbody tr:nth-of-type(even) {
-            background-color: #ffffff;
+        .table th, .table td {
+            vertical-align: middle;
         }
 
-        .table-hover tbody tr:hover {
-            background-color: #f1f1f1;
-            cursor: pointer;
-            transform: scale(1.02);
-            transition: all 0.2s ease;
+        .custom-table th, .custom-table td {
+            padding: 1rem;
+            border-top: 2px solid #dee2e6;
         }
 
-        .alert-info {
+        .table td:hover {
+            background-color: transparent;
+            color: inherit;
+        }
+
+        .accordion-button:hover {
+            background-color: #f82249;
+            color: white;
+        }
+
+        .accordion-button:not(.collapsed) {
             background-color: #f8f9fa;
             color: #2f3138;
-            border: 1px solid #dee2e6;
-        }
-
-        .payment-row {
-            transition: background-color 0.3s ease, transform 0.3s ease;
-        }
-
-            .payment-row:hover {
-                background-color: #e9ecef;
-                transform: translateY(-5px);
-            }
-
-        .table-light {
-            background-color: #f8f9fa;
-        }
-
-        .badge.bg-light {
-            background-color: #f8f9fa;
-            color: #2f3138;
-            border: 1px solid #dee2e6;
-            padding: 5px 10px;
-            font-size: 12px;
-        }
-
-        .table-responsive {
-            border-radius: 10px;
-            overflow: hidden;
         }
     </style>
-</div>
+}
