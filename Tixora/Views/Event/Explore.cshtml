@@ -1,4 +1,4 @@
-﻿@model List<Tixora.Models.Event>
+﻿@model List<Tixora.Models.Event>  
 @using Tixora.Settings
 @{
     ViewData["Title"] = "Explore Events";
@@ -54,9 +54,10 @@
     <!-- Categories -->
     <div class="d-flex justify-content-center flex-wrap gap-3 mb-5">
         <button type="button" class="btn category-btn px-4 py-2 rounded-pill selected">All Events</button>
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Concerts</button>
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Sports</button>
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Theater</button>
+        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Matches</button>
+        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Shows</button>
+        
+        @* <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Theater</button> *@
     </div>
 
     <!-- Events -->

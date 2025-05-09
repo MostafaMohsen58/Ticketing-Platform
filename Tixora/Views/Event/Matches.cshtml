@@ -40,14 +40,14 @@
             var isSoldOut = eventItem.Tickets == null || !eventItem.Tickets.Any(t => t.AvailableQuantity > 0);
 
             <div class="col-12 mb-4">
-                <div class="card shadow-sm border-0 rounded-3 d-flex flex-row">
-                    <!-- Left: Image -->
-                    <div class="col-5">
-                        <img src="@(FileSettings.ImagePath + "/" + eventItem.ImageUrl)" alt="@eventItem.Title"
-                             class="card-img-left" />
+                <div class="card shadow-sm border-0 rounded-3 d-flex flex-row event-card-fixed-height">
+                  
+                    <div class="event-image-container">
+                        <img src="@(eventItem.ImageUrl != null ? $"{FileSettings.ImagePath}/{eventItem.ImageUrl}" : "/images/placeholder.jpg")"
+                             alt="@eventItem.Title" class="event-img-fixed" />
                     </div>
 
-                    <!-- Right: Details -->
+                  
                     <div class="col-7 d-flex flex-column p-4">
                         <h5 class="card-title mb-3">@eventItem.Title</h5>
 
@@ -69,8 +69,9 @@
                             <span class="text-muted">@eventItem.Venue?.Address</span>
                         </div>
 
+                        <p class="text-truncate mb-3">@eventItem.Description</p>
 
-                        <div class="d-flex justify-content-end mt-auto">
+                        <div class="d-flex justify-content-end mt-auto gap-2">
                             @if (!isUpcoming || isSoldOut)
                             {
                                 <button class="btn btn-book btn-disabled" disabled>
@@ -79,11 +80,13 @@
                             }
                             else
                             {
-                                @* <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@item.Id" class="btn btn-dark w-100">Book Ticket</a> *@
+                                <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id" class="btn btn-book btn-dark">Book Ticket</a>
+                            }
 
-
-                                <a asp-controller="Booking" asp-action="Create" asp-route-eventId="@eventItem.Id"
-                                   class="btn btn-book   btn-dark">Book Ticket</a>
+                            @if (User.Identity.IsAuthenticated && User.IsInRole("Admin"))
+                            {
+                                <a asp-action="Edit" asp-route-id="@eventItem.Id" class="btn btn-secondary">Edit</a>
+                                <a asp-action="Delete" asp-route-id="@eventItem.Id" class="btn btn-danger">Delete</a>
                             }
                         </div>
                     </div>
@@ -100,18 +103,28 @@
     </div>
 </div>
 
- @section Styles {
+@section Styles {
     <style>
         .container {
             max-width: 1200px;
-            /* background-color: #f4f4f4; */
         }
 
-        .card {
-            display: flex;
-            flex-direction: row;
-            min-height: 250px;
-            transition: transform 0.3s ease-in-out;
+        .event-card-fixed-height {
+            height: 250px;
+        }
+
+        .event-image-container {
+            flex: 0 0 40%;
+            max-width: 40%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        .event-img-fixed {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 0.25rem 0 0 0.25rem;
         }
 
         .card:hover {
@@ -119,55 +132,32 @@
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
 
-        .card-img-left {
-            width: 100%;
-            height: 100%;
-            max-height: 250px;
-            object-fit: cover;
-            border-radius: 0.25rem 0 0 0.25rem;
-        }
-
-        .col-5 {
-            padding-right: 0;
-            height: 250px;
-        }
-
-        .col-7 {
-            padding-left: 0;
-            height: 250px;
-        }
-
         .card-title {
             font-size: 1.5rem;
             font-weight: 700;
         }
 
-        .card-text {
-            font-size: 1rem;
-            color: #444;
-        }
-
         .btn-book {
             background-color: #212529;
-            border: none;
             color: white;
+            border: none;
             padding: 0.5rem 1rem;
         }
 
-        .btn-book:hover,
-        .btn-book:focus,
-        .btn-book:active {
-            background-color: #212529;
-            color: white;
-            box-shadow: none;
-        }
+            .btn-book:hover,
+            .btn-book:focus,
+            .btn-book:active {
+                background-color: #212529;
+                color: white;
+                box-shadow: none;
+            }
 
-        .btn-book.btn-disabled {
-            background-color: #9fa5aa;
-            color: white;
-            cursor: not-allowed;
-            pointer-events: none;
-        }
+            .btn-book.btn-disabled {
+                background-color: #9fa5aa;
+                color: white;
+                cursor: not-allowed;
+                pointer-events: none;
+            }
 
         .clear-btn:hover {
             background-color: #9fa5aa;
@@ -180,6 +170,12 @@
 
         .text-muted {
             color: #6c757d !important;
+        }
+
+        .text-truncate {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
     </style>
 }
