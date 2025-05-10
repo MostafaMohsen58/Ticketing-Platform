@@ -12,8 +12,8 @@
             <form method="get" asp-action="Index" class="d-flex gap-2">
                 <div class="input-group minInput">
                     <input id="insearch" type="text" class="form-control" name="searchEmail" placeholder="Search users by email..." value="@Context.Request.Query["searchEmail"]">
-                    <button class="btn btn-outline-primary" type="submit" id="search">
-                        <i class="bi bi-search"></i>
+                    <button class="btn btn-outline-primary" type="submit" id="search" style="border-color:#0e1b4d;">
+                        <i class="bi bi-search" style="color:#0e1b4d;"></i>
                     </button>
                 </div>
                 <a href="@Url.Action("Index", "Account")" class="btn btn-outline-secondary d-flex align-items-center">
@@ -188,6 +188,15 @@ else
             justify-content: center;
             margin-top: 2rem;
         }
+
+        .btn-outline-primary:hover{
+            background-color: #0e1b4d;
+            color:white;
+        }
+
+            .btn-outline-primary:hover .bi-search {
+                color: white !important; 
+            }
     </style>
     }
 

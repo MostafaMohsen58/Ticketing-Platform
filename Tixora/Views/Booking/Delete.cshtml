@@ -51,7 +51,8 @@
                 <input type="hidden" asp-for="Id" />
                 @Html.AntiForgeryToken()
                 <button type="submit" class="btn" style="background-color:#0e1b4d; color:white;">
-                    <i class="fas fa-trash-alt"></i> Confirm Delete
+                    @* <i class="fas fa-trash-alt"></i> *@
+                    Confirm Delete
                 </button>
                 <a asp-action="Index" class="btn btn-outline">
                     <i class="fas fa-arrow-left"></i> Back to List
