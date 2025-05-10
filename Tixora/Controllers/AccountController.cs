@@ -25,6 +25,7 @@ namespace Tixora.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
+
         public async Task<IActionResult> Register(RegisterViewModel viewModel, IFormFile ImageUrl)
         {
             if (ModelState.IsValid)
@@ -40,17 +41,57 @@ namespace Tixora.Controllers
                     return View("Register", viewModel);
                 }
 
-                IdentityResult result = await _userService.RegisterUserAsync(viewModel);
+                // Check if the current user is an admin
+                bool isAdmin = User.IsInRole("Admin");
 
-                if (result.Succeeded)
+                // If admin is creating a user, ensure we don't auto-sign in the new user
+                if (isAdmin)
                 {
-                    return RedirectToAction("Index", "Account");
+                    // Register the user without auto sign-in
+                    IdentityResult result = await _userService.RegisterUserAsync(viewModel, false);
+
+                    if (result.Succeeded)
+                    {
+                        // Redirect back to admin user management page
+                        return RedirectToAction("Index", "Account"); // Adjust this to your actual admin user list page
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View("Create", viewModel);
+                }
+                else
+                {
+                    // Regular user registration with auto sign-in
+                    IdentityResult result = await _userService.RegisterUserAsync(viewModel, true);
+
+                    if (result.Succeeded)
+                    {
+                        return RedirectToAction("Explore", "Event");
+                    }
+
+                    foreach (var error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+
+                    return View("Create", viewModel);
                 }
 
-                foreach (var error in result.Errors)
-                {
-                    ModelState.AddModelError("", error.Description);
-                }
+                //IdentityResult result = await _userService.RegisterUserAsync(viewModel);
+
+                //if (result.Succeeded)
+                //{
+                //    return RedirectToAction("Index", "Account");
+                //}
+
+                //foreach (var error in result.Errors)
+                //{
+                //    ModelState.AddModelError("", error.Description);
+                //}
             }
             //must to do
             //if(User.IsInRole("Admin"))
@@ -270,7 +311,7 @@ namespace Tixora.Controllers
             var signInResult = await _userService.MyExternalLoginSignInAsync(info);
             if (signInResult.Succeeded)
             {
-                return RedirectToAction("index", "Event");
+                return RedirectToAction("Explore", "Event");
             }
 
             else
@@ -281,7 +322,7 @@ namespace Tixora.Controllers
                     var user = await _userService.MyFindByEmailAsync(userEmail);
                     if (user != null)
                     {
-                        return RedirectToAction("index", "Event");
+                        return RedirectToAction("Explore", "Event");
                     }
 
                 }
