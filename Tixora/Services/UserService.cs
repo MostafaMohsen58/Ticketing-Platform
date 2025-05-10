@@ -18,7 +18,7 @@ namespace Tixora.Services
             _signInManager = signInManager;
         }
 
-        public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model)
+        public async Task<IdentityResult> RegisterUserAsync(RegisterViewModel model, bool autoSignIn = true)
         {
             ApplicationUser userFromDb = new ApplicationUser()
             {
@@ -40,7 +40,12 @@ namespace Tixora.Services
             if (identityResult.Succeeded)
             {
                 await _userManager.AddToRoleAsync(userFromDb, "User");
-                await _signInManager.SignInAsync(userFromDb, false);
+
+                if (autoSignIn)
+                {
+                    await _signInManager.SignInAsync(userFromDb, isPersistent: false);
+                }
+                //await _signInManager.SignInAsync(userFromDb, false);
             }
 
             return identityResult;
