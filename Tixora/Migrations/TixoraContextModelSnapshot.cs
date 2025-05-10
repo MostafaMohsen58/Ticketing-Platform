@@ -344,6 +344,96 @@ namespace Tixora.Migrations
                     b.HasIndex("VenueId");
 
                     b.ToTable("Events");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Category = "Entertainment",
+                            Description = "An evening with Egypt's top comedians",
+                            ImageUrl = "images/comedy-night.jpg",
+                            OrganizerId = 1,
+                            StartDate = new DateTime(2025, 6, 15, 20, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Stand-Up Comedy Night",
+                            VenueId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Category = "Matches",
+                            Description = "The classic Cairo football derby",
+                            ImageUrl = "images/AlahlyVsZam.jpg",
+                            OrganizerId = 2,
+                            StartDate = new DateTime(2025, 7, 1, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Al Ahly vs Zamalek Derby",
+                            VenueId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Category = "Entertainment",
+                            Description = "Annual technology conference",
+                            ImageUrl = "images/Trends.jpg",
+                            OrganizerId = 3,
+                            StartDate = new DateTime(2025, 7, 15, 10, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Tech Trends 2025",
+                            VenueId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Category = "Entertainment",
+                            Description = "Scientific lecture on artificial intelligence",
+                            ImageUrl = "images/Future.jpg",
+                            OrganizerId = 4,
+                            StartDate = new DateTime(2025, 8, 1, 18, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Future of AI",
+                            VenueId = 4
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Category = "Matches",
+                            Description = "The classic Cairo football derby",
+                            ImageUrl = "images/PortovsAlahly.jpeg",
+                            OrganizerId = 2,
+                            StartDate = new DateTime(2025, 7, 1, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Al Ahly vs FC Porto",
+                            VenueId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Category = "Matches",
+                            Description = "The classic Cairo football derby",
+                            ImageUrl = "images/LivvsChe.jpg",
+                            OrganizerId = 2,
+                            StartDate = new DateTime(2025, 7, 1, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Liverpool vs chelsea",
+                            VenueId = 2
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Category = "Matches",
+                            Description = "The classic Cairo football derby",
+                            ImageUrl = "images/barcavsreal.jpeg",
+                            OrganizerId = 2,
+                            StartDate = new DateTime(2025, 7, 1, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Barcelona vs Real Madrid",
+                            VenueId = 2
+                        },
+                        new
+                        {
+                            Id = 8,
+                            Category = "Matches",
+                            Description = "The classic Cairo football derby",
+                            ImageUrl = "images/Manvscity.jpeg",
+                            OrganizerId = 2,
+                            StartDate = new DateTime(2025, 7, 1, 19, 0, 0, 0, DateTimeKind.Unspecified),
+                            Title = "Manchester United vs Manchester City",
+                            VenueId = 2
+                        });
                 });
 
             modelBuilder.Entity("Tixora.Models.Organizer", b =>
@@ -373,6 +463,40 @@ namespace Tixora.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Organizers");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ContactEmail = "info@comedyclub.com",
+                            ContactPhone = "01032567599",
+                            LogoUrl = "comedyLogo.jpg",
+                            Name = "Comedy Club Egypt"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ContactEmail = "info@efa.com",
+                            ContactPhone = "0223456789",
+                            LogoUrl = "footlogo.jpg",
+                            Name = "Egyptian Football Association"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ContactEmail = "contact@techsummit.org",
+                            ContactPhone = "01012345678",
+                            LogoUrl = "TechLogo.jpg",
+                            Name = "Tech Summit Org"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ContactEmail = "info@science.org",
+                            ContactPhone = "0229876543",
+                            LogoUrl = "SciLogo.jpg",
+                            Name = "Science Foundation"
+                        });
                 });
 
             modelBuilder.Entity("Tixora.Models.Ticket", b =>
@@ -405,6 +529,215 @@ namespace Tixora.Migrations
                     b.HasIndex("TicketCategoryId");
 
                     b.ToTable("Tickets");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            AvailableQuantity = 50,
+                            EventId = 1,
+                            Price = 500m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            AvailableQuantity = 150,
+                            EventId = 1,
+                            Price = 300m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            AvailableQuantity = 100,
+                            EventId = 1,
+                            Price = 150m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 4,
+                            AvailableQuantity = 500,
+                            EventId = 2,
+                            Price = 1000m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 5,
+                            AvailableQuantity = 5000,
+                            EventId = 2,
+                            Price = 500m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 6,
+                            AvailableQuantity = 2000,
+                            EventId = 2,
+                            Price = 250m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 7,
+                            AvailableQuantity = 30,
+                            EventId = 3,
+                            Price = 800m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 8,
+                            AvailableQuantity = 200,
+                            EventId = 3,
+                            Price = 400m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 9,
+                            AvailableQuantity = 100,
+                            EventId = 3,
+                            Price = 280m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 10,
+                            AvailableQuantity = 300,
+                            EventId = 4,
+                            Price = 200m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 11,
+                            AvailableQuantity = 150,
+                            EventId = 4,
+                            Price = 100m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 12,
+                            AvailableQuantity = 500,
+                            EventId = 5,
+                            Price = 1000m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 13,
+                            AvailableQuantity = 5000,
+                            EventId = 5,
+                            Price = 500m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 14,
+                            AvailableQuantity = 2000,
+                            EventId = 5,
+                            Price = 250m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 15,
+                            AvailableQuantity = 500,
+                            EventId = 6,
+                            Price = 1000m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 16,
+                            AvailableQuantity = 5000,
+                            EventId = 6,
+                            Price = 500m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 17,
+                            AvailableQuantity = 2000,
+                            EventId = 6,
+                            Price = 250m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 18,
+                            AvailableQuantity = 500,
+                            EventId = 7,
+                            Price = 1000m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 19,
+                            AvailableQuantity = 5000,
+                            EventId = 7,
+                            Price = 500m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 20,
+                            AvailableQuantity = 2000,
+                            EventId = 7,
+                            Price = 250m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        },
+                        new
+                        {
+                            Id = 21,
+                            AvailableQuantity = 500,
+                            EventId = 8,
+                            Price = 1000m,
+                            Status = 0,
+                            TicketCategoryId = 1
+                        },
+                        new
+                        {
+                            Id = 22,
+                            AvailableQuantity = 5000,
+                            EventId = 8,
+                            Price = 500m,
+                            Status = 0,
+                            TicketCategoryId = 2
+                        },
+                        new
+                        {
+                            Id = 23,
+                            AvailableQuantity = 2000,
+                            EventId = 8,
+                            Price = 250m,
+                            Status = 0,
+                            TicketCategoryId = 3
+                        });
                 });
 
             modelBuilder.Entity("Tixora.Models.TicketCategory", b =>
@@ -431,6 +764,29 @@ namespace Tixora.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TicketCategories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Description = "VIP seating with complimentary drinks",
+                            Name = "VIP",
+                            PriceMultiplier = 2f
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Description = "Regular seating",
+                            Name = "Regular",
+                            PriceMultiplier = 1f
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Description = "Discounted ticket for students",
+                            Name = "Student",
+                            PriceMultiplier = 0.5f
+                        });
                 });
 
             modelBuilder.Entity("Tixora.Models.Venue", b =>
@@ -457,6 +813,36 @@ namespace Tixora.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Venues");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Address = "Cairo, Egypt",
+                            Capacity = 2000,
+                            Name = "Cairo House"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Address = "Nasr City, Cairo",
+                            Capacity = 75000,
+                            Name = "Cairo International Stadium"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Address = "Alexandria",
+                            Capacity = 1500,
+                            Name = "Bibliotheca Alexandrina"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Address = "New Cairo",
+                            Capacity = 500,
+                            Name = "American University in Cairo"
+                        });
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
