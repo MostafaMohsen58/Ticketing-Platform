@@ -5,44 +5,7 @@
     ViewData["Title"] = "Login";
 }
 
-    <style>
-        body {
-            /* background-image: url('/images/crowded_people.jpg');  */
-        /* background-size: cover; */
-            background-repeat: no-repeat;
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/cover.jpg');
-        background-size: cover;
-        background-position: center;
-        }
-
-        .login-container {
-            max-width: 500px; 
-            background-color: rgba(255, 255, 255);
-            padding: 30px;
-            border-radius: 10px;
-             box-shadow: 0 0 10px rgba(0, 0, 0, 0.2); 
-            margin: auto;
-            margin-top: 50px; 
-        }
-
-        .form-label {
-            font-weight: bold;
-        }
-
-    .btn-prim {
-        background-color: #0e1b4d;
-        border-color: #0e1b4d;
-        color:white;
-    }
-    .btn-prim:hover{
-        background-color:white;
-            border: #0e1b4d 1px solid;
-            color: #0e1b4d;
-
-        }
-    </style>
-
-<div class="container">
+<div class="container mt-120">
     <div class="login-container">
         <h2 class="mb-4 text-center">Login</h2>
         <form asp-action="Login" method="post">
@@ -90,6 +53,44 @@
     </div>
 </div>
 
+@section Styles {
+    <style>
+        body {
+            /* background-image: url('/images/crowded_people.jpg');  */
+            /* background-size: cover; */
+            background-repeat: no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/cover.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .login-container {
+            max-width: 500px;
+            background-color: rgba(255, 255, 255);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: auto;
+            margin-top: 50px;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .btn-prim {
+            background-color: #0e1b4d;
+            border-color: #0e1b4d;
+            color: white;
+        }
+
+        .btn-prim:hover {
+            background-color: white;
+            border: #0e1b4d 1px solid;
+            color: #0e1b4d;
+        }
+    </style>
+}
 @section Scripts {
     @{
         await Html.RenderPartialAsync("_ValidationScriptsPartial");

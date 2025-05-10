@@ -3,9 +3,7 @@
     ViewData["Title"] = "My Tickets";
 }
 
-<link href="~/css/mytickets.css" rel="stylesheet" />
-
-<div class="container my-5">
+<div class="container mt-120">
     <h2 class="text-center mb-5 fw-bold text-primary">🎫 My Tickets</h2>
 
     <div class="accordion" id="ticketsAccordion">
@@ -176,7 +174,7 @@
                                             <td>#@ticket.Id</td>
                                             <td>@ticket.BookedAt.ToString("dd MMM yyyy")</td>
                                             <td>Stripe</td>
-                                            <td>@(ticket.TotalAmount * ticket.Ticket.Price) EGP</td>
+                                            <td>@(ticket.TotalAmount) $</td>
                                         </tr>
                                     }
                                 </tbody>
@@ -189,13 +187,19 @@
     </div>
 </div>
 
-<script>
-    // Add smooth scroll to accordion items when opened
-    document.querySelectorAll('.accordion-button').forEach(button => {
-        button.addEventListener('click', () => {
-            setTimeout(() => {
-                button.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            }, 300);
+@section Styles {
+    <link href="~/css/mytickets.css" rel="stylesheet" />
+}
+
+@section Scripts {
+    <script>
+        // Add smooth scroll to accordion items when opened
+        document.querySelectorAll('.accordion-button').forEach(button => {
+            button.addEventListener('click', () => {
+                setTimeout(() => {
+                    button.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }, 300);
+            });
         });
-    });
-</script>
+    </script>
+}

@@ -1,4 +1,8 @@
-﻿.ticket-card {
+﻿.mt-120 {
+    margin-top: 120px;
+}
+
+.ticket-card {
     border-radius: 10px;
     overflow: hidden;
     background-color: #fff;

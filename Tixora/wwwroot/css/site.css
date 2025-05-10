@@ -17,10 +17,6 @@ html {
   min-height: 100%;
 }
 
-body {
-  margin-bottom: 60px;
-}
-
 .form-floating > .form-control-plaintext::placeholder, .form-floating > .form-control::placeholder {
   color: var(--bs-secondary-color);
   text-align: end;
@@ -29,7 +25,58 @@ body {
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
 }
-
+.mt-70 {
+    margin-top: 70px;
+}
 .mt-100 {
     margin-top: 100px;
 }
+.mt-120 {
+    margin-top: 120px;
+}
+
+/* Header improvements */
+.header {
+    background-color: rgba(4, 9, 25, 0.95) !important;
+    box-shadow: 0 2px 15px rgba(0, 0, 0, 0.1);
+    padding: 15px 0;
+}
+
+.logo img {
+    max-height: 50px;
+}
+
+.sitename {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: white;
+    margin-left: 10px;
+}
+
+.navmenu ul li a {
+    font-weight: 500;
+    font-size: 0.95rem;
+    padding: 10px 15px;
+    transition: all 0.3s ease;
+}
+
+    .navmenu ul li a:hover,
+    .navmenu ul li a.active {
+        color: #F82249;
+    }
+
+.cta-btn {
+    background-color: #F82249;
+    color: white;
+    padding: 10px 25px;
+    border-radius: 50px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+    .cta-btn:hover {
+        background-color: #e01f45;
+        transform: translateY(-2px);
+        color: white;
+        text-decoration: none;
+    }

@@ -7,65 +7,6 @@
     ViewData["Title"] = "Register";
 }
 
-<style>
-    body {
-        background-repeat: no-repeat;
-        background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/cover.jpg');
-        background-size: cover;
-        background-position: center;
-    }
-
-    .register-container {
-        max-width: 520px;
-        background-color: #e7d4d4e0;
-        padding: 30px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
-        margin: auto;
-    }
-
-    .form-label {
-        font-weight: bold;
-    }
-    .cont{
-        background-color: rgba(255, 255, 255);
-        width: 775px;
-		margin: auto;
-    }
-
-    .bg-primary {
-        --bs-bg-opacity: 1;
-        background-color: #0e1b4d !important;
-    }
-
-    .next-btn{
-        background-color: #0e1b4d;
-        border-color: #0e1b4d;
-        color: #ffff;
-    }
-
-    .next-btn:hover {
-        background-color: white;
-            border: #0e1b4d 1px solid;
-            color: #0e1b4d;
-    }
-
-    .prev-btn {
-        background-color: #F82249;
-        border-color: #F82249;
-        color:white;
-    }
-
-        .prev-btn:hover {
-            background-color: white;
-            border: #F82249 1px solid;
-            color: #F82249;
-        }
-
-    .text {
-        color: #0e1b4d;
-    }
-</style>
 <section class="cont">
     <div class="container">
         <div class="row justify-content-center">
@@ -184,6 +125,70 @@
         </div>
     </div>
 </section>
+
+@section Styles {
+
+    <style>
+        body {
+            background-repeat: no-repeat;
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('/images/cover.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+
+        .register-container {
+            max-width: 520px;
+            background-color: #e7d4d4e0;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            margin: auto;
+        }
+
+        .form-label {
+            font-weight: bold;
+        }
+
+        .cont {
+            background-color: rgba(255, 255, 255);
+            width: 775px;
+            margin: auto;
+        }
+
+        .bg-primary {
+            --bs-bg-opacity: 1;
+            background-color: #0e1b4d !important;
+        }
+
+        .next-btn {
+            background-color: #0e1b4d;
+            border-color: #0e1b4d;
+            color: #ffff;
+        }
+
+        .next-btn:hover {
+            background-color: white;
+            border: #0e1b4d 1px solid;
+            color: #0e1b4d;
+        }
+
+        .prev-btn {
+            background-color: #F82249;
+            border-color: #F82249;
+            color: white;
+        }
+
+        .prev-btn:hover {
+            background-color: white;
+            border: #F82249 1px solid;
+            color: #F82249;
+        }
+
+        .text {
+            color: #0e1b4d;
+        }
+    </style>
+}
 
 @section Scripts {
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script>
