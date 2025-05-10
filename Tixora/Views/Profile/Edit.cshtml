@@ -33,9 +33,9 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="mb-0">Personal Information</h3>
             <div class="action-buttons-personal">
-                <button type="button" class="btn btn-secondary cancel-btn-personal" style="display: none;" onclick="cancelPersonalEdit()">Cancel</button>
-                <button type="button" class="btn btn-primary save-btn-personal" style="display: none;" onclick="savePersonalInfo()">Save</button>
-                <button type="button" class="btn btn-success update-btn-personal" onclick="enablePersonalEdit()">Update</button>
+                <button type="button" class="btn  cancel-btn-personal" style="display: none; background-color:#abaeba;color:white" onclick="cancelPersonalEdit()">Cancel</button>
+                <button type="button" class="btn  save-btn-personal" style="display: none;background-color:#0e1b4d;color:white" onclick="savePersonalInfo()">Save</button>
+                <button type="button" class="btn  update-btn-personal" style="background-color:#F82249; color:white" onclick="enablePersonalEdit()">Update</button>
             </div>
         </div>
         <div class="card-body">
@@ -68,9 +68,9 @@
         <div class="card-header d-flex justify-content-between align-items-center">
             <h3 class="mb-0">Account Information</h3>
             <div class="action-buttons-account">
-                <button type="button" class="btn btn-secondary cancel-btn-account" style="display: none;" onclick="cancelAccountEdit()">Cancel</button>
-                <button type="button" class="btn btn-primary save-btn-account" style="display: none;" onclick="saveAccountInfo()">Save</button>
-                <button type="button" class="btn btn-success update-btn-account" onclick="enableAccountEdit()">Update</button>
+                <button type="button" class="btn  cancel-btn-account" style="display: none; background-color:#abaeba;color:white" onclick="cancelAccountEdit()">Cancel</button>
+                <button type="button" class="btn  save-btn-account" style="display: none;background-color:#0e1b4d;color:white" onclick="saveAccountInfo()">Save</button>
+                <button type="button" class="btn  update-btn-account" style="background-color:#F82249; color:white" onclick="enableAccountEdit()">Update</button>
             </div>
         </div>
         <div class="card-body">
@@ -79,17 +79,26 @@
                 @Html.AntiForgeryToken()
                 <div class="row">
                     <div class="col-md-4 mb-3">
-                        @Html.LabelFor(m => m.AccountInfo.OldPassword, new { @class = "form-label" })
+                        @* @Html.LabelFor(m => m.AccountInfo.OldPassword, new { @class = "form-label" }) *@
+						<label class="form-label">
+							Old Password
+						</label>
                         @Html.PasswordFor(m => m.AccountInfo.OldPassword, new { @class = "form-control", placeholder = "Old Password", disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.AccountInfo.OldPassword, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-4 mb-3">
-                        @Html.LabelFor(m => m.AccountInfo.Password, new { @class = "form-label" })
-                        @Html.PasswordFor(m => m.AccountInfo.Password, new { @class = "form-control", placeholder = "Password", disabled = "disabled" })
+                        @* @Html.LabelFor(m => m.AccountInfo.Password, new { @class = "form-label" }) *@
+                        <label class="form-label">
+                            New Password
+                        </label>
+                        @Html.PasswordFor(m => m.AccountInfo.Password, new { @class = "form-control", placeholder = "New Password", disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.AccountInfo.Password, "", new { @class = "text-danger" })
                     </div>
                     <div class="col-md-4 mb-3">
-                        @Html.LabelFor(m => m.AccountInfo.ConfirmPassword, new { @class = "form-label" })
+                        @* @Html.LabelFor(m => m.AccountInfo.ConfirmPassword, new { @class = "form-label" }) *@
+                        <label class="form-label">
+                            Confirm New Password
+                        </label>
                         @Html.PasswordFor(m => m.AccountInfo.ConfirmPassword, new { @class = "form-control", placeholder = "Confirm Password", disabled = "disabled" })
                         @Html.ValidationMessageFor(m => m.AccountInfo.ConfirmPassword, "", new { @class = "text-danger" })
                     </div>
