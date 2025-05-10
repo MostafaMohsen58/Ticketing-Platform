@@ -130,7 +130,7 @@ namespace Tixora.Controllers
         [HttpGet]
         public async Task<IActionResult> ExploreEntertainment(DateTime? startDate, string? location, string? search)
         {
-            string category = "entertainment";
+            string category = "Entertainment";
             var events = await Search(startDate, location, search, category);
 
             return View("Entertainment",events);    
@@ -168,7 +168,7 @@ namespace Tixora.Controllers
             
             // Get all events
             var events = await _eventsService.GetAll();
-            events = events.Where(e => e.Category.Equals("entertainment", StringComparison.OrdinalIgnoreCase)).ToList();
+            events = events.Where(e => e.Category.Equals("Entertainment", StringComparison.OrdinalIgnoreCase)).ToList();
 
             return View(events);
         }
