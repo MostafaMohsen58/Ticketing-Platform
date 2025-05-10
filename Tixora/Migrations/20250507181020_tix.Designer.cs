@@ -12,8 +12,8 @@ using Tixora.Models.Context;
 namespace Tixora.Migrations
 {
     [DbContext(typeof(TixoraContext))]
-    [Migration("20250501020159_fix Price")]
-    partial class fixPrice
+    [Migration("20250507181020_tix")]
+    partial class tix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)

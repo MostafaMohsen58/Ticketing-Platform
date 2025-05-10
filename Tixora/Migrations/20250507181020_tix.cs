@@ -5,7 +5,7 @@
 namespace Tixora.Migrations
 {
     /// <inheritdoc />
-    public partial class fixPrice : Migration
+    public partial class tix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)

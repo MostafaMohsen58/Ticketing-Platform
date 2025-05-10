@@ -1,4 +1,4 @@
-﻿@model List<Tixora.Models.Event>
+﻿@model List<Tixora.Models.Event>  
 @using Tixora.Settings
 @{
     ViewData["Title"] = "Home";
@@ -53,10 +53,11 @@
 
     <!-- Categories -->
     <div class="d-flex justify-content-center flex-wrap gap-3 mb-5">
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill selected">All Events</button>
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Concerts</button>
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Sports</button>
-        <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Theater</button>
+        <a  class="btn category-btn px-4 py-2 rounded-pill selected">All Events</a>
+        <a  class="btn category-btn px-4 py-2 rounded-pill" asp-action="Matches" asp-controller="Event">Matches</a>
+        <a  class="btn category-btn px-4 py-2 rounded-pill" asp-action="Entertainment" asp-controller="Event">Shows</a>
+        
+        @* <button type="button" class="btn category-btn px-4 py-2 rounded-pill">Theater</button> *@
     </div>
 
     <!-- Events -->
