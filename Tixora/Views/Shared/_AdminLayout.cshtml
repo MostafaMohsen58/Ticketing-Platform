@@ -10,7 +10,7 @@
 
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <link rel="stylesheet" href="~/css/admin.css" />
 
     @RenderSection("Styles", required: false)
@@ -60,7 +60,12 @@
             <nav class="navbar navbar-expand-lg navbar-light bg-light border-bottom" style="min-height:60px">
                 <div class="container-fluid ps-4 pe-4">
                     <button class="btn" id="menu-toggle" style="background-color:#010821d1; color:white"><i class="bi bi-list"></i></button>
-                    <span class="ms-auto">Welcome, @User.Identity.Name </span>
+                    <div class="ms-auto d-flex align-items-center">
+                        <span class="me-3">Welcome, @User.Identity.Name</span>
+                        <a asp-controller="Account" asp-action="Logout" class="btn btn-outline-secondary btn-sm" title="Logout">
+                            <i class="fa-solid fa-sign-out-alt"></i> Logout
+                        </a>
+                    </div>
                 </div>
             </nav>
 
@@ -89,7 +94,7 @@
                         $menuToggle.find('i').removeClass('bi-list').addClass('bi-x');
                     } else {
                         $overlay.removeClass('active');
-						$menuToggle.find('i').removeClass('bi-x').addClass('bi-list');
+                        $menuToggle.find('i').removeClass('bi-x').addClass('bi-list');
                     }
                 } else {
                     $wrapper.toggleClass('toggled');
@@ -136,7 +141,7 @@
                 }
             });
 
-			const currentPath = window.location.pathname.toLowerCase();
+            const currentPath = window.location.pathname.toLowerCase();
             $('#sidebar-wrapper .list-group-item').each(function() {
                 const linkPath = $(this).attr('href').toLowerCase();
                 if (currentPath === (linkPath)) {

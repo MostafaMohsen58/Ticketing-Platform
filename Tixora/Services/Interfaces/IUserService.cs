@@ -7,7 +7,7 @@ namespace Tixora.Services.Interface
 {
     public interface IUserService
     {
-        Task<IdentityResult> RegisterUserAsync(RegisterViewModel model);
+        Task<IdentityResult> RegisterUserAsync(RegisterViewModel model, bool autoSignIn);
         Task<SignInResult> LoginUserAsync(LoginViewModel model, bool rememberMe);
         Task SignOutUserAsync();
         EditProfileViewModel GetUserById(string userId);
