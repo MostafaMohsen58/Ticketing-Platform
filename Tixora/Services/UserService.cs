@@ -118,10 +118,10 @@ namespace Tixora.Services
             }
 
             var result = await _userManager.DeleteAsync(user);
-            if (result.Succeeded)
-            {
-                await _signInManager.SignOutAsync();
-            }
+            //if (result.Succeeded)
+            //{
+            //    await _signInManager.SignOutAsync();
+            //}
             return result;
         }
         public List<EditProfileViewModel> GetAllUsers()

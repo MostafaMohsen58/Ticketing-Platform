@@ -29,27 +29,28 @@
             </div>
         </form>
         <div class="mt-3 text-center">
-            <a asp-action="Register">Don't have an account? Register here</a>
+            @if (Model.Schemes.Count() == 0)
+            {
+                <p>dddddddddddd</p>
+            }
+            else
+            {
+                <form asp-action="ExternalLogin">
+                    <div>
+                        @foreach (var provider in Model.Schemes)
+                        {
+                            <button type="submit" style="background-color:white;color:#0e1b4d; border:0px;" name="provider" value="@provider.Name">
+                                Login With @provider.DisplayName
+                            </button>
+                        }
+                    </div>
+                </form>
+            }
         </div>
         <div class="mt-3 text-center">
-            @if (Model.Schemes.Count() == 0) 
-            { 
-                <p>dddddddddddd</p>
-            } 
-            else 
-            { 
-                <form asp-action="ExternalLogin"> 
-                    <div> 
-                        @foreach (var provider in Model.Schemes) 
-                        {
-                            <button type="submit" class="" name="provider" value="@provider.Name">
-                                Login With @provider.DisplayName 
-                            </button> 
-                        }
-                    </div> 
-                </form> 
-            } 
+            <a asp-action="Register"> <span style="color:#F82249">Don't have an account?</span> <span style="font-weight:bold">Register here</span></a>
         </div>
+        
     </div>
 </div>
 
