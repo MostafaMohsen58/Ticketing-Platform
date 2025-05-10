@@ -135,7 +135,7 @@ namespace Tixora.Controllers
             return RedirectToAction("Index", "Home");
         }
         [Authorize(Roles = "Admin")]
-        public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 2)
+        public IActionResult Index(string searchEmail, int pageNumber = 1, int pageSize = 3)
         {
             var users = _userService.GetAllUsers();
 

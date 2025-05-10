@@ -10,11 +10,8 @@
           crossorigin="anonymous"
           referrerpolicy="no-referrer" />
     
-    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    
-
     <!-- Favicons -->
-    <link href="~/assets/img/favicon.png" rel="icon" asp-append-version="true">
+    <link href="~/assets/img/logo.png" rel="icon" asp-append-version="true">
 
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com" rel="preconnect" asp-append-version="true">
@@ -32,6 +29,7 @@
 
     <!-- Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet" asp-append-version="true">
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     @RenderSection("Styles", required: false)
 </head>
 <body>
@@ -39,30 +37,27 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid container-xl position-relative d-flex align-items-center">
 
-            <a href="index.html" class="logo d-flex align-items-center me-auto">
-                <img src='assets/img/logo.png' alt="" width="50px">
-
-                <!-- Uncomment the line below if you also wish to use an text logo -->
+            <a asp-controller="Home" asp-action="Index" class="logo d-flex align-items-center me-auto">
+                <img src='~/assets/img/logo.png' alt="" width="50" height="30">
                 <h1 class="sitename">Tixora</h1> 
             </a>
 n 
             <nav id="navmenu" class="navmenu">
                 <ul>
-                    <li><a asp-controller="Event" asp-action="Explore" class="active">Home<br></a></li>
-                    <li><a asp-controller="Event" asp-action="Matches">Matches</a></li>
-                    <li><a asp-controller="Event" asp-action="Entertainment">Shows</a></li>
+                    <li><a asp-controller="Event" asp-action="Explore" class="@(Context.Request.Path.Value.Contains("Explore") ? "active" : "")">Home<br></a></li>
+                    <li><a asp-controller="Event" asp-action="Matches" class="@(Context.Request.Path.Value.Contains("Matches") ? "active" : "")">Matches</a></li>
+                    <li><a asp-controller="Event" asp-action="Entertainment" class="@(Context.Request.Path.Value.Contains("Entertainment") ? "active" : "")">Shows</a></li>
                     
                     
                     @if(User.Identity.IsAuthenticated&&User.IsInRole("User"))
                     {
-                        <li><a asp-controller="Booking" asp-action="MyTickets">My Tickets</a></li>
-                        <li><a asp-controller="Profile" asp-action="Edit">Profile</a></li>
+                        <li><a asp-controller="Booking" asp-action="MyTickets" class="@(Context.Request.Path.Value.Contains("MyTickets") ? "active" : "")">My Tickets</a></li>
+                        <li><a asp-controller="Profile" asp-action="Edit" class="@(Context.Request.Path.Value.Contains("Edit") ? "active" : "")">Profile</a></li>
                     }
                     else
                     {
                         <li><a asp-controller="Account" asp-action="Register">Register</a></li>
                     }
-                    <li><a href="#footer">Contact</a></li>
                 </ul>
                 <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
             </nav>
@@ -79,7 +74,7 @@ n
         </div>
     </header>
     <div>
-        <main role="main" class="pb-3 mt-100">
+        <main role="main" class="pb-3 mt-70">
             @RenderBody()
         </main>
     </div>
@@ -181,18 +176,18 @@ n
     <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
 
     
-
     <!-- Vendor JS Files -->
-    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/assets/vendor/php-email-form/validate.js" asp-append-version="true"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/assets/js/main.js"></script>
+
+    <script src="~/assets/vendor/bootstrap/js/bootstrap.bundle.min.js" asp-append-version="true"></script>
     <script src="~/assets/vendor/aos/aos.js" asp-append-version="true"></script>
     <script src="~/assets/vendor/glightbox/js/glightbox.min.js" asp-append-version="true"></script>
     <script src="~/assets/vendor/swiper/swiper-bundle.min.js" asp-append-version="true"></script>
 
     <!-- Main JS File -->
-    <script src="~/assets/js/main.js"></script>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

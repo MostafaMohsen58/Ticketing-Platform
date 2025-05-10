@@ -5,129 +5,9 @@
     Layout = "_AdminLayout";
 }
 
-<style>
-    .users-section {
-        padding: 2rem 0;
-    }
-
-    .users-table {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-        .users-table thead {
-            background-color: #f8f9fa;
-            text-align: center;
-        }
-
-        .users-table th {
-            background-color: #0e1b4d;
-            color: white;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            padding: 1rem;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        
-        .users-table td {
-            word-wrap: break-word; 
-            word-break: break-all; 
-            overflow-wrap: break-word; 
-            max-width: 265px; 
-            text-overflow: ellipsis; 
-            white-space: nowrap; 
-            overflow: hidden; 
-            padding: 1rem;
-            vertical-align: middle;
-            border-left: 1px solid #ededed;
-            border-bottom: 1px solid #ededed;
-        }
-
-        
-        .users-table td {
-            word-wrap: break-word;
-        }
-
-        .users-table tbody tr {
-            transition: background-color 0.2s ease;
-            text-align: center;
-            max-width: 265px;
-        }
-
-            .users-table tbody tr:hover {
-                background-color: rgba(0, 123, 255, 0.05);
-            }
-
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: center;
-    }
-
-    .btn-action {
-        min-width: 80px;
-    }
-
-    .header-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-
-    .search-container {
-        max-width: 300px;
-    }
-
-    
-    .modal-header {
-        background-color: #0e1b4d;
-        color: white;
-        padding: 8px 20px;
-    }
-
-    .modal-title {
-        font-size: 16px;
-    }
-
-    .modal-body {
-        background-color: #ffffff;
-        color: #0e1b4d;
-        font-weight: bold;
-        font-size: 16px;
-        padding: 20px;
-    }
-
-    .modal-footer {
-        background-color: #ffffff;
-        padding: 8px 10px;
-    }
-
-    .btn-confirm-delete {
-        background-color: #f82249;
-        color: white;
-        border: 2px solid #f82249;
-        border-radius: 5px;
-        padding: 8px 16px;
-        font-size: 16px;
-    }
-
-    .btn-cancel-delete {
-        background-color: #ffffff;
-        color: #0e1b4d;
-        border: 2px solid #0e1b4d;
-        border-radius: 5px;
-        padding: 8px 16px;
-        font-size: 16px;
-    }
-</style>
-
-<div class="container users-section">
-    <div class="header-actions">
-        <h1>Ticket Categories </h1>
+<div class="container-fluid users-section">
+    <div class="header-actions d-flex flex-column flex-lg-row justify-content-around align-items-center gap-3 px-3">
+        <h1>Ticket Categories</h1>
         <a asp-action="Create" class="btn d-flex align-items-center" style="background-color:#0e1b4d; color:white">
             <i class="bi bi-plus-circle me-2"></i>Add New Category
         </a>
@@ -142,7 +22,7 @@
     else
     {
         <div class="table-responsive users-table" style="margin: 5rem; margin-top: 0px; margin-bottom:0px">
-            <table class="table table-borderless mb-3">
+            <table class="table table-borderless mb-3" style="min-width: 650px;">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -154,7 +34,7 @@
                 <tbody>
                     @foreach (var item in Model)
                     {
-                        <tr>
+                        <tr style="border-bottom: 1px solid #ededed;">
                             <td>
                                 <strong>@Html.DisplayFor(modelItem => item.Name)</strong>
                             </td>
@@ -166,7 +46,7 @@
                             </td>
                             <td>
                                 <div class="action-buttons">
-                                    <a href="/TicketCategory/Edit?id=@item.Id" class="btn btn-action" style="background-color:#abaeba; color:white">
+                                    <a href="/TicketCategory/Edit?id=@item.Id" class="btn btn-action" style="background-color:#abaeba; color:white; display: flex; justify-content: space-evenly;">
                                         <i class="bi bi-pencil me-1"></i>Edit
                                     </a>
                                     <a href="/TicketCategory/Details?id=@item.Id" class="btn  btn-action" style="background-color:#0e1b4d;color:white">
@@ -241,35 +121,34 @@
     </div>
 }
 
-<!-- Bootstrap & jQuery Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        // JavaScript for handling the delete confirmation modal
+        $(document).ready(function() {
+            // When the delete button is clicked, set the category data in the modal
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
 
-<script>
-    // JavaScript for handling the delete confirmation modal
-    $(document).ready(function() {
-        // When the delete button is clicked, set the category data in the modal
-        $('#deleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
-            
-            var categoryId = button.data('id');
-            var categoryName = button.data('name');
-            var categoryDescription = button.data('description');
-            var categoryPrice = button.data('price');
+                var categoryId = button.data('id');
+                var categoryName = button.data('name');
+                var categoryDescription = button.data('description');
+                var categoryPrice = button.data('price');
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#categoryId').val(categoryId);
-            modal.find('#categoryNameToDelete').text(categoryName);
-            modal.find('#categoryDescriptionToDelete').text(categoryDescription);
-            modal.find('#categoryPriceToDelete').text(categoryPrice);
-        });
+                // Update the modal's content
+                var modal = $(this);
+                modal.find('#categoryId').val(categoryId);
+                modal.find('#categoryNameToDelete').text(categoryName);
+                modal.find('#categoryDescriptionToDelete').text(categoryDescription);
+                modal.find('#categoryPriceToDelete').text(categoryPrice);
+            });
 
         @if (TempData["SuccessMessage"] != null)
         {
             <text>
-                $('#successPopup').modal('show');
+                        $('#successPopup').modal('show');
             </text>
         }
-    });
-</script>
+        });
+    </script>
+}

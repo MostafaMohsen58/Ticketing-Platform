@@ -1,136 +1,13 @@
 ﻿@model Tixora.ViewModels.TicketIndexViewModel
 
 @{
-    ViewData["Title"] = "Tickets";
+    ViewData["Title"] = "Tickets Management";
     Layout = "_AdminLayout";
 }
 
-
-
-<style>
-    .users-section {
-        padding: 2rem 0;
-    }
-
-    .users-table {
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
-        border-radius: 10px;
-        overflow: hidden;
-    }
-
-        .users-table thead {
-            background-color: #f8f9fa;
-            text-align: center;
-        }
-
-        .users-table th {
-            background-color: #0e1b4d;
-            color:white;
-            font-weight: 600;
-            text-transform: uppercase;
-            font-size: 0.85rem;
-            padding: 1rem;
-            border-bottom: 2px solid #dee2e6;
-        }
-
-        /* Ensure text inside cells wraps properly */
-        .users-table td {
-            word-wrap: break-word; /* Breaks long words */
-            word-break: break-all; /* Allows content to break anywhere if needed */
-            overflow-wrap: break-word; /* Ensures that long words will break when necessary */
-            max-width: 265px; /* Adjust as needed */
-            text-overflow: ellipsis; /* Truncate content with '...' if it overflows */
-            white-space: nowrap; /* Prevents text from breaking into multiple lines */
-            overflow: hidden; /* Hide content that overflows */
-            padding: 1rem;
-            vertical-align: middle;
-            border-top-right-radius: 1rem;
-            border-top-left-radius: 1rem;
-        }
-
-        /* For long text fields (like name, email, etc.), you may want to force wrapping */
-        .users-table td {
-            word-wrap: break-word;
-            /* max-width: 30px; /* Adjust as needed */
-        }
-
-        .users-table tbody tr {
-            transition: background-color 0.2s ease;
-            text-align: center;
-            max-width: 265px;
-        }
-
-            .users-table tbody tr:hover {
-                background-color: rgba(0, 123, 255, 0.05);
-            }
-
-    .action-buttons {
-        display: flex;
-        gap: 0.5rem;
-        justify-content: center;
-    }
-
-    .btn-action {
-        min-width: 80px;
-    }
-
-    .header-actions {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        margin-bottom: 2rem;
-    }
-
-    .search-container {
-        max-width: 300px;
-    }
-
-    /* Custom modal styling */
-    .modal-header {
-        background-color: #0e1b4d;
-        color: white;
-        padding: 8px 20px;
-    }
-
-    .modal-title {
-        font-size: 16px;
-    }
-
-    .modal-body {
-        background-color: #ffffff;
-        color: #0e1b4d;
-        font-weight: bold;
-        font-size: 16px;
-        padding: 20px;
-    }
-
-    .modal-footer {
-        background-color: #ffffff;
-        padding: 8px 10px;
-    }
-
-    .btn-confirm-delete {
-        background-color: #f82249;
-        color: white;
-        border: 2px solid #f82249;
-        border-radius: 5px;
-        padding: 8px 16px;
-        font-size: 16px;
-    }
-
-    .btn-cancel-delete {
-        background-color: #ffffff;
-        color: #f82249;
-        border: 2px solid #f82249;
-        border-radius: 5px;
-        padding: 8px 16px;
-        font-size: 16px;
-    }
-</style>
-
-<div class="container users-section">
-    <div class="header-actions">
-        <h1>Tickets </h1>
+<div class="container-fluid users-section">
+    <div class="header-actions d-flex flex-column flex-sm-row justify-content-around align-items-center gap-3 px-3">
+        <h1>Tickets List</h1>
         <a asp-action="Create" class="btn d-flex align-items-center" style="background-color:#0e1b4d; color:white">
             <i class="bi bi-plus-circle me-2"></i>Add New Ticket
         </a>
@@ -145,7 +22,7 @@
     else
     {
         <div class="table-responsive users-table" style="margin: 5rem; margin-top: 0px; margin-bottom:0px">
-            <table class="table table-borderless mb-3">
+            <table class="table table-borderless mb-3" style="min-width: 650px;">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -159,7 +36,7 @@
                 <tbody>
                     @foreach (var ticket in Model.Tickets)
                     {
-                        <tr>
+                        <tr style="border-bottom: 1px solid #ededed;">
                             <td>
                                 <strong>@ticket.Id</strong>
                             </td>
@@ -275,48 +152,47 @@
         </div>
     </div>
 }
+@section Scripts {
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-<!-- Bootstrap & jQuery Scripts -->
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // JavaScript for handling the delete confirmation modal
+            $(document).ready(function() {
+            // When the delete button is clicked, set the ticket data in the modal
+            $('#deleteModal').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget); // Button that triggered the modal
 
-<script>
-    // JavaScript for handling the delete confirmation modal
-        $(document).ready(function() {
-        // When the delete button is clicked, set the ticket data in the modal
-        $('#deleteModal').on('show.bs.modal', function (event) {
-            var button = $(event.relatedTarget); // Button that triggered the modal
+                var ticketId = button.data('id');
+                var ticketPrice = button.data('price');
+                var ticketQuantity = button.data('quantity');
+                var ticketEvent = button.data('event');
+                var ticketCategory = button.data('category');
 
-            var ticketId = button.data('id');
-            var ticketPrice = button.data('price');
-            var ticketQuantity = button.data('quantity');
-            var ticketEvent = button.data('event');
-            var ticketCategory = button.data('category');
+                // Update the modal's content
+                var modal = $(this);
+                modal.find('#ticketId').val(ticketId);
+                modal.find('#ticketIdToDelete').text(ticketId);
+                modal.find('#ticketPriceToDelete').text(ticketPrice);
+                modal.find('#ticketQuantityToDelete').text(ticketQuantity);
+                modal.find('#ticketEventToDelete').text(ticketEvent);
+                modal.find('#ticketCategoryToDelete').text(ticketCategory);
+            });
 
-            // Update the modal's content
-            var modal = $(this);
-            modal.find('#ticketId').val(ticketId);
-            modal.find('#ticketIdToDelete').text(ticketId);
-            modal.find('#ticketPriceToDelete').text(ticketPrice);
-            modal.find('#ticketQuantityToDelete').text(ticketQuantity);
-            modal.find('#ticketEventToDelete').text(ticketEvent);
-            modal.find('#ticketCategoryToDelete').text(ticketCategory);
+            // Show success message if available
+        @if (TempData["SuccessMessage"] != null)
+        {
+            <text>
+                            $('#successPopup').modal('show');
+            </text>
+        }
+
+            // Show error message if available
+        @if (TempData["ErrorMessage"] != null)
+        {
+            <text>
+                            $('#errorPopup').modal('show');
+            </text>
+        }
         });
-
-        // Show success message if available
-    @if (TempData["SuccessMessage"] != null)
-    {
-        <text>
-                    $('#successPopup').modal('show');
-        </text>
-    }
-
-        // Show error message if available
-    @if (TempData["ErrorMessage"] != null)
-    {
-        <text>
-                    $('#errorPopup').modal('show');
-        </text>
-    }
-    });
-</script>
+    </script>
+}

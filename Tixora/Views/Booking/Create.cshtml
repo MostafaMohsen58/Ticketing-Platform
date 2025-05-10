@@ -5,7 +5,7 @@
     ViewData["Title"] = "Create Booking";
 }
 
-<div class="min-vh-100 box">
+<div class="min-vh-100 box mt-4">
     <h1 class="display-4 mb-4 text-center" style="color:white;">Create Booking</h1>
     <div class="mdl">
         <div class="circles">
@@ -99,7 +99,6 @@
     body {
     display: block;
     position: center;
-    /* font-family: "Space Mono", monospace !important; */
     background-color: rgb(240, 244, 247);
     background: linear-gradient(-70deg, #040919, #040919);
     height: 100vh;
@@ -162,44 +161,39 @@
 
     /* ANIMATIONS */
     @@keyframes explode {
-    0%
+        0% {
+        opacity: 1;
+        }
 
-    {
-    opacity: 1;
-    }
-
-    100% {
-    transform: scale(1.2);
-    opacity: 0;
-    }
-
+        100% {
+        transform: scale(1.2);
+        opacity: 0;
+        }
     }
     @@keyframes float {
-    0%
+        0% {
+        -webkit-transform: rotateX(0deg) translateY(0px);
+        -moz-transform: rotateX(0deg) translateY(0px);
+        -ms-transform: rotateX(0deg) translateY(0px);
+        -o-transform: rotateX(0deg) translateY(0px);
+        transform: rotateX(0deg) translateY(0px);
+        }
 
-    {
-    -webkit-transform: rotateX(0deg) translateY(0px);
-    -moz-transform: rotateX(0deg) translateY(0px);
-    -ms-transform: rotateX(0deg) translateY(0px);
-    -o-transform: rotateX(0deg) translateY(0px);
-    transform: rotateX(0deg) translateY(0px);
-    }
+        50% {
+        -webkit-transform: rotateX(0deg) translateY(1px) translateX(5px);
+        -moz-transform: rotateX(0deg) translateY(10px) translateX(5px);
+        -ms-transform: rotateX(0deg) translateY(30px) translateX(5px);
+        -o-transform: rotateX(0deg) translateY(40px) translateX(5px);
+        transform: rotateX(0deg) translateY(10px) translateX(5px);
+        }
 
-    50% {
-    -webkit-transform: rotateX(0deg) translateY(1px) translateX(5px);
-    -moz-transform: rotateX(0deg) translateY(10px) translateX(5px);
-    -ms-transform: rotateX(0deg) translateY(30px) translateX(5px);
-    -o-transform: rotateX(0deg) translateY(40px) translateX(5px);
-    transform: rotateX(0deg) translateY(10px) translateX(5px);
-    }
-
-    100% {
-    -webkit-transform: rotateX(0deg) translateY(0px) translateX(1px);
-    -moz-transform: rotateX(0deg) translateY(0px) translateX(1px);
-    -ms-transform: rotateX(0deg) translateY(0px) translateX(1px);
-    -o-transform: rotateX(0deg) translateY(0px) translateX(1px);
-    transform: rotateX(0deg) translateY(0px) translateX(1px);
-    }
+        100% {
+        -webkit-transform: rotateX(0deg) translateY(0px) translateX(1px);
+        -moz-transform: rotateX(0deg) translateY(0px) translateX(1px);
+        -ms-transform: rotateX(0deg) translateY(0px) translateX(1px);
+        -o-transform: rotateX(0deg) translateY(0px) translateX(1px);
+        transform: rotateX(0deg) translateY(0px) translateX(1px);
+        }
 
     }
 
@@ -216,6 +210,8 @@
 
     .cardy {
     width: 600px;
+    max-width: 600px;
+    max-height: 700px;
     border-radius: 20px;
     background: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(35px);
@@ -229,6 +225,23 @@
     .pt-150 {
     padding-top: 150px;
     }
+
+    .event-image-container {
+    min-height: 250px;
+    max-height: 400px;
+    overflow: hidden;
+    border-radius: 10px;
+    position: relative;
+}
+
+.event-image-container img {
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.event-image-container:hover img {
+    transform: scale(1.03);
+}
 
 </style>
 }

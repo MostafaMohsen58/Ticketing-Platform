@@ -1,35 +1,231 @@
-﻿/* Set sidebar background color */
-#sidebar-wrapper {
-    min-width: 250px;
-    max-width: 250px;
-    background-color: #010821d1 !important;
+﻿
+body {
+    overflow-x: hidden;
+    position: relative;
 }
+
 #wrapper {
     display: flex;
     min-height: 100vh;
+    height: 100vh;
 }
 
-/* Set background and text color of sidebar items */
+#sidebar-wrapper {
+    min-width: 250px;
+    max-width: 250px;
+    background-color: #010821d1;
+    transition: all 0.3s ease;
+}
+
 #sidebar-wrapper .list-group-item {
-    background-color: transparent !important; /* So parent background shows */
+    background-color: transparent !important;
     color: #ffffff !important;
     border: none;
+    transition: all 0.2s;
+}
+.sidebar-heading {
+    padding: 1rem;
+    font-size: 1.1rem;
 }
 
-/* Hover effect for sidebar items */
-#sidebar-wrapper .list-group-item:hover,
-#sidebar-wrapper .list-group-item:focus {
+.list-group-item {
+    padding: 1rem 1.25rem;
+    transition: all 0.2s ease;
+}
+
+#sidebar-wrapper .list-group-item:hover {
     background-color: #0a1930 !important;
-    color: #ffffff !important;
 }
 
-/* Optional: style active item */
 #sidebar-wrapper .list-group-item.active {
     background-color: #0d2d4a !important;
-    color: #ffffff !important;
     font-weight: bold;
+    position: relative;
 }
 
-#wrapper.toggled #sidebar-wrapper {
-    margin-left: -250px;
+#sidebar-wrapper .list-group-item.active::after {
+    content: "";
+    position: absolute;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    width: 4px;
+    background-color: #f82249;
+}
+
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.5);
+    z-index: 999;
+    display: none;
+    transition: all 0.3s ease;
+}
+
+.sidebar-overlay.active {
+    display: block;
+}
+
+@media (max-width: 767.98px) {
+    #sidebar-wrapper {
+        position: fixed;
+        z-index: 1000;
+        left: -250px;
+        top: 0;
+        bottom: 0;
+        width: 250px;
+        transition: transform 0.3s ease;
+    }
+
+    #sidebar-wrapper.mobile-visible {
+        transform: translateX(249px);
+        box-shadow: 5px 0 15px rgba(0,0,0,0.2);
+    }
+
+    #menu-toggle {
+        z-index: 1001;
+        transition: all 0.3s ease;
+    }
+
+    #sidebar-wrapper .list-group-item.active::after {
+        display: block;
+    }
+}
+
+@media (min-width: 768px) {
+    #wrapper.toggled #sidebar-wrapper {
+        margin-left: -250px;
+    }
+    #menu-toggle {
+        transition: all 0.3s ease;
+    }
+
+    body.sidebar-open {
+        overflow: hidden;
+    }
+    #menu-toggle i {
+        transition: all 0.3s ease;
+    }
+}
+/*=============Table Style=======================*/
+.header-actions {
+    padding: 2rem 0;
+}
+
+.users-table {
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    border-radius: 10px;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-responsive::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-responsive::-webkit-scrollbar-thumb {
+    background: #0e1b4d;
+    border-radius: 4px;
+}
+
+.users-table thead {
+    background-color: #0e1b4d;
+    text-align: center;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+.users-table th {
+    background-color: #0e1b4d;
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    padding: 0.75rem 1rem;
+    white-space: nowrap;
+}
+
+.users-table td {
+    white-space: nowrap;
+    padding: 1rem;
+    vertical-align: middle;
+    border-left: 1px solid #ededed;
+}
+
+    .users-table td:nth-child(1) {
+        border-left: none;
+    }
+
+.users-table tbody tr {
+    transition: background-color 0.2s ease;
+    text-align: center;
+}
+
+    .users-table tbody tr:hover {
+        background-color: rgba(0, 123, 255, 0.05);
+    }
+
+tr:nth-child(even) {
+    background-color: #f2f2f2;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-action {
+    min-width: 93px;
+}
+
+.btn-edit:hover,
+.btn-details:hover,
+.btn-delete:hover {
+    opacity: 0.85;
+}
+/*=============Modal Style=====================*/
+.modal-header {
+    background-color: #0e1b4d;
+    color: white;
+    padding: 8px 20px;
+}
+
+.modal-title {
+    font-size: 16px;
+}
+
+.modal-body {
+    background-color: #ffffff;
+    color: #0e1b4d;
+    font-weight: bold;
+    font-size: 16px;
+    padding: 20px;
+}
+
+.modal-footer {
+    background-color: #ffffff;
+    padding: 8px 10px;
+}
+
+.btn-confirm-delete {
+    background-color: #f82249;
+    color: white;
+    border: 2px solid #f82249;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 16px;
+}
+
+.btn-cancel-delete {
+    background-color: #ffffff;
+    color: #0e1b4d;
+    border: 2px solid #0e1b4d;
+    border-radius: 5px;
+    padding: 8px 16px;
+    font-size: 16px;
 }

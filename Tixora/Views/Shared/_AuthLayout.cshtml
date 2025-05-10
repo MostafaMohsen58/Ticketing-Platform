@@ -11,10 +11,10 @@
           referrerpolicy="no-referrer" />
 
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    @RenderSection("Styles", required: false)
+    
 
     <!-- Favicons -->
-    <link href="~/assets/img/favicon.png" rel="icon" asp-append-version="true">
+    <link href="~/assets/img/logo.png" rel="icon" asp-append-version="true">
     <link href="~/assets/img/apple-touch-icon.png" rel="apple-touch-icon" asp-append-version="true">
 
     <!-- Fonts -->
@@ -33,12 +33,13 @@
 
     <!-- Main CSS File -->
     <link href="~/assets/css/main.css" rel="stylesheet" asp-append-version="true">
+    @RenderSection("Styles", required: false)
 </head>
 <body>
 
     
     <div>
-        <main role="main" class="pb-3 mt-100">
+        <main role="main" class="pb-3 mt-70">
             @RenderBody()
         </main>
     </div>

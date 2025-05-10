@@ -12,7 +12,7 @@
             <div class="status-header">
                 <div class="status-badge">
                     <div class="status-dot"></div>
-                    <div class="status-text">Booking Confirmed</div>
+                    <div class="status-text mt-2">Booking Confirmed</div>
                 </div>
                 <div class="confirmation-id">Your Booking: @Model.BookingId</div>
             </div>
@@ -125,7 +125,7 @@
         box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
         min-width: 300px;
         flex: 1;
-        max-width: 800px;
+        max-width: 850px;
     }
 
     .status-header {
@@ -232,6 +232,7 @@
         padding: 1.5rem;
         border: 1px solid var(--border);
         align-self: flex-start;
+        margin-top: 45px;
     }
 
     .price-row, .total-row {
@@ -241,7 +242,7 @@
         border-bottom: 1px dashed var(--border);
     }
 
-	.price-row:last-child {
+	.price-row:nth-child(2) {
 		border-bottom: none;
 	}
 
@@ -268,6 +269,7 @@
         gap: 1rem;
         flex-wrap: wrap;
         border-top: 1px solid var(--border);
+			justify-content: center;
     }
 
     .btn {
@@ -281,7 +283,6 @@
         text-decoration: none;
         cursor: pointer;
         transition: all 0.2s ease;
-        flex: 1;
         min-width: 140px;
     }
 
